@@ -29,8 +29,25 @@ if ('IntersectionObserver' in window && !reduceMotion.matches) {
       }
     });
   }, { threshold: 0.08 });
-  document.querySelectorAll('.section h2, .project-card, .fact-row, .experience-row, .activity-card, .certificate, .interest-grid > div, .contact h2, .contact-links').forEach((element, index) => {
+  document.querySelectorAll('.section h2, .project-card, .past-project-row, .fact-row, .experience-row, .activity-card, .certificate, .interest-grid > div, .contact h2, .contact-links').forEach((element, index) => {
     element.style.setProperty('--reveal-delay', `${(index % 3) * 55}ms`);
     observer.observe(element);
   });
 }
+
+// Native scrolling is untouched; only the decorative background receives depth.
+const drift = document.querySelector('.background-drift');
+const wideScreen = window.matchMedia('(min-width: 851px)');
+let backgroundFrame = 0;
+function updateBackground() {
+  backgroundFrame = 0;
+  const offset = !reduceMotion.matches && wideScreen.matches ? Math.min(window.scrollY * 0.035, 120) : 0;
+  drift.style.transform = `translate3d(0, ${-offset}px, 0)`;
+}
+function queueBackground() {
+  if (!backgroundFrame) backgroundFrame = window.requestAnimationFrame(updateBackground);
+}
+window.addEventListener('scroll', queueBackground, { passive: true });
+wideScreen.addEventListener('change', queueBackground);
+reduceMotion.addEventListener('change', queueBackground);
+updateBackground();

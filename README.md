@@ -55,10 +55,14 @@ The View CV button opens `./assets/philip-leitner-cv.pdf` in a new tab. The sepa
 Credential buttons use the exact individual Bloomberg and Forage URLs supplied by Philip. Update the corresponding `credential-link` anchors in `index.html` if credentials are reissued. These external services may restrict automated access.
 
 
-## Layered visual design
+## Background, palette, and scrolling
 
-A fixed navy background and restrained blue glow sit behind warm cream content panels. On wide, sufficiently tall screens, the introduction stays sticky briefly while the first panel rises over it. Later panels scroll naturally, including long Projects and Work Experience content. The rounded panel edges, top borders and shadows create depth without scroll snapping or wheel handlers. Below 1000px width or on short screens, the introduction and background use simpler scrolling behavior.
+The palette uses Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black text, and an orange-red accent (`#FF2B06`) visually matched to the supplied swatch. The reference's printed yellow-green hex was intentionally not used. The PL favicon retains its vector geometry with adapted colors.
 
-The header stays opaque for legibility; CSS scroll padding plus target scroll margins keep anchors below it. IntersectionObserver triggers short, staggered heading/card reveals only as elements enter view. Elements are visible by default, including when JavaScript is blocked. Reduced-motion preferences remove animation and the sticky introduction. No third-party animation libraries or tracking are used.
+The introduction and every content section stay in normal document flow: no sticky section stacking, negative section margins, scroll snapping, or wheel interception. Only the readable navigation header is sticky. CSS scroll padding and target margins keep headings clear of it.
 
-Leadership & Activities sits between Work Experience and Certifications. The Jakarta role was moved there; PennSEM and economics activity summaries link back to the existing full project content.
+A fixed, pointer-inert background layer contains a blue-to-white gradient, three soft forms and two oversized circular outlines. Lightweight requestAnimationFrame updates shift only the background slightly; mobile and reduced-motion users receive a static version. Content surfaces remain mostly open/translucent so the background shows through. IntersectionObserver starts short heading/content reveals on entry; everything is visible by default if JavaScript fails.
+
+Only the current equity research project uses a large featured card. Past projects use compact separated rows without fake action links. Keep their IDs intact because Leadership & Activities links to them. Add document actions only after real files or URLs are supplied.
+
+Leadership & Activities remains between Work Experience and Certifications. The current public-safe CV PDF and the individual credential URLs remain unchanged.
