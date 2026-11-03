@@ -425,3 +425,48 @@ nav a:is(:hover, :focus-visible)::after { transform: scaleX(1); }
   nav { justify-content: flex-start; }
   .menu-toggle { margin-left: auto; }
 }
+
+/* Reference-calibrated orbital field: one small star behind natural-flow content.
+   The short reference shows a shallow tilted orbit, not a section-to-section path. */
+.orbital-decoration { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; color: var(--accent); }
+.orbital-field { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .11; }
+.orbital-route { position: absolute; left: 34%; top: 37%; width: 52%; height: 6%; transform: rotate(22deg); transform-origin: center; }
+.orbital-route::before { content: ''; position: absolute; inset: 0; border: 1px solid #ff2b0626; border-radius: 50%; }
+.orbital-spark, .orbital-trail-dot { position: absolute; left: 0; top: 0; offset-path: ellipse(50% 50% at 50% 50%); offset-distance: 75%; offset-rotate: 0deg; }
+.orbital-spark { --orbit-start: 75%; width: 40px; height: 40px; isolation: isolate; }
+.orbital-spark > svg { position: relative; display: block; width: 100%; height: 100%; }
+.orbital-spark::before { content: ''; position: absolute; inset: -45px; z-index: -1; background: radial-gradient(circle, #ff2b061c 0%, #ff2b0609 38%, transparent 70%); border-radius: 50%; }
+.orbital-trail-dot { display: none; width: var(--dot-size); height: var(--dot-size); border-radius: 50%; background: var(--accent); opacity: var(--dot-opacity); }
+@supports (animation-timeline: scroll()) and (offset-path: ellipse(50% 50% at 50% 50%)) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.orbital-ready .orbital-spark, html.orbital-ready .orbital-trail-dot { animation: orbital-travel linear both; animation-timeline: scroll(root block); }
+    html.orbital-ready .orbital-trail-dot { display: block; }
+    html.orbital-ready .orbital-spark > svg { animation: orbital-turn linear both; animation-timeline: scroll(root block); }
+  }
+}
+@keyframes orbital-travel { from { offset-distance: var(--orbit-start); } to { offset-distance: calc(var(--orbit-start) + var(--orbit-travel, 600%)); } }
+@keyframes orbital-turn { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+@media (max-width:850px) {
+  .orbital-route { left: 22%; top: 42%; width: 68%; height: 8%; transform: rotate(12deg); }
+  .orbital-spark { width: 28px; height: 28px; }
+  .orbital-spark::before { inset: -25px; }
+  .orbital-trail-dot { width: calc(var(--dot-size) * .7); height: calc(var(--dot-size) * .7); }
+  .orbital-field { opacity: .08; }
+}
+@supports not (offset-path: ellipse(50% 50% at 50% 50%)) {
+  .orbital-spark { left: 50%; top: 50%; transform: translate(-50%,-50%); }
+}
+@media (prefers-reduced-motion:reduce) { .orbital-trail-dot { display: none; } .orbital-spark::before { background: none; } }
+@supports (animation-timeline: scroll()) and (offset-path: ellipse(50% 50% at 50% 50%)) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.orbital-ready .orbital-decoration[data-direction="reverse"] .orbital-trail-dot { animation-name: orbital-return-trail; }
+  }
+}
+@keyframes orbital-return-trail { from { offset-distance: calc(150% - var(--orbit-start)); } to { offset-distance: calc(150% - var(--orbit-start) + var(--orbit-travel, 600%)); } }
+
+@supports (animation-timeline: scroll()) and (offset-path: ellipse(50% 50% at 50% 50%)) {
+  @media (prefers-reduced-motion: no-preference) {
+    html.orbital-ready .orbital-trail-dot { opacity: 0; transition: opacity 150ms ease; }
+    html.orbital-ready .orbital-decoration[data-motion="moving"] .orbital-trail-dot { opacity: var(--dot-opacity); }
+  }
+}

@@ -71,7 +71,7 @@ Leadership & Activities remains between Work Experience and Certifications. The 
 
 Work Experience, Leadership & Activities, Past Projects and Certifications share solid white list surfaces, fine separators, aligned typography and spacing tokens. Only the current equity research report uses the large featured composition. Noninteractive entries have no hover effects or pointer cursor. Real actions have subtle matching hover/focus treatments plus visible keyboard outlines.
 
-The moving star and its CSS, containers, resize measurements, animation frames and scroll listeners have been removed. The decorative gradient background is static. Smooth native anchor navigation remains, and active navigation uses IntersectionObserver without scroll listeners. Reduced motion disables scroll motion and smooth scrolling; content remains visible without JavaScript.
+The earlier gutter-following star was removed. The current, explicitly requested reference-based effect is described below. The decorative gradient background remains static and content stays in normal flow. Active navigation uses IntersectionObserver. Reduced motion disables scroll motion and smooth scrolling; content remains visible without JavaScript.
 
 The complete available Git history contains four interests: Varsity football, Weightlifting, Poker, and the finance/philosophy reading entry. These are retained, with the final title Reading: Finance & Philosophy and a non-clickable Reading List — coming soon placeholder below it. A fifth interest must be supplied before it can be added; it is not invented.
 
@@ -79,7 +79,7 @@ The complete available Git history contains four interests: Varsity football, We
 
 Project-local skills: Anthropic frontend-design and webapp-testing, plus ibelick/ui-skills fixing-motion-performance. Each has a pinned source and licence under `.agents/skills/`; AGENTS.md defines when to use them. They do not install an animation library or change other projects.
 
-The site now uses native CSS Scroll/View Timelines for a thin reading-progress line and subtle movement inside the PL illustration on wide screens. All content stays in normal flow; there is no floating shape, scrolling JavaScript, or animation dependency. Repeated heading/card reveals were removed. Unsupported browsers and reduced-motion users get the complete static design; the illustration stays static on mobile.
+The site now uses native CSS Scroll/View Timelines for a thin reading-progress line and subtle movement inside the PL illustration on wide screens. All content stays in normal flow. The reference-based orbit described below adds a small decorative shape without an animation dependency. Repeated heading/card reveals were removed. Unsupported browsers and reduced-motion users get the complete static design; the illustration stays static on mobile.
 
 With Python Playwright and system Chromium available, run from the repository root:
 
@@ -95,3 +95,19 @@ This verifies responsive flow, native scroll progress at several positions, stat
 For website changes, AGENTS.md now directs a briefing/review coordinator and one website-builder agent. The coordinator writes an implementation brief under `.agents/briefs/`, the builder implements and browser-tests it, and the coordinator independently reviews the diff and screenshots before pushing to `main`.
 
 Role instructions are saved in `.agents/roles/briefing-review.md` and `.agents/roles/website-builder.md`. These files persist the workflow for this repository; they do not create always-running agents or install a global app feature. If agent tools are unavailable, the coordinator must say so and perform the stages sequentially rather than claim a second agent ran.
+
+## Reference-based orbital scroll animation
+
+The supplied 7.59-second desktop clip was inspected frame by frame. Its observed effect is a small curved four-point red shape on a broad, shallow diagonal orbit, a local halo and a tapered dotted tail. Thin background curves stay behind naturally scrolling content; solid cards cover the decoration as it passes below them. The portfolio recreates that observed character using its own orange-red colour and existing content. No Ferraria branding or product assets are included.
+
+Native CSS scroll timelines control orbital positions and slight rotation. One passive JavaScript listener detects scroll direction to switch the tail to the trailing side and lets it fade after scrolling stops; it does not position the shape, intercept scrolling, read layout, or run an animation loop. A one-time/font-ready/resize measurement sets the travel distance. The portfolio cadence is approximately one orbit per 1.7 viewport heights. The short recording cannot establish the source site's complete path, exact easing/velocity, full page behaviour or mobile layout. The portfolio's scroll cadence, mobile orbit and static/reduced-motion fallbacks are adaptations, not verified copies of unseen source behavior.
+
+Reference video, extracted frames, comparison screenshots and browser recordings are kept outside the checkout under the review artifacts directory. Do not publish the user's screen recording, which includes browser chrome.
+
+Additional reference-motion checks (using the same server helper):
+
+```sh
+python3 .agents/skills/webapp-testing/scripts/with_server.py --server "python3 -m http.server 8780 --bind 127.0.0.1" --port 8780 -- python3 tests/orbital_motion.py --url http://127.0.0.1:8780 --artifacts /tmp/portfolio-orbit
+```
+
+Use distinct ports for concurrent test/recording servers.

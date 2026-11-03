@@ -23,6 +23,9 @@ with sync_playwright() as p:
     page.goto(args.url)
     page.wait_for_load_state('networkidle')
     assert page.locator('.journey-star,.star-layer,.journey-ribbon').count() == 0
+    assert page.locator('.orbital-decoration').count() == 1
+    assert page.locator('.orbital-spark').count() == 1
+    assert page.locator('.orbital-decoration').evaluate('(e)=>getComputedStyle(e).pointerEvents') == 'none'
     assert page.locator('.project-card').count() == 1
     assert page.locator('.project-card .badge').inner_text() == 'In progress'
     assert page.locator('.credential-link').count() == 2

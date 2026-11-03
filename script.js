@@ -35,3 +35,34 @@ if ('IntersectionObserver' in window) {
   }, { rootMargin: '-15% 0px -55% 0px', threshold: 0 });
   document.querySelectorAll('main > section').forEach(section => activeObserver.observe(section));
 }
+
+// The native ScrollTimeline owns every position. JS measures travel once per
+// resize and only changes the tail side when actual scroll direction reverses.
+const orbitalDecoration = document.querySelector('.orbital-decoration');
+const orbitalReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (CSS.supports('animation-timeline: scroll()') && CSS.supports('offset-path: ellipse(50% 50% at 50% 50%)')) {
+  function measureOrbitalTravel() {
+    const viewportSpan = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    // Calibration: one shallow orbit per 1.7 viewport heights, not per section.
+    const turns = Math.max(2, viewportSpan / (innerHeight * 1.7));
+    orbitalDecoration.style.setProperty('--orbit-travel', `${turns * 100}%`);
+  }
+  measureOrbitalTravel();
+  window.addEventListener('resize', measureOrbitalTravel);
+  document.fonts.ready.then(measureOrbitalTravel);
+  document.documentElement.classList.add('orbital-ready');
+  let previousOrbitalScroll = window.scrollY;
+  let orbitalIdleTimer;
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.scrollY;
+    const delta = currentScroll - previousOrbitalScroll;
+    if (Math.abs(delta) < 2) return;
+    previousOrbitalScroll = currentScroll;
+    if (orbitalReducedMotion.matches) return;
+    const direction = delta < 0 ? 'reverse' : 'forward';
+    if (orbitalDecoration.dataset.direction !== direction) orbitalDecoration.dataset.direction = direction;
+    if (orbitalDecoration.dataset.motion !== 'moving') orbitalDecoration.dataset.motion = 'moving';
+    clearTimeout(orbitalIdleTimer);
+    orbitalIdleTimer = setTimeout(() => { orbitalDecoration.dataset.motion = 'idle'; }, 260);
+  }, { passive: true });
+}
