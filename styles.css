@@ -465,3 +465,50 @@ nav a:is(:hover, :focus-visible)::after { transform: scaleX(1); }
     html.orbital-ready .orbital-decoration[data-motion="moving"] .orbital-trail-dot { opacity: var(--dot-opacity); }
   }
 }
+
+/* Shared glass tiers. Text remains opaque; only the surface tint is translucent.
+   Solid fallback deliberately takes priority where backdrop filtering is absent. */
+:root {
+  --glass-clear: rgb(253 253 254 / .32);
+  --glass-medium: rgb(253 253 254 / .56);
+  --glass-strong: rgb(253 253 254 / .74);
+  --glass-blur-clear: 2px;
+  --glass-blur-medium: 5px;
+  --glass-blur-strong: 9px;
+}
+.about, .entry-list, .project-card {
+  --glass-tint: var(--glass-clear);
+  --glass-blur: var(--glass-blur-clear);
+  background: var(--white);
+}
+.experience .entry-list, .project-card {
+  --glass-tint: var(--glass-strong);
+  --glass-blur: var(--glass-blur-strong);
+}
+.leadership .entry-list, .training .entry-list {
+  --glass-tint: var(--glass-medium);
+  --glass-blur: var(--glass-blur-medium);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .about, .entry-list, .project-card {
+    background: var(--glass-tint);
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur));
+  }
+}
+/* Keep both halves of the featured surface in the same readable glass tier. */
+.project-content { background: transparent; }
+.project-visual { background: linear-gradient(150deg, #d9f1ff80, #9edaff80); }
+/* Darker small copy protects contrast even when the red star passes beneath
+   the clearest tier; accent colour remains on large titles, borders and actions. */
+.about .prose, .about .fact-row > div,
+.entry-list p, .entry-list li,
+.entry-list .experience-date, .entry-list .experience-date span,
+.entry-list .past-project-title .eyebrow, .entry-list .certificate .issuer-label,
+.entry-list .credential-date { color: #26313a; }
+.past-project-list.entry-list h3 { color: #942008; }
+@media (max-width:600px) {
+  :root { --glass-blur-strong: 6px; --glass-blur-medium: 3px; --glass-blur-clear: 1px; }
+}
+.entry-list .activity-card > p:not(.role), .entry-list .activity-card .eyebrow,
+.entry-list .availability, .entry-list .role span { color: #26313a; }

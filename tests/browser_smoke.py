@@ -43,7 +43,7 @@ with sync_playwright() as p:
         action = page.locator('nav .nav-contact').bounding_box()
         assert abs(logo['x'] - width * .04) <= 1, f'Unexpected logo inset at {width}'
         assert abs(width - action['x'] - action['width'] - width * .04) <= 1, f'Navigation is not right aligned at {width}'
-    assert page.locator('.entry-list h3').first.evaluate('(e)=>getComputedStyle(e).color') == 'rgb(169, 35, 11)'
+    assert page.locator('.entry-list h3').first.evaluate('(e)=>getComputedStyle(e).color') == 'rgb(148, 32, 8)'
     assert page.locator('.entry-list').first.evaluate('(e)=>getComputedStyle(e).borderLeftColor') == 'rgb(255, 43, 6)'
     page.set_viewport_size({'width': 1440, 'height': 900})
     supported = page.evaluate("CSS.supports('animation-timeline: scroll()')")

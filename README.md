@@ -61,7 +61,7 @@ The palette uses Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black text
 
 The introduction and every content section stay in normal document flow: no sticky section stacking, negative section margins, scroll snapping, or wheel interception. Only the readable navigation header is sticky. CSS scroll padding and target margins keep headings clear of it.
 
-A fixed, pointer-inert background layer contains a blue-to-white gradient, three soft forms and two oversized circular outlines. The background is static on all devices. Solid white entry lists sit over open sections so the gradient still shows through between content groups. Everything is visible by default if JavaScript fails.
+A fixed, pointer-inert background layer contains a blue-to-white gradient, three soft forms and two oversized circular outlines. The background is static on all devices. Tiered translucent entry lists sit over open sections so the gradient still shows through between content groups. Everything is visible by default if JavaScript fails.
 
 Only the current equity research project uses a large featured card. Past projects use compact separated rows without fake action links. Keep their IDs intact because Leadership & Activities links to them. Add document actions only after real files or URLs are supplied.
 
@@ -69,7 +69,7 @@ Leadership & Activities remains between Work Experience and Certifications. The 
 
 ## Consistent entry styles and interaction
 
-Work Experience, Leadership & Activities, Past Projects and Certifications share solid white list surfaces, fine separators, aligned typography and spacing tokens. Only the current equity research report uses the large featured composition. Noninteractive entries have no hover effects or pointer cursor. Real actions have subtle matching hover/focus treatments plus visible keyboard outlines.
+Work Experience, Leadership & Activities, Past Projects and Certifications share consistent glass list surfaces, fine separators, aligned typography and spacing tokens. Only the current equity research report uses the large featured composition. Noninteractive entries have no hover effects or pointer cursor. Real actions have subtle matching hover/focus treatments plus visible keyboard outlines.
 
 The earlier gutter-following star was removed. The current, explicitly requested reference-based effect is described below. The decorative gradient background remains static and content stays in normal flow. Active navigation uses IntersectionObserver. Reduced motion disables scroll motion and smooth scrolling; content remains visible without JavaScript.
 
@@ -100,7 +100,7 @@ Role instructions are saved in `.agents/roles/briefing-review.md` and `.agents/r
 
 Two supplied desktop clips were inspected frame by frame. The first7.59-second segment suggested a shallow local orbit; the longer26.38-second recording shows the star reaching different upper/lower and left/right regions as the page scrolls. The implementation now follows one continuous, non-repeating curve mapped to actual portfolio section landmarks, rather than revolving around one fixed oval.
 
-The small four-point orange-red shape, local halo, tapered tail, faint field curves and natural occlusion by solid content surfaces are retained. Position follows native scroll progress, holds at rest and retraces when scrolling upward. Content stays in normal document flow. No Ferraria branding or product assets are included.
+The small four-point orange-red shape, local halo, tapered tail, faint field curves and tiered visibility beneath translucent content surfaces are retained. Position follows native scroll progress, holds at rest and retraces when scrolling upward. Content stays in normal document flow. No Ferraria branding or product assets are included.
 
 A small passive direction/idle listener controls only the tail side and its rest fade. Layout is measured on initial/font-ready/resize to calibrate the native path/keyframes; there is no wheel interception, per-frame layout polling or time-driven position loop. Mobile uses a simpler path; reduced-motion/no-JavaScript/unsupported-motion versions remain static. Exact source scroll offsets/easing and mobile behavior are not available, so the portfolio path remains a documented reference adaptation rather than a pixel-exact source reconstruction.
 
@@ -113,3 +113,17 @@ python3 .agents/skills/webapp-testing/scripts/with_server.py --server "python3 -
 ```
 
 Use distinct ports for concurrent test/recording servers.
+
+## Curled journey, glass and refresh behavior
+
+The section-linked journey includes three tangent-continuous curls, with smaller curves on mobile. One small shape follows native scroll progress and reverses along the same path; it does not run on a clock. Reduced-motion users keep a static version.
+
+Shared glass variables define three importance tiers: About and compact past projects are clearest; Leadership and Certifications use medium tint/blur; the featured research project and detailed Work Experience use stronger tint/blur. Text stays fully opaque. Browsers without backdrop filtering receive solid white surfaces. Mobile blur is reduced.
+
+An actual browser reload resets to the introduction and removes an old section fragment. Fresh incoming section links and ordinary anchor navigation still work. This resets scroll position, not the browser cache.
+
+Additional regression checks cover real reloads, fresh deep links, translucent tiers and curled geometry:
+
+```sh
+python3 .agents/skills/webapp-testing/scripts/with_server.py --server "python3 -m http.server 8781 --bind 127.0.0.1" --port 8781 -- python3 tests/glass_refresh.py --url http://127.0.0.1:8781 --artifacts /tmp/portfolio-glass
+```

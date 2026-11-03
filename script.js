@@ -1,3 +1,18 @@
+// A real refresh starts a new visit at the introduction. Fresh deep links and
+// ordinary anchor/back navigation retain their native browser behavior.
+if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
+  const previousRestoration = history.scrollRestoration;
+  history.scrollRestoration = 'manual';
+  if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
+  window.addEventListener('pageshow', () => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      history.scrollRestoration = previousRestoration;
+    });
+  }, { once: true });
+}
+
 const menuButton = document.querySelector('.menu-toggle');
 const navigation = document.querySelector('#navigation');
 function closeMenu() {
@@ -66,14 +81,41 @@ if (CSS.supports('animation-timeline: scroll()') && CSS.supports('offset-path: p
       const clamp = (v,j) => Math.max(limits[j][0],Math.min(limits[j][1],v));
       const c1 = p1.map((v,j) => clamp(v + (p2[j]-p0[j]) / 7,j));
       const c2 = p2.map((v,j) => clamp(v - (p3[j]-p1[j]) / 7,j));
-      const segment = `C ${c1.join(' ')} ${c2.join(' ')} ${p2.join(' ')}`;
-      path += ` ${segment}`;
-      let previous = p1;
-      for (let step=1;step<=80;step++) {
-        const t=step/80,u=1-t;
-        const next=p1.map((v,j)=>u*u*u*v+3*u*u*t*c1[j]+3*u*t*t*c2[j]+t*t*t*p2[j]);
-        total += Math.hypot(next[0]-previous[0],next[1]-previous[1]);
-        previous=next;
+      let curves = [[p1,c1,c2,p2]];
+      if ([1,3,5].includes(i)) {
+        // Split the original sweep exactly, insert one complete local curl,
+        // then rejoin with the same tangent. No phase reset or separate shape.
+        const lerp = (a,b) => a.map((v,j)=>(v+b[j])/2);
+        const a=lerp(p1,c1),b=lerp(c1,c2),c=lerp(c2,p2);
+        const d=lerp(a,b),e=lerp(b,c),m=lerp(d,e);
+        const vector=e.map((v,j)=>v-d[j]);
+        const magnitude=Math.hypot(...vector);
+        const tangent=vector.map(v=>v/magnitude);
+        const side=i===3 ? -1 : 1;
+        const normal=[-tangent[1]*side,tangent[0]*side];
+        const radius=mobile ? Math.min(innerWidth*.10,36) : Math.min(innerWidth*.065,92);
+        const center=m.map((v,j)=>v+normal[j]*radius);
+        const k=.55228475;
+        const ring=[];
+        for(let quarter=0;quarter<4;quarter++) {
+          const angle=quarter*Math.PI/2;
+          const pointAt=t=>center.map((v,j)=>v+radius*(-normal[j]*Math.cos(t)+tangent[j]*Math.sin(t)));
+          const derivativeAt=t=>normal.map((v,j)=>v*Math.sin(t)+tangent[j]*Math.cos(t));
+          const q0=pointAt(angle),q3=pointAt(angle+Math.PI/2);
+          const v0=derivativeAt(angle),v1=derivativeAt(angle+Math.PI/2);
+          ring.push([q0,q0.map((v,j)=>v+k*radius*v0[j]),q3.map((v,j)=>v-k*radius*v1[j]),q3]);
+        }
+        curves=[[p1,a,d,m],...ring,[m,e,c,p2]];
+      }
+      for (const [q0,q1,q2,q3] of curves) {
+        path += ` C ${q1.join(' ')} ${q2.join(' ')} ${q3.join(' ')}`;
+        let previous=q0;
+        for (let step=1;step<=80;step++) {
+          const t=step/80,u=1-t;
+          const next=q0.map((v,j)=>u*u*u*v+3*u*u*t*q1[j]+3*u*t*t*q2[j]+t*t*t*q3[j]);
+          total+=Math.hypot(next[0]-previous[0],next[1]-previous[1]);
+          previous=next;
+        }
       }
       lengths.push(total);
     }

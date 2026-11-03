@@ -66,11 +66,11 @@ with sync_playwright() as p:
                 page.wait_for_timeout(45)
                 b=page.locator('.orbital-spark').bounding_box()
                 assert math.hypot(a['x']-b['x'],a['y']-b['y']) < 35, (target,a,b)
-            print(mode, 'coordinate ranges', [min(x for x,y in positions),max(x for x,y in positions),min(y for x,y in positions),max(y for x,y in positions)], 'card occlusion', covered, '/', len(positions))
+            print(mode, 'coordinate ranges', [min(x for x,y in positions),max(x for x,y in positions),min(y for x,y in positions),max(y for x,y in positions)], 'glass-surface crossings', covered, '/', len(positions))
             (out/f'{mode}-positions.json').write_text(json.dumps(positions))
             # A former 1.7-viewport interval must not just repeat the same lane.
             assert sum(math.dist(a,b) > 100 for a,b in zip(positions,positions[17:])) > 10
-            assert covered, 'Opaque card did not naturally cover any orbit samples'
+            assert covered, 'Journey did not pass beneath any content surfaces'
             # Reversing changes tail direction, not the star position at a given offset.
             for target in [450, 1200, 2200]:
                 page.evaluate('(y)=>scrollTo({top:y-150,behavior:"instant"})',target)
@@ -115,4 +115,4 @@ with sync_playwright() as p:
     assert plain.locator('nav').is_visible()
     assert not errors, errors
     browser.close()
-print('PASS: one native broad non-repeating journey, small constant star, no automatic tangent rotation, full-page desktop/mobile sampling, normal flow, natural opaque-card occlusion, direction-aware trail, reversible star positions, reduced-motion/no-JS static fallbacks.')
+print('PASS: one native broad non-repeating journey, small constant star, no automatic tangent rotation, full-page desktop/mobile sampling, normal flow, natural glass-surface crossings, direction-aware trail, reversible star positions, reduced-motion/no-JS static fallbacks.')
