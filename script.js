@@ -16,3 +16,18 @@ document.addEventListener('keydown', event => {
     menuButton.focus();
   }
 });
+// Enable the collapsed menu only after its event handlers are installed.
+document.documentElement.classList.add('menu-ready');
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+if ('IntersectionObserver' in window && !reduceMotion.matches) {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-revealing');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.section, .contact').forEach(section => observer.observe(section));
+}

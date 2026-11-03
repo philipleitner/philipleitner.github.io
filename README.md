@@ -16,7 +16,8 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 
 - `index.html`: biography, projects, experience, education, certifications, interests, contact details, and navigation.
 - `styles.css`: colors in `:root`, typography, layouts, mobile breakpoints, reduced-motion preferences, and subtle introductory animation.
-- `script.js`: accessible mobile navigation toggle, link-close behavior, and Escape handling.
+- `script.js`: accessible mobile navigation, Escape handling, and progressive section reveals. Content and navigation remain visible without JavaScript; reduced-motion preferences disable animation.
+- `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
 - `assets/philip-leitner-cv.pdf`: public CV derived from the supplied CV, omitting the home address and phone number. The original private CV is not included.
 
 Edit the relevant text directly in `index.html`. Keep section IDs and navigation links aligned. Use relative paths (for example, `./assets/report.pdf`) so the site works at both a domain root and a GitHub Pages project path.
@@ -46,3 +47,9 @@ Serve the site locally and check desktop and mobile widths, menu open/close and 
 5. Wait for GitHub's Pages deployment to complete and use the URL shown there. Verify all sections, downloads, and mobile navigation on the published site.
 
 Repository ownership determines the Pages URL; use GitHub's displayed URL rather than assuming the repository name establishes a user-site address. GitHub Pages must be enabled in repository settings to publish the files pushed to `main`.
+
+## CV and credential maintenance
+
+The View CV button opens `./assets/philip-leitner-cv.pdf` in a new tab; the separate Download CV link downloads the same file. The newly supplied original CV contains a home address and phone number and has deliberately not replaced the existing public-safe file. A public-safe original PDF is required to preserve the original design without publishing private details. Replace that file byte-for-byte once supplied; do not regenerate the CV.
+
+Credential buttons use the exact individual Bloomberg and Forage URLs supplied by Philip. Update the corresponding `credential-link` anchors in `index.html` if credentials are reissued. These external services may restrict automated access.

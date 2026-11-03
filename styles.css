@@ -692,3 +692,46 @@ footer p {
   transition:none!important}
 }
 
+
+/* Portfolio refinements: retain the original palette and decorative artwork. */
+.site-header { position:sticky; top:0; z-index:20; background:var(--cream); }
+html { scroll-padding-top:110px; }
+section[id] { scroll-margin-top:20px; }
+nav { gap:22px; }
+.nav-contact { display:inline-flex; align-items:center; gap:10px; padding:10px 16px; border:1px solid var(--navy); border-radius:9px; background:var(--navy); color:var(--cream); transition:background .2s, transform .2s; }
+nav .nav-contact:hover { background:var(--blue); color:white; transform:translateY(-1px); }
+.icon { width:19px; height:19px; flex-shrink:0; vertical-align:middle; }
+.nav-contact .icon { width:14px; height:14px; }
+.hero-copy { font-size:16px; line-height:1.8; max-width:470px; margin:28px 0; }
+.hero-links { flex-wrap:wrap; gap:12px; }
+.button { border:1px solid var(--navy); border-radius:8px; align-items:center; gap:10px; padding:13px 19px; font-size:13px; }
+.button-secondary { background:transparent; color:var(--navy); }
+.button-secondary:hover { background:#e7edf6; color:var(--navy); }
+.cv-download { display:inline-flex; align-items:center; gap:7px; font-size:12px; padding:11px 5px; border-radius:5px; color:var(--muted); transition:color .2s; }
+.cv-download:hover { color:var(--blue); }
+.hero-bottom { justify-content:flex-end; }
+.section h2 { font:clamp(44px,5.1vw,72px)/1.1 var(--serif); letter-spacing:-2px; margin:0 0 32px; }
+.section-heading { margin-bottom:0; }
+.section-label { margin-bottom:24px; }
+.project-group-title { font:600 14px/1.4 var(--sans); letter-spacing:1px; margin:16px 0 22px; }
+.past-projects { margin-top:46px; }
+.research-note { grid-template-columns:1fr; }
+.training-grid { grid-template-columns:1fr; gap:12px; }
+.credential-pending { display:inline-block; color:var(--muted); font-size:11px; margin-top:12px; }
+.credential-link { display:inline-flex; align-items:center; gap:8px; margin-top:12px; padding:8px 12px; border:1px solid #b6c8df; border-radius:7px; color:var(--navy); font-size:12px; transition:background .2s, color .2s; }
+.credential-link:hover { background:var(--navy); color:var(--cream); }
+.credential-link .icon { width:14px; height:14px; }
+.contact { padding-top:85px; padding-bottom:85px; }
+.contact h2 { margin:22px 0 32px; }
+.contact-links { flex-wrap:wrap; gap:16px; }
+.contact-link { display:inline-flex; align-items:center; justify-content:center; gap:12px; padding:14px 20px; border:1px solid #698294; border-radius:9px; font-size:14px; transition:background .2s, border-color .2s; }
+.contact-link:hover { background:#23465f; border-color:#a4bce2; }
+/* Visible by default. JS only animates sections as they enter the viewport. */
+@keyframes section-reveal { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+.section.is-revealing, .contact.is-revealing { animation:section-reveal .65s ease both; }
+@media (max-width:1050px) and (min-width:601px) { nav { gap:12px; font-size:10px; } .site-header { padding-left:4%; padding-right:4%; } .nav-contact { padding:9px; } }
+@media (max-width:700px) and (min-width:601px) { nav { gap:8px; font-size:9px; } .nav-contact { gap:4px; padding:8px 6px; } }
+@media (max-width:600px) { html { scroll-padding-top:90px; } .section h2 { font-size:44px; letter-spacing:-1.5px; margin-bottom:28px; } .hero-copy { font-size:15px; } .hero-links { gap:10px; } .cv-download { flex-basis:100%; } nav .nav-contact { margin-top:10px; justify-content:center; padding:12px 16px; } .contact { padding:60px 6%; } .contact-links { flex-direction:column; align-items:stretch; } .contact-link { padding:14px 10px; font-size:13px; } .contact-link .icon { width:17px; height:17px; } .training-grid { gap:0; } }
+@media (prefers-reduced-motion:reduce) { .section.is-revealing, .contact.is-revealing { animation:none; } }
+/* Keep mobile navigation available when JavaScript is disabled or fails. */
+@media (max-width:600px) { html:not(.menu-ready) nav { display:flex; } html:not(.menu-ready) .menu-toggle { display:none; } }
