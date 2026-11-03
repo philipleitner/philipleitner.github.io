@@ -79,7 +79,7 @@ The complete available Git history contains four interests: Varsity football, We
 
 Project-local skills: Anthropic frontend-design and webapp-testing, plus ibelick/ui-skills fixing-motion-performance. Each has a pinned source and licence under `.agents/skills/`; AGENTS.md defines when to use them. They do not install an animation library or change other projects.
 
-The site now uses native CSS Scroll/View Timelines for a thin reading-progress line and subtle movement inside the PL illustration on wide screens. All content stays in normal flow. The reference-based orbit described below adds a small decorative shape without an animation dependency. Repeated heading/card reveals were removed. Unsupported browsers and reduced-motion users get the complete static design; the illustration stays static on mobile.
+The site now uses native CSS Scroll/View Timelines for a thin reading-progress line and subtle movement inside the PL illustration on wide screens. All content stays in normal flow. The reference-based journey described below adds a small decorative shape without an animation dependency. Repeated heading/card reveals were removed. Unsupported browsers and reduced-motion users get the complete static design; the illustration stays static on mobile.
 
 With Python Playwright and system Chromium available, run from the repository root:
 
@@ -96,13 +96,15 @@ For website changes, AGENTS.md now directs a briefing/review coordinator and one
 
 Role instructions are saved in `.agents/roles/briefing-review.md` and `.agents/roles/website-builder.md`. These files persist the workflow for this repository; they do not create always-running agents or install a global app feature. If agent tools are unavailable, the coordinator must say so and perform the stages sequentially rather than claim a second agent ran.
 
-## Reference-based orbital scroll animation
+## Reference-based scroll journey
 
-The supplied 7.59-second desktop clip was inspected frame by frame. Its observed effect is a small curved four-point red shape on a broad, shallow diagonal orbit, a local halo and a tapered dotted tail. Thin background curves stay behind naturally scrolling content; solid cards cover the decoration as it passes below them. The portfolio recreates that observed character using its own orange-red colour and existing content. No Ferraria branding or product assets are included.
+Two supplied desktop clips were inspected frame by frame. The first7.59-second segment suggested a shallow local orbit; the longer26.38-second recording shows the star reaching different upper/lower and left/right regions as the page scrolls. The implementation now follows one continuous, non-repeating curve mapped to actual portfolio section landmarks, rather than revolving around one fixed oval.
 
-Native CSS scroll timelines control orbital positions and slight rotation. One passive JavaScript listener detects scroll direction to switch the tail to the trailing side and lets it fade after scrolling stops; it does not position the shape, intercept scrolling, read layout, or run an animation loop. A one-time/font-ready/resize measurement sets the travel distance. The portfolio cadence is approximately one orbit per 1.7 viewport heights. The short recording cannot establish the source site's complete path, exact easing/velocity, full page behaviour or mobile layout. The portfolio's scroll cadence, mobile orbit and static/reduced-motion fallbacks are adaptations, not verified copies of unseen source behavior.
+The small four-point orange-red shape, local halo, tapered tail, faint field curves and natural occlusion by solid content surfaces are retained. Position follows native scroll progress, holds at rest and retraces when scrolling upward. Content stays in normal document flow. No Ferraria branding or product assets are included.
 
-Reference video, extracted frames, comparison screenshots and browser recordings are kept outside the checkout under the review artifacts directory. Do not publish the user's screen recording, which includes browser chrome.
+A small passive direction/idle listener controls only the tail side and its rest fade. Layout is measured on initial/font-ready/resize to calibrate the native path/keyframes; there is no wheel interception, per-frame layout polling or time-driven position loop. Mobile uses a simpler path; reduced-motion/no-JavaScript/unsupported-motion versions remain static. Exact source scroll offsets/easing and mobile behavior are not available, so the portfolio path remains a documented reference adaptation rather than a pixel-exact source reconstruction.
+
+Source recordings, extracted frames, comparison screenshots and browser recordings stay outside the checkout. Do not publish the user's recording/browser chrome.
 
 Additional reference-motion checks (using the same server helper):
 
