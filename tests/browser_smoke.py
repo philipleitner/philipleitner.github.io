@@ -23,9 +23,7 @@ with sync_playwright() as p:
     page.goto(args.url)
     page.wait_for_load_state('networkidle')
     assert page.locator('.journey-star,.star-layer,.journey-ribbon').count() == 0
-    assert page.locator('.orbital-decoration').count() == 1
-    assert page.locator('.orbital-spark').count() == 1
-    assert page.locator('.orbital-decoration').evaluate('(e)=>getComputedStyle(e).pointerEvents') == 'none'
+    assert page.locator('.orbital-decoration,.orbital-spark,.reading-progress').count() == 0
     assert page.locator('.project-card').count() == 1
     assert page.locator('.project-card .badge').inner_text() == 'In progress'
     assert page.locator('.credential-link').count() == 2
@@ -46,24 +44,10 @@ with sync_playwright() as p:
     assert page.locator('.entry-list h3').first.evaluate('(e)=>getComputedStyle(e).color') == 'rgb(148, 32, 8)'
     assert page.locator('.entry-list').first.evaluate('(e)=>getComputedStyle(e).borderLeftColor') == 'rgb(255, 43, 6)'
     page.set_viewport_size({'width': 1440, 'height': 900})
-    supported = page.evaluate("CSS.supports('animation-timeline: scroll()')")
-    if supported:
-        scales = []
-        for progress in [0, .25, .5, .75, 1]:
-            page.evaluate('(p) => scrollTo({top:(document.documentElement.scrollHeight-innerHeight)*p,behavior:"instant"})', progress)
-            page.wait_for_timeout(120)
-            scale = page.locator('.reading-progress > span').evaluate('(e) => new DOMMatrixReadOnly(getComputedStyle(e).transform).a')
-            assert abs(scale - progress) < .025, f'Incorrect reading progress: {progress}/{scale}'
-            scales.append(scale)
-        assert scales == sorted(scales)
-        page.evaluate('scrollTo({top:0,behavior:"instant"})')
-        page.wait_for_timeout(120)
-        before = page.locator('.art-monogram').evaluate('(e)=>getComputedStyle(e).transform')
-        page.evaluate('scrollTo({top:450,behavior:"instant"})')
-        page.wait_for_timeout(120)
-        assert page.locator('.art-monogram').evaluate('(e)=>getComputedStyle(e).transform') != before
-    else:
-        print('LIMITATION: Chromium lacks native scroll timelines; static fallback checked.')
+    for progress in [0,.25,.5,.75,1]:
+        page.evaluate('(p)=>scrollTo({top:(document.documentElement.scrollHeight-innerHeight)*p,behavior:"instant"})',progress)
+        page.wait_for_timeout(80)
+        assert page.evaluate('document.getAnimations().length') == 0, 'Scroll-triggered animation remains'
     for width, name in [(1440, 'desktop'), (390, 'mobile')]:
         page.set_viewport_size({'width': width, 'height': 900})
         for section, suffix in [('home', 'intro'), ('projects', 'projects'), ('training', 'credentials')]:
@@ -101,7 +85,7 @@ with sync_playwright() as p:
     assert page.url.endswith('#main')
     page.emulate_media(reduced_motion='reduce')
     page.set_viewport_size({'width': 1440, 'height': 900})
-    assert not page.locator('.reading-progress').is_visible()
+    assert page.locator('.reading-progress').count() == 0
     assert page.locator('.art-monogram').evaluate('(e)=>getComputedStyle(e).animationName') == 'none'
     assert page.locator('html').evaluate('(e)=>getComputedStyle(e).scrollBehavior') == 'auto'
     plain = browser.new_context(java_script_enabled=False, viewport={'width': 390, 'height': 844})
@@ -119,4 +103,4 @@ with sync_playwright() as p:
     assert not errors, errors
     assert not failed_assets, failed_assets
     browser.close()
-print('PASS: ten widths, right-aligned wide navigation, orange-red entry accents, normal-flow sections, native scroll motion, mobile/static/reduced-motion fallbacks, navigation, hover/focus, no-JS content, PDF/favicon, no browser errors.')
+print('PASS: ten widths, right-aligned wide navigation, orange-red entry accents, normal-flow sections, plain native scrolling, mobile/static/reduced-motion fallbacks, navigation, hover/focus, no-JS content, PDF/favicon, no browser errors.')

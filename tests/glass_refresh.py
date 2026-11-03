@@ -1,4 +1,4 @@
-"""Real reload, glass hierarchy and curled-path regression checks."""
+"""Real reload and inexpensive translucent-surface regression checks."""
 import argparse, math, shutil, json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
@@ -45,18 +45,9 @@ with sync_playwright() as pw:
    assert page.locator('.background-shape').evaluate_all('(es)=>es.every(e=>getComputedStyle(e).filter==="none")')
    assert '0.32' in tiers[0]['tint']
    assert '0.74' in tiers[-1]['tint']
-   # Inspect the browser's actual generated offset geometry, independent of JS sampling.
-   turns=page.evaluate('''()=>{const e=document.querySelector('.orbital-decoration');const value=e.style.getPropertyValue('--journey-path');const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',value.slice(6,-2));const n=path.getTotalLength();const points=Array.from({length:801},(_,i)=>path.getPointAtLength(n*i/800));let total=0,previous;for(let i=1;i<points.length;i++){const angle=Math.atan2(points[i].y-points[i-1].y,points[i].x-points[i-1].x);if(previous!==undefined){let d=angle-previous;while(d>Math.PI)d-=2*Math.PI;while(d< -Math.PI)d+=2*Math.PI;total+=Math.abs(d);}previous=angle;}return total;}''')
-   print(width,'path absolute turning radians',turns)
-   assert turns>20,'Path lacks visible curling curvature'
-   found=set();span=page.evaluate('document.documentElement.scrollHeight-innerHeight')
-   for y in range(0,int(span),35):
-    page.evaluate('(y)=>scrollTo({top:y,behavior:"instant"})',y);page.wait_for_timeout(30)
-    hit=page.locator('.orbital-spark').evaluate('''e=>{const r=e.getBoundingClientRect();const p=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);for(const [name,s] of [['clear','.past-project-list'],['medium','.leadership .entry-list,.training .entry-list'],['strong','.experience .entry-list']])if(p?.closest(s))return name;return null;}''')
-    if hit and hit not in found:
-     page.screenshot(path=str(out/f'{width}-glass-{hit}.png'));found.add(hit)
-    if len(found)==3:break
-   assert len(found)==3,(width,found)
+   assert page.locator('.orbital-decoration,.reading-progress').count() == 0
+   assert page.evaluate('document.getAnimations().length') == 0
+   page.screenshot(path=str(out/f'{width}-static-surfaces.png'))
  assert not errors,errors
  b.close()
-print('PASS: actual middle/bottom/hash reload resets, fresh incoming anchors, post-refresh navigation, tiered glass, content opacity, visible curled geometry and star-behind-tier screenshots.')
+print('PASS: actual middle/bottom/hash reload resets, fresh incoming anchors, post-refresh navigation, tiered glass, content opacity, no scroll animations and static screenshots.')

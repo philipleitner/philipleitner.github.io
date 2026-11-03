@@ -16,7 +16,7 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 
 - `index.html`: biography, projects, experience, education, certifications, interests, contact details, and navigation.
 - `styles.css`: colors in `:root`, typography, layouts, mobile breakpoints, reduced-motion preferences, and subtle introductory animation.
-- `script.js`: accessible mobile navigation, Escape handling, and active-section tracking. Content and navigation remain visible without JavaScript; CSS handles native scroll motion and reduced-motion preferences.
+- `script.js`: accessible mobile navigation, Escape handling, and active-section tracking. Content and navigation remain visible without JavaScript; CSS handles smooth anchor navigation and reduced-motion preferences.
 - `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
 - `assets/philip-leitner-cv.pdf`: the supplied public-safe original PDF, copied byte-for-byte to preserve layout and fonts. The earlier private CV is not included.
 
@@ -71,7 +71,7 @@ Leadership & Activities remains between Work Experience and Certifications. The 
 
 Work Experience, Leadership & Activities, Past Projects and Certifications share consistent glass list surfaces, fine separators, aligned typography and spacing tokens. Only the current equity research report uses the large featured composition. Noninteractive entries have no hover effects or pointer cursor. Real actions have subtle matching hover/focus treatments plus visible keyboard outlines.
 
-The earlier gutter-following star was removed. The current, explicitly requested reference-based effect is described below. The decorative gradient background remains static and content stays in normal flow. Active navigation uses IntersectionObserver. Reduced motion disables scroll motion and smooth scrolling; content remains visible without JavaScript.
+The moving decoration was removed to address scroll lag. The decorative gradient background remains static and content stays in normal flow. Active navigation uses IntersectionObserver. Reduced motion disables scroll motion and smooth scrolling; content remains visible without JavaScript.
 
 The complete available Git history contains four interests: Varsity football, Weightlifting, Poker, and the finance/philosophy reading entry. These are retained, with the final title Reading: Finance & Philosophy and a non-clickable Reading List — coming soon placeholder below it. A fifth interest must be supplied before it can be added; it is not invented.
 
@@ -79,7 +79,7 @@ The complete available Git history contains four interests: Varsity football, We
 
 Project-local skills: Anthropic frontend-design and webapp-testing, plus ibelick/ui-skills fixing-motion-performance. Each has a pinned source and licence under `.agents/skills/`; AGENTS.md defines when to use them. They do not install an animation library or change other projects.
 
-The site now uses native CSS Scroll/View Timelines for a thin reading-progress line and subtle movement inside the PL illustration on wide screens. All content stays in normal flow. The reference-based journey described below adds a small decorative shape without an animation dependency. Repeated heading/card reveals were removed. Unsupported browsers and reduced-motion users get the complete static design; the illustration stays static on mobile.
+The site uses ordinary native scrolling without continuous decorative animations or an animation library.
 
 With Python Playwright and system Chromium available, run from the repository root:
 
@@ -88,7 +88,7 @@ python3 .agents/skills/webapp-testing/scripts/with_server.py --help
 python3 .agents/skills/webapp-testing/scripts/with_server.py --server "python3 -m http.server 8765 --bind 127.0.0.1" --port 8765 -- python3 tests/browser_smoke.py --url http://127.0.0.1:8765 --artifacts /tmp/portfolio-checks
 ```
 
-This verifies responsive flow, native scroll progress at several positions, static fallbacks, menu/keyboard access, links and local PDF/favicon assets. Screenshots go outside the checkout. This is local browser validation, not proof of a GitHub Pages deployment or external credential access.
+This verifies responsive flow, native scrolling at several positions, static fallbacks, menu/keyboard access, links and local PDF/favicon assets. Screenshots go outside the checkout. This is local browser validation, not proof of a GitHub Pages deployment or external credential access.
 
 ## Two-agent maintenance workflow
 
@@ -96,34 +96,10 @@ For website changes, AGENTS.md now directs a briefing/review coordinator and one
 
 Role instructions are saved in `.agents/roles/briefing-review.md` and `.agents/roles/website-builder.md`. These files persist the workflow for this repository; they do not create always-running agents or install a global app feature. If agent tools are unavailable, the coordinator must say so and perform the stages sequentially rather than claim a second agent ran.
 
-## Reference-based scroll journey
+## Scrolling and performance
 
-Two supplied desktop clips were inspected frame by frame. The first7.59-second segment suggested a shallow local orbit; the longer26.38-second recording shows the star reaching different upper/lower and left/right regions as the page scrolls. The implementation now follows one continuous, non-repeating curve mapped to actual portfolio section landmarks, rather than revolving around one fixed oval.
+The page uses native browser scrolling with smooth section links. The scroll-following star, trail, path generation, scroll listeners, reading-progress animation and illustration parallax were removed after reports of lag. There are no continuous decorative animations or scroll timelines. The fixed gradient background and translucent surfaces remain, without backdrop filters or large blur filters.
 
-The small four-point orange-red shape, local halo, tapered tail, faint field curves and tiered visibility beneath translucent content surfaces are retained. Position follows native scroll progress, holds at rest and retraces when scrolling upward. Content stays in normal document flow. No Ferraria branding or product assets are included.
+Actual browser reloads return to the introduction and remove an old section fragment. Fresh incoming section links and normal anchor/back navigation still work. This resets scroll position, not the browser cache. Reduced-motion preferences disable smooth anchor scrolling.
 
-A small passive direction/idle listener controls only the tail side and its rest fade. Layout is measured on initial/font-ready/resize to calibrate the native path/keyframes; there is no wheel interception, per-frame layout polling or time-driven position loop. Mobile uses a simpler path; reduced-motion/no-JavaScript/unsupported-motion versions remain static. Exact source scroll offsets/easing and mobile behavior are not available, so the portfolio path remains a documented reference adaptation rather than a pixel-exact source reconstruction.
-
-Source recordings, extracted frames, comparison screenshots and browser recordings stay outside the checkout. Do not publish the user's recording/browser chrome.
-
-Additional reference-motion checks (using the same server helper):
-
-```sh
-python3 .agents/skills/webapp-testing/scripts/with_server.py --server "python3 -m http.server 8780 --bind 127.0.0.1" --port 8780 -- python3 tests/orbital_motion.py --url http://127.0.0.1:8780 --artifacts /tmp/portfolio-orbit
-```
-
-Use distinct ports for concurrent test/recording servers.
-
-## Curled journey, glass and refresh behavior
-
-The section-linked journey includes three tangent-continuous curls, with smaller curves on mobile. One small shape follows native scroll progress and reverses along the same path; it does not run on a clock. Reduced-motion users keep a static version.
-
-Shared glass variables define three importance tiers: About and compact past projects are clearest; Leadership and Certifications use medium tint; the featured research project and detailed Work Experience use stronger tint. Text stays fully opaque. Surfaces use inexpensive alpha backgrounds without live backdrop filters, and soft background forms use radial gradients rather than large CSS blur filters. This avoids continuously resampling the moving decoration behind large panels.
-
-An actual browser reload resets to the introduction and removes an old section fragment. Fresh incoming section links and ordinary anchor navigation still work. This resets scroll position, not the browser cache.
-
-Additional regression checks cover real reloads, fresh deep links, translucent tiers and curled geometry:
-
-```sh
-python3 .agents/skills/webapp-testing/scripts/with_server.py --server "python3 -m http.server 8781 --bind 127.0.0.1" --port 8781 -- python3 tests/glass_refresh.py --url http://127.0.0.1:8781 --artifacts /tmp/portfolio-glass
-```
+The browser regression suites check responsive layouts, scrolling, keyboard navigation, local PDF/favicon assets, reload behavior and the absence of continuous scroll effects. Screenshots stay outside the repository.
