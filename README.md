@@ -16,7 +16,7 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 
 - `index.html`: biography, projects, experience, education, certifications, interests, contact details, and navigation.
 - `styles.css`: colors in `:root`, typography, layouts, mobile breakpoints, reduced-motion preferences, and subtle introductory animation.
-- `script.js`: accessible mobile navigation, Escape handling, and progressive section reveals. Content and navigation remain visible without JavaScript; reduced-motion preferences disable animation.
+- `script.js`: accessible mobile navigation, Escape handling, and active-section tracking. Content and navigation remain visible without JavaScript; CSS handles native scroll motion and reduced-motion preferences.
 - `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
 - `assets/philip-leitner-cv.pdf`: the supplied public-safe original PDF, copied byte-for-byte to preserve layout and fonts. The earlier private CV is not included.
 
@@ -61,7 +61,7 @@ The palette uses Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black text
 
 The introduction and every content section stay in normal document flow: no sticky section stacking, negative section margins, scroll snapping, or wheel interception. Only the readable navigation header is sticky. CSS scroll padding and target margins keep headings clear of it.
 
-A fixed, pointer-inert background layer contains a blue-to-white gradient, three soft forms and two oversized circular outlines. The background is static on all devices. Solid white entry lists sit over open sections so the gradient still shows through between content groups. IntersectionObserver starts short heading/content reveals on entry; everything is visible by default if JavaScript fails.
+A fixed, pointer-inert background layer contains a blue-to-white gradient, three soft forms and two oversized circular outlines. The background is static on all devices. Solid white entry lists sit over open sections so the gradient still shows through between content groups. Everything is visible by default if JavaScript fails.
 
 Only the current equity research project uses a large featured card. Past projects use compact separated rows without fake action links. Keep their IDs intact because Leadership & Activities links to them. Add document actions only after real files or URLs are supplied.
 
@@ -71,6 +71,21 @@ Leadership & Activities remains between Work Experience and Certifications. The 
 
 Work Experience, Leadership & Activities, Past Projects and Certifications share solid white list surfaces, fine separators, aligned typography and spacing tokens. Only the current equity research report uses the large featured composition. Noninteractive entries have no hover effects or pointer cursor. Real actions have subtle matching hover/focus treatments plus visible keyboard outlines.
 
-The moving star and its CSS, containers, resize measurements, animation frames and scroll listeners have been removed. The decorative gradient background is static. Smooth native anchor navigation remains, and active navigation/reveals use IntersectionObserver without scroll listeners. Reduced motion disables reveals and smooth scrolling; content remains visible without JavaScript.
+The moving star and its CSS, containers, resize measurements, animation frames and scroll listeners have been removed. The decorative gradient background is static. Smooth native anchor navigation remains, and active navigation uses IntersectionObserver without scroll listeners. Reduced motion disables scroll motion and smooth scrolling; content remains visible without JavaScript.
 
 The complete available Git history contains four interests: Varsity football, Weightlifting, Poker, and the finance/philosophy reading entry. These are retained, with the final title Reading: Finance & Philosophy and a non-clickable Reading List — coming soon placeholder below it. A fifth interest must be supplied before it can be added; it is not invented.
+
+## Skills and repeatable browser checks
+
+Project-local skills: Anthropic frontend-design and webapp-testing, plus ibelick/ui-skills fixing-motion-performance. Each has a pinned source and licence under `.agents/skills/`; AGENTS.md defines when to use them. They do not install an animation library or change other projects.
+
+The site now uses native CSS Scroll/View Timelines for a thin reading-progress line and subtle movement inside the PL illustration on wide screens. All content stays in normal flow; there is no floating shape, scrolling JavaScript, or animation dependency. Repeated heading/card reveals were removed. Unsupported browsers and reduced-motion users get the complete static design; the illustration stays static on mobile.
+
+With Python Playwright and system Chromium available, run from the repository root:
+
+```sh
+python3 .agents/skills/webapp-testing/scripts/with_server.py --help
+python3 .agents/skills/webapp-testing/scripts/with_server.py --server "python3 -m http.server 8765 --bind 127.0.0.1" --port 8765 -- python3 tests/browser_smoke.py --url http://127.0.0.1:8765 --artifacts /tmp/portfolio-checks
+```
+
+This verifies responsive flow, native scroll progress at several positions, static fallbacks, menu/keyboard access, links and local PDF/favicon assets. Screenshots go outside the checkout. This is local browser validation, not proof of a GitHub Pages deployment or external credential access.

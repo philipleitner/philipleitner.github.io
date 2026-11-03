@@ -172,8 +172,6 @@ footer { display: flex; align-items: center; justify-content: space-between; gap
 footer p { color: var(--muted); }
 .footer-links { display: flex; gap: 28px; }
 footer a:is(:hover, :focus-visible) { color: #005f99; }
-@keyframes gentle-reveal { from { opacity: .25; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.reveal-once { animation: gentle-reveal .55s ease both; animation-delay: var(--reveal-delay, 0ms); }
 @media (max-width:1150px) { nav { gap: 13px; font-size: 10px; } }
 @media (max-width:999px) { .hero { padding-top: 55px; gap: 35px; } .hero h1 { font-size: 90px; } .hero-art { min-height: 440px; } .section { width: calc(100% - 48px); padding: 45px 24px; margin-top: 54px; } .section.about { padding: 45px 32px; } .section h2 { font-size: 58px; } .project-content { padding: 30px; } }
 @media (max-width:850px) {
@@ -386,3 +384,21 @@ nav a:is(:hover, :focus-visible)::after { transform: scaleX(1); }
   .certificate > span { font-size: 22px; }
   .interest-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Native scroll motion: one illustration treatment and useful reading progress.
+   Unsupported browsers retain the full static design. No scroll JS is used. */
+.reading-progress { display: none; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; overflow: hidden; background: #0099ff18; pointer-events: none; }
+.reading-progress > span { display: block; width: 100%; height: 100%; background: var(--accent); transform-origin: left; }
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reading-progress { display: block; }
+    .reading-progress > span { animation: reading-progress linear both; animation-timeline: scroll(root block); }
+    .hero { view-timeline-name: --introduction; view-timeline-axis: block; }
+    .art-monogram { animation: monogram-depth linear both; animation-timeline: --introduction; animation-range: exit 0% exit 100%; }
+    .art-line { animation: illustration-angle linear both; animation-timeline: --introduction; animation-range: exit 0% exit 100%; }
+  }
+}
+@keyframes reading-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes monogram-depth { from { transform: translateY(0); } to { transform: translateY(14px); } }
+@keyframes illustration-angle { from { transform: rotate(-48deg); } to { transform: rotate(-40deg); } }
+@media (max-width:850px) { .art-monogram, .art-line { animation: none !important; } }

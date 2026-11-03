@@ -19,22 +19,6 @@ document.addEventListener('keydown', event => {
 // Enable the collapsed menu only after its event handlers are installed.
 document.documentElement.classList.add('menu-ready');
 
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-if ('IntersectionObserver' in window && !reduceMotion.matches) {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('reveal-once');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.section h2, .project-card, .past-project-row, .fact-row, .experience-row, .activity-card, .certificate, .interest-grid > div, .contact h2, .contact-links').forEach((element, index) => {
-    element.style.setProperty('--reveal-delay', `${(index % 3) * 55}ms`);
-    observer.observe(element);
-  });
-}
-
 // Active section tracking uses IntersectionObserver, with no scroll listeners.
 const sectionLinks = [...navigation.querySelectorAll('a[href^="#"]')];
 function markActive(id) {
