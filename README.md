@@ -55,25 +55,13 @@ The View CV button opens `./assets/philip-leitner-cv.pdf` in a new tab. The foot
 Credential buttons use the exact individual Bloomberg and Forage URLs supplied by Philip. Update the corresponding `credential-link` anchors in `index.html` if credentials are reissued. These external services may restrict automated access.
 
 
-## Background, palette, and scrolling
+## Design and content structure
 
-The palette uses Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black text, and an orange-red accent (`#FF2B06`) visually matched to the supplied swatch. The reference's printed yellow-green hex was intentionally not used. The PL favicon retains its vector geometry with adapted colors.
+Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black ink and orange-red (`#FF2B06`) form the shared palette. The layout uses a compact identity introduction, one featured research composition, compact past projects and aligned experience/leadership/credential entries. Shared typography, spacing, surface and action tokens live in `styles.css`.
 
-The introduction and every content section stay in normal document flow: no sticky section stacking, negative section margins, scroll snapping, or wheel interception. Only the readable navigation header is sticky. CSS scroll padding and target margins keep headings clear of it.
+All content stays in normal document flow. The decorative background is static. There are no moving stars, overlapping panels, backdrop filters or large blur filters. The PL logo/favicon identity, safe original PDF and supplied credential URLs remain intact. Unavailable reports, models and reading-list links remain non-clickable coming-soon text.
 
-A fixed, pointer-inert background layer contains a blue-to-white gradient, three soft forms and two oversized circular outlines. The background is static on all devices. Tiered translucent entry lists sit over open sections so the gradient still shows through between content groups. Everything is visible by default if JavaScript fails.
-
-Only the current equity research project uses a large featured card. Past projects use compact separated rows without fake action links. Keep their IDs intact because Leadership & Activities links to them. Add document actions only after real files or URLs are supplied.
-
-Leadership & Activities remains between Work Experience and Certifications. The current public-safe CV PDF and the individual credential URLs remain unchanged.
-
-## Consistent entry styles and interaction
-
-Work Experience, Leadership & Activities, Past Projects and Certifications share consistent glass list surfaces, fine separators, aligned typography and spacing tokens. Only the current equity research report uses the large featured composition. Noninteractive entries have no hover effects or pointer cursor. Real actions have subtle matching hover/focus treatments plus visible keyboard outlines.
-
-The moving decoration was removed to address scroll lag. The decorative gradient background remains static and content stays in normal flow. Active navigation uses IntersectionObserver. Reduced motion disables scroll motion and smooth scrolling; content remains visible without JavaScript.
-
-The complete available Git history contains four interests: Varsity football, Weightlifting, Poker, and the finance/philosophy reading entry. These are retained, with the final title Reading: Finance & Philosophy and a non-clickable Reading List — coming soon placeholder below it. A fifth interest must be supplied before it can be added; it is not invented.
+The recoverable interests remain Varsity football, Weightlifting, Poker and Reading: Finance & Philosophy. Do not invent a fifth interest.
 
 ## Skills and repeatable browser checks
 
@@ -98,8 +86,8 @@ Role instructions are saved in `.agents/roles/briefing-review.md` and `.agents/r
 
 ## Scrolling and performance
 
-The page uses native browser scrolling with smooth section links. The scroll-following star, trail, path generation, scroll listeners, reading-progress animation and illustration parallax were removed after reports of lag. There are no continuous decorative animations or scroll timelines. The fixed gradient background and translucent surfaces remain, without backdrop filters or large blur filters.
+The page uses native browser scrolling and smooth section links. A thin red reading-progress bar uses only a native CSS scroll timeline and `transform: scaleX()` on one small element. There is no JavaScript scroll-position animation, per-frame polling, moving star/trail, hero parallax or animation library. Browsers without scroll-timeline support and reduced-motion users receive a static design without the progress effect.
 
 Actual browser reloads return to the introduction and remove an old section fragment. Fresh incoming section links and normal anchor/back navigation still work. This resets scroll position, not the browser cache. Reduced-motion preferences disable smooth anchor scrolling.
 
-The browser regression suites check responsive layouts, scrolling, keyboard navigation, local PDF/favicon assets, reload behavior and the absence of continuous scroll effects. Screenshots stay outside the repository.
+Browser regression suites check responsive layouts, progress at several scroll positions, keyboard navigation, local PDF/favicon assets, reload behavior and the absence of expensive decorative effects. Screenshots stay outside the repository. Cloud Chromium validation does not guarantee a particular frame rate on every device.

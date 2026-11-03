@@ -1,4 +1,4 @@
-"""Real reload and inexpensive translucent-surface regression checks."""
+"""Real reload and redesigned content-surface regression checks."""
 import argparse, math, shutil, json
 from pathlib import Path
 from playwright.sync_api import sync_playwright
@@ -39,15 +39,15 @@ with sync_playwright() as pw:
   if width in [1440,390]:
    page.goto(a.url);page.wait_for_timeout(180)
    tiers=page.evaluate('''()=>['.about','.past-project-list','.leadership .entry-list','.training .entry-list','.experience .entry-list','.project-card'].filter(s=>document.querySelector(s)).map(s=>{const e=document.querySelector(s),c=getComputedStyle(e);return {selector:s,tint:c.backgroundColor,blur:c.backdropFilter,opacity:c.opacity}})''')
-   print(width,'glass tiers',tiers)
+   print(width,'content surfaces',tiers)
    assert all(t['opacity']=='1' for t in tiers)
    assert all(t['blur']=='none' for t in tiers), 'Expensive backdrop filtering returned'
-   assert page.locator('.background-shape').evaluate_all('(es)=>es.every(e=>getComputedStyle(e).filter==="none")')
-   assert '0.32' in tiers[0]['tint']
-   assert '0.74' in tiers[-1]['tint']
-   assert page.locator('.orbital-decoration,.reading-progress').count() == 0
-   assert page.evaluate('document.getAnimations().length') == 0
+   assert page.locator('*').evaluate_all('(es)=>es.every(e=>getComputedStyle(e).filter==="none" && getComputedStyle(e).backdropFilter==="none")')
+   assert page.locator('.project-card').evaluate('(e)=>getComputedStyle(e).backgroundColor') != 'rgba(0, 0, 0, 0)'
+   assert page.locator('.experience .entry-list').evaluate('(e)=>getComputedStyle(e).backgroundColor') == 'rgba(0, 0, 0, 0)'
+   assert page.locator('.orbital-decoration').count() == 0
+   assert page.evaluate('document.getAnimations().every(a=>a.effect.target.matches(".reading-progress>span"))')
    page.screenshot(path=str(out/f'{width}-static-surfaces.png'))
  assert not errors,errors
  b.close()
-print('PASS: actual middle/bottom/hash reload resets, fresh incoming anchors, post-refresh navigation, tiered glass, content opacity, no scroll animations and static screenshots.')
+print('PASS: actual middle/bottom/hash reload resets, fresh incoming anchors, post-refresh navigation, coherent content surfaces, content opacity, progress-only animation and redesigned screenshots.')
