@@ -118,7 +118,7 @@ Use distinct ports for concurrent test/recording servers.
 
 The section-linked journey includes three tangent-continuous curls, with smaller curves on mobile. One small shape follows native scroll progress and reverses along the same path; it does not run on a clock. Reduced-motion users keep a static version.
 
-Shared glass variables define three importance tiers: About and compact past projects are clearest; Leadership and Certifications use medium tint/blur; the featured research project and detailed Work Experience use stronger tint/blur. Text stays fully opaque. Browsers without backdrop filtering receive solid white surfaces. Mobile blur is reduced.
+Shared glass variables define three importance tiers: About and compact past projects are clearest; Leadership and Certifications use medium tint; the featured research project and detailed Work Experience use stronger tint. Text stays fully opaque. Surfaces use inexpensive alpha backgrounds without live backdrop filters, and soft background forms use radial gradients rather than large CSS blur filters. This avoids continuously resampling the moving decoration behind large panels.
 
 An actual browser reload resets to the introduction and removes an old section fragment. Fresh incoming section links and ordinary anchor navigation still work. This resets scroll position, not the browser cache.
 

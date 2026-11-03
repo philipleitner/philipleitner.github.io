@@ -43,10 +43,10 @@ section[id], article[id] { scroll-margin-top: 22px; }
 /* Only decoration is fixed. All content sections stay in natural flow. */
 .site-background { position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; background: linear-gradient(155deg, #0099ff 0%, #8bd4ff 34%, #edf8ff 63%, #fdfdfe 84%); }
 .background-drift { position: absolute; inset: -150px -8%; }
-.background-shape { position: absolute; border-radius: 50%; filter: blur(65px); }
-.shape-one { top: 6%; right: -5%; width: 55vw; height: 65vh; background: #fdfdfe9c; }
-.shape-two { top: 42%; left: -12%; width: 60vw; height: 65vh; background: #0099ff7a; }
-.shape-three { bottom: -5%; right: -5%; width: 50vw; height: 48vh; background: #b5e5ffcf; }
+.background-shape { position: absolute; border-radius: 50%; }
+.shape-one { top: 6%; right: -5%; width: 55vw; height: 65vh; background: radial-gradient(ellipse, #fdfdfe9c 0%, #fdfdfe55 35%, transparent 72%); }
+.shape-two { top: 42%; left: -12%; width: 60vw; height: 65vh; background: radial-gradient(ellipse, #0099ff7a 0%, #0099ff35 35%, transparent 72%); }
+.shape-three { bottom: -5%; right: -5%; width: 50vw; height: 48vh; background: radial-gradient(ellipse, #b5e5ffcf 0%, #b5e5ff66 35%, transparent 72%); }
 .background-orbit { position: absolute; border: 1px solid #fdfdfeb3; border-radius: 50%; }
 .orbit-large { width: 1000px; height: 1000px; top: -130px; right: -260px; box-shadow: none; }
 .orbit-small { width: 630px; height: 630px; left: -280px; bottom: 80px; border-color: #0085d549; }
@@ -191,7 +191,6 @@ footer a:is(:hover, :focus-visible) { color: #005f99; }
 }
 @media (max-width:600px) {
   html { scroll-padding-top: 90px; }
-  .background-shape { filter: blur(40px); }
   .shape-one { width: 90vw; right: -10%; }
   .shape-two { width: 95vw; }
   .shape-three { width: 80vw; }
@@ -466,35 +465,22 @@ nav a:is(:hover, :focus-visible)::after { transform: scaleX(1); }
   }
 }
 
-/* Shared glass tiers. Text remains opaque; only the surface tint is translucent.
-   Solid fallback deliberately takes priority where backdrop filtering is absent. */
+/* Shared translucent tiers use alpha alone: no resampling of moving backdrops.
+   Text remains opaque and contrast-safe over both blue and the red star. */
 :root {
   --glass-clear: rgb(253 253 254 / .32);
   --glass-medium: rgb(253 253 254 / .56);
   --glass-strong: rgb(253 253 254 / .74);
-  --glass-blur-clear: 2px;
-  --glass-blur-medium: 5px;
-  --glass-blur-strong: 9px;
 }
 .about, .entry-list, .project-card {
   --glass-tint: var(--glass-clear);
-  --glass-blur: var(--glass-blur-clear);
-  background: var(--white);
+  background: var(--glass-tint);
 }
 .experience .entry-list, .project-card {
   --glass-tint: var(--glass-strong);
-  --glass-blur: var(--glass-blur-strong);
 }
 .leadership .entry-list, .training .entry-list {
   --glass-tint: var(--glass-medium);
-  --glass-blur: var(--glass-blur-medium);
-}
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .about, .entry-list, .project-card {
-    background: var(--glass-tint);
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-    backdrop-filter: blur(var(--glass-blur));
-  }
 }
 /* Keep both halves of the featured surface in the same readable glass tier. */
 .project-content { background: transparent; }
@@ -507,8 +493,5 @@ nav a:is(:hover, :focus-visible)::after { transform: scaleX(1); }
 .entry-list .past-project-title .eyebrow, .entry-list .certificate .issuer-label,
 .entry-list .credential-date { color: #26313a; }
 .past-project-list.entry-list h3 { color: #942008; }
-@media (max-width:600px) {
-  :root { --glass-blur-strong: 6px; --glass-blur-medium: 3px; --glass-blur-clear: 1px; }
-}
 .entry-list .activity-card > p:not(.role), .entry-list .activity-card .eyebrow,
 .entry-list .availability, .entry-list .role span { color: #26313a; }

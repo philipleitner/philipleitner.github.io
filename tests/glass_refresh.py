@@ -41,6 +41,8 @@ with sync_playwright() as pw:
    tiers=page.evaluate('''()=>['.about','.past-project-list','.leadership .entry-list','.training .entry-list','.experience .entry-list','.project-card'].filter(s=>document.querySelector(s)).map(s=>{const e=document.querySelector(s),c=getComputedStyle(e);return {selector:s,tint:c.backgroundColor,blur:c.backdropFilter,opacity:c.opacity}})''')
    print(width,'glass tiers',tiers)
    assert all(t['opacity']=='1' for t in tiers)
+   assert all(t['blur']=='none' for t in tiers), 'Expensive backdrop filtering returned'
+   assert page.locator('.background-shape').evaluate_all('(es)=>es.every(e=>getComputedStyle(e).filter==="none")')
    assert '0.32' in tiers[0]['tint']
    assert '0.74' in tiers[-1]['tint']
    # Inspect the browser's actual generated offset geometry, independent of JS sampling.
