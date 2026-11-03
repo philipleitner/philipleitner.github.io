@@ -66,3 +66,9 @@ A fixed, pointer-inert background layer contains a blue-to-white gradient, three
 Only the current equity research project uses a large featured card. Past projects use compact separated rows without fake action links. Keep their IDs intact because Leadership & Activities links to them. Add document actions only after real files or URLs are supplied.
 
 Leadership & Activities remains between Work Experience and Certifications. The current public-safe CV PDF and the individual credential URLs remain unchanged.
+
+## Continuous ribbon and shared design tokens
+
+Typography, spacing, surfaces, borders, radii and accent treatments share CSS variables in `:root`. Orange-red identifies primary actions, active navigation (with a bold label and underline), status dots, section markers and link details; text remains near-black. The reading-list placeholder is plain text until a genuine URL is supplied.
+
+A single decorative SVG loop travels through named anchors for the introduction, About, Projects, the featured research card, Work Experience, Leadership, Certifications, Beyond Finance and Contact. Its position, rotation and scale are interpolated from native scroll position, so upward scrolling reverses the same journey. Resize measurements account for real section heights. Only SVG transforms change during scrolling; content remains in normal flow. A text-line/control mask keeps the ribbon clear of readable and clickable areas, and the complete decorative layer ignores pointer events. Mobile uses a smaller loop and simpler horizontal travel. Reduced motion keeps a static loop. Without JavaScript, the loop remains a quiet static decoration and content/navigation remain usable.
