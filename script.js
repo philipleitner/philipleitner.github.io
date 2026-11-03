@@ -24,10 +24,13 @@ if ('IntersectionObserver' in window && !reduceMotion.matches) {
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('is-revealing');
+        entry.target.classList.add('reveal-once');
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.08 });
-  document.querySelectorAll('.section, .contact').forEach(section => observer.observe(section));
+  document.querySelectorAll('.section h2, .project-card, .fact-row, .experience-row, .activity-card, .certificate, .interest-grid > div, .contact h2, .contact-links').forEach((element, index) => {
+    element.style.setProperty('--reveal-delay', `${(index % 3) * 55}ms`);
+    observer.observe(element);
+  });
 }

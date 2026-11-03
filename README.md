@@ -18,7 +18,7 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 - `styles.css`: colors in `:root`, typography, layouts, mobile breakpoints, reduced-motion preferences, and subtle introductory animation.
 - `script.js`: accessible mobile navigation, Escape handling, and progressive section reveals. Content and navigation remain visible without JavaScript; reduced-motion preferences disable animation.
 - `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
-- `assets/philip-leitner-cv.pdf`: public CV derived from the supplied CV, omitting the home address and phone number. The original private CV is not included.
+- `assets/philip-leitner-cv.pdf`: the supplied public-safe original PDF, copied byte-for-byte to preserve layout and fonts. The earlier private CV is not included.
 
 Edit the relevant text directly in `index.html`. Keep section IDs and navigation links aligned. Use relative paths (for example, `./assets/report.pdf`) so the site works at both a domain root and a GitHub Pages project path.
 
@@ -50,6 +50,15 @@ Repository ownership determines the Pages URL; use GitHub's displayed URL rather
 
 ## CV and credential maintenance
 
-The View CV button opens `./assets/philip-leitner-cv.pdf` in a new tab; the separate Download CV link downloads the same file. The newly supplied original CV contains a home address and phone number and has deliberately not replaced the existing public-safe file. A public-safe original PDF is required to preserve the original design without publishing private details. Replace that file byte-for-byte once supplied; do not regenerate the CV.
+The View CV button opens `./assets/philip-leitner-cv.pdf` in a new tab. The separate Download CV link lives in the footer and downloads the same file. The current PDF is the public-safe original supplied by Philip, preserved byte-for-byte. Future replacements must also omit private details; copy the original PDF rather than regenerating it.
 
 Credential buttons use the exact individual Bloomberg and Forage URLs supplied by Philip. Update the corresponding `credential-link` anchors in `index.html` if credentials are reissued. These external services may restrict automated access.
+
+
+## Layered visual design
+
+A fixed navy background and restrained blue glow sit behind warm cream content panels. On wide, sufficiently tall screens, the introduction stays sticky briefly while the first panel rises over it. Later panels scroll naturally, including long Projects and Work Experience content. The rounded panel edges, top borders and shadows create depth without scroll snapping or wheel handlers. Below 1000px width or on short screens, the introduction and background use simpler scrolling behavior.
+
+The header stays opaque for legibility; CSS scroll padding plus target scroll margins keep anchors below it. IntersectionObserver triggers short, staggered heading/card reveals only as elements enter view. Elements are visible by default, including when JavaScript is blocked. Reduced-motion preferences remove animation and the sticky introduction. No third-party animation libraries or tracking are used.
+
+Leadership & Activities sits between Work Experience and Certifications. The Jakarta role was moved there; PennSEM and economics activity summaries link back to the existing full project content.
