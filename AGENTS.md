@@ -11,6 +11,13 @@
 - Preserve the original public-safe CV PDF and its appearance. Do not publish private addresses or phone numbers.
 - Keep plain HTML, CSS, and JavaScript compatible with GitHub Pages. Use relative file paths, including for assets, the favicon, and the CV; support root and repository-subpath hosting.
 
+## Frontend design skill
+
+- Before requested UI/design work, read [frontend-design](.agents/skills/frontend-design/SKILL.md) and apply its relevant design and review guidance.
+- This is a project-local skill, not a global installation. Its pinned source and licence are recorded in [SOURCE.md](.agents/skills/frontend-design/SOURCE.md).
+- The user's requests and this repository's content, palette, layout, accessibility, and publishing rules take precedence over the skill's general suggestions. Do not rewrite approved copy, change the palette, add motion, or redesign unrelated areas merely to satisfy the skill.
+- Adding or updating the skill does not itself authorise a website redesign. No additional packages or animation libraries are required.
+
 ## Validation
 
 - For visual changes, inspect the actual result in a browser at desktop and mobile sizes, including narrow screens and intermediate scroll positions.
@@ -23,7 +30,7 @@
 ## Tools and publishing
 
 - Keep maintenance lightweight. Playwright and system Chromium are available in the current cloud environment; check availability in future environments before installing anything.
-- No dedicated design or browser-testing skill was installed when these instructions were written. Discover suitable existing skills first, and explain any missing capability before proposing an installation.
+- The frontend-design skill is available locally as described above. No dedicated browser-testing skill is installed; use the existing Playwright/Chromium tools. Discover suitable existing skills first, and explain any missing capability before proposing an installation.
 - Use the existing isolated checkout; do not create a worktree unless requested.
 - Before editing, inspect Git status and repository instructions. Preserve unrelated changes and sync with remote `main` without overwriting remote work.
 - The user has authorised committing and pushing requested, tested website changes directly to `main`, which publishes through GitHub Pages. Do not create a pull request or ask for routine confirmation.
