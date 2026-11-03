@@ -1,5 +1,13 @@
 # Portfolio maintenance
 
+## Standing two-agent workflow
+
+- For website implementation requests, use a briefing/review coordinator plus one website-builder agent. The user explicitly requested this as the default project workflow.
+- The coordinator writes a concrete brief before implementation, delegates to the builder when agent tools are available, then independently reviews the result before committing/pushing.
+- Follow [briefing-review](.agents/roles/briefing-review.md) and [website-builder](.agents/roles/website-builder.md). Keep briefs under `.agents/briefs/` and avoid overlapping file ownership.
+- These files persist roles/instructions, not continuously running agents. If agent tools are unavailable in a future session, report that and execute the stages sequentially; do not claim delegation occurred.
+- This workflow applies to implementation requests, not ordinary explanatory chat or trivial documentation-only edits. It does not add routine approval steps.
+
 ## Content and design
 
 - Preserve approved content and working links unless the user requests changes.

@@ -27,13 +27,21 @@ with sync_playwright() as p:
     assert page.locator('.project-card .badge').inner_text() == 'In progress'
     assert page.locator('.credential-link').count() == 2
     assert page.locator('.reading-pending').inner_text() == 'Reading List — coming soon'
-    for width in [320, 375, 390, 600, 768, 850, 1024, 1440]:
+    for width in [320, 375, 390, 600, 768, 850, 1024, 1440, 1920, 2048]:
         page.set_viewport_size({'width': width, 'height': 900})
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth'), f'Overflow at {width}'
         boxes = page.locator('main > section').evaluate_all('(els) => els.map(e => {const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bottom,position:getComputedStyle(e).position}})')
         for previous, current in zip(boxes, boxes[1:]):
             assert current['top'] >= previous['bottom'], f'Overlapping sections at {width}'
             assert current['position'] not in ['sticky', 'fixed', 'absolute']
+    for width in [1440, 1920, 2048]:
+        page.set_viewport_size({'width': width, 'height': 900})
+        logo = page.locator('.site-header .wordmark').bounding_box()
+        action = page.locator('nav .nav-contact').bounding_box()
+        assert abs(logo['x'] - width * .04) <= 1, f'Unexpected logo inset at {width}'
+        assert abs(width - action['x'] - action['width'] - width * .04) <= 1, f'Navigation is not right aligned at {width}'
+    assert page.locator('.entry-list h3').first.evaluate('(e)=>getComputedStyle(e).color') == 'rgb(169, 35, 11)'
+    assert page.locator('.entry-list').first.evaluate('(e)=>getComputedStyle(e).borderLeftColor') == 'rgb(255, 43, 6)'
     page.set_viewport_size({'width': 1440, 'height': 900})
     supported = page.evaluate("CSS.supports('animation-timeline: scroll()')")
     if supported:
@@ -108,4 +116,4 @@ with sync_playwright() as p:
     assert not errors, errors
     assert not failed_assets, failed_assets
     browser.close()
-print('PASS: eight widths, normal-flow sections, native scroll motion, mobile/static/reduced-motion fallbacks, navigation, hover/focus, no-JS content, PDF/favicon, no browser errors.')
+print('PASS: ten widths, right-aligned wide navigation, orange-red entry accents, normal-flow sections, native scroll motion, mobile/static/reduced-motion fallbacks, navigation, hover/focus, no-JS content, PDF/favicon, no browser errors.')

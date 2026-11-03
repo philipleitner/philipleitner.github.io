@@ -89,3 +89,9 @@ python3 .agents/skills/webapp-testing/scripts/with_server.py --server "python3 -
 ```
 
 This verifies responsive flow, native scroll progress at several positions, static fallbacks, menu/keyboard access, links and local PDF/favicon assets. Screenshots go outside the checkout. This is local browser validation, not proof of a GitHub Pages deployment or external credential access.
+
+## Two-agent maintenance workflow
+
+For website changes, AGENTS.md now directs a briefing/review coordinator and one website-builder agent. The coordinator writes an implementation brief under `.agents/briefs/`, the builder implements and browser-tests it, and the coordinator independently reviews the diff and screenshots before pushing to `main`.
+
+Role instructions are saved in `.agents/roles/briefing-review.md` and `.agents/roles/website-builder.md`. These files persist the workflow for this repository; they do not create always-running agents or install a global app feature. If agent tools are unavailable, the coordinator must say so and perform the stages sequentially rather than claim a second agent ran.
