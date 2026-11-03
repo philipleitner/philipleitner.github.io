@@ -35,104 +35,19 @@ if ('IntersectionObserver' in window && !reduceMotion.matches) {
   });
 }
 
-// Native scrolling is untouched; only the decorative background receives depth.
-const drift = document.querySelector('.background-drift');
-const wideScreen = window.matchMedia('(min-width: 851px)');
-let backgroundFrame = 0;
-function updateBackground() {
-  backgroundFrame = 0;
-  const offset = !reduceMotion.matches && wideScreen.matches ? Math.min(window.scrollY * 0.035, 120) : 0;
-  drift.style.transform = `translate3d(0, ${-offset}px, 0)`;
-}
-function queueBackground() {
-  if (!backgroundFrame) backgroundFrame = window.requestAnimationFrame(updateBackground);
-}
-window.addEventListener('scroll', queueBackground, { passive: true });
-wideScreen.addEventListener('change', queueBackground);
-reduceMotion.addEventListener('change', queueBackground);
-updateBackground();
-
-// One small star follows whitespace corridors, never section contents.
-const star = document.querySelector('.journey-star');
-const sections = [...document.querySelectorAll('main > section')];
+// Active section tracking uses IntersectionObserver, with no scroll listeners.
 const sectionLinks = [...navigation.querySelectorAll('a[href^="#"]')];
-let crossings = [];
-let starFrame = 0;
-let measurementFrame = 0;
-let starLayout = {};
-const smooth = t => t * t * (3 - 2 * t);
-const mix = (a, b, t) => a + (b - a) * t;
-
-function measureStar() {
-  const compact = innerWidth <= 850;
-  const size = compact ? 28 : 44;
-  // Side corridors sit outside text and controls. Crossings use measured gaps.
-  const edge = compact ? 16 : Math.max(25, (innerWidth - 1240) / 2 - 36);
-  const left = edge;
-  const right = innerWidth - edge;
-  const height = innerHeight;
-  const bounds = sections.map(section => {
-    const rect = section.getBoundingClientRect();
-    return { top: rect.top + scrollY, bottom: rect.bottom + scrollY };
-  });
-  crossings = bounds.slice(1).map((section, index) => {
-    const previous = bounds[index];
-    const gap = (previous.bottom + section.top) / 2;
-    const oldSide = compact ? Math.floor(index / 2) % 2 : index % 2;
-    const newSide = compact ? Math.floor((index + 1) / 2) % 2 : (index + 1) % 2;
-    return { start: gap - height * .68, end: gap - height * .32, gap,
-      from: oldSide ? left : right, to: newSide ? left : right };
-  });
-  starLayout = { left, right, size, height };
-  updateStar();
-}
-
-function updateStar() {
-  starFrame = 0;
-  if (!starLayout.size) return;
-  const { right, size, height } = starLayout;
-  let x = right;
-  let y = height * .36;
-  let previousEnd = 0;
-  let previousY = y;
-  for (const crossing of crossings) {
-    if (scrollY < crossing.start) {
-      const t = Math.max(0, Math.min(1, (scrollY - previousEnd) / Math.max(1, crossing.start - previousEnd)));
-      y = mix(previousY, height * .68, smooth(t));
-      break;
-    }
-    if (scrollY <= crossing.end) {
-      const t = Math.max(0, Math.min(1, (scrollY - crossing.start) / (crossing.end - crossing.start)));
-      // Smooth horizontal acceleration; the world-space Y remains in the gap.
-      x = mix(crossing.from, crossing.to, smooth(t));
-      y = crossing.gap - scrollY;
-      break;
-    }
-    x = crossing.to;
-    y = height * .32;
-    previousEnd = crossing.end;
-    previousY = y;
-  }
-  if (reduceMotion.matches) { x = right; y = height * .36; }
-  const rotation = reduceMotion.matches ? 0 : Math.sin(scrollY / 850) * 9;
-  star.style.transform = `translate3d(${x - size / 2}px, ${y - size / 2}px, 0)`;
-  star.querySelector('path').setAttribute('transform', `rotate(${rotation})`);
-  const atEnd = scrollY + innerHeight >= document.documentElement.scrollHeight - 3;
-  const active = atEnd ? sections[sections.length - 1] : [...sections].reverse().find(section => section.getBoundingClientRect().top <= innerHeight * .4);
+function markActive(id) {
   sectionLinks.forEach(link => {
-    if (active && link.hash === `#${active.id}`) link.setAttribute('aria-current', 'location');
+    if (link.hash === `#${id}`) link.setAttribute('aria-current', 'location');
     else link.removeAttribute('aria-current');
   });
 }
-function queueStar() {
-  if (!starFrame) starFrame = requestAnimationFrame(updateStar);
+sectionLinks.forEach(link => link.addEventListener('click', () => markActive(link.hash.slice(1))));
+if ('IntersectionObserver' in window) {
+  const activeObserver = new IntersectionObserver(entries => {
+    const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (visible.length) markActive(visible[0].target.id);
+  }, { rootMargin: '-15% 0px -55% 0px', threshold: 0 });
+  document.querySelectorAll('main > section').forEach(section => activeObserver.observe(section));
 }
-function queueStarMeasurement() {
-  if (!measurementFrame) measurementFrame = requestAnimationFrame(() => { measurementFrame = 0; measureStar(); });
-}
-window.addEventListener('scroll', queueStar, { passive: true });
-window.addEventListener('resize', queueStarMeasurement);
-reduceMotion.addEventListener('change', queueStar);
-document.fonts.ready.then(queueStarMeasurement);
-if ('ResizeObserver' in window) new ResizeObserver(queueStarMeasurement).observe(document.querySelector('main'));
-measureStar();

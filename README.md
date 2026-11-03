@@ -61,16 +61,16 @@ The palette uses Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black text
 
 The introduction and every content section stay in normal document flow: no sticky section stacking, negative section margins, scroll snapping, or wheel interception. Only the readable navigation header is sticky. CSS scroll padding and target margins keep headings clear of it.
 
-A fixed, pointer-inert background layer contains a blue-to-white gradient, three soft forms and two oversized circular outlines. Lightweight requestAnimationFrame updates shift only the background slightly; mobile and reduced-motion users receive a static version. Content surfaces remain mostly open/translucent so the background shows through. IntersectionObserver starts short heading/content reveals on entry; everything is visible by default if JavaScript fails.
+A fixed, pointer-inert background layer contains a blue-to-white gradient, three soft forms and two oversized circular outlines. The background is static on all devices. Solid white entry lists sit over open sections so the gradient still shows through between content groups. IntersectionObserver starts short heading/content reveals on entry; everything is visible by default if JavaScript fails.
 
 Only the current equity research project uses a large featured card. Past projects use compact separated rows without fake action links. Keep their IDs intact because Leadership & Activities links to them. Add document actions only after real files or URLs are supplied.
 
 Leadership & Activities remains between Work Experience and Certifications. The current public-safe CV PDF and the individual credential URLs remain unchanged.
 
-## Small star journey and design tokens
+## Consistent entry styles and interaction
 
-Typography, spacing, surfaces, borders, radii and accent treatments share CSS variables in `:root`. Orange-red identifies primary actions, active navigation (bold label plus underline), status dots, section markers and link details. Research is the only featured project; past projects remain compact rows. Certifications use typographic issuer labels rather than unverified logo assets. Completion dates are explicitly marked as not provided; replace those labels with verified dates when supplied.
+Work Experience, Leadership & Activities, Past Projects and Certifications share solid white list surfaces, fine separators, aligned typography and spacing tokens. Only the current equity research report uses the large featured composition. Noninteractive entries have no hover effects or pointer cursor. Real actions have subtle matching hover/focus treatments plus visible keyboard outlines.
 
-One curved four-point SVG star remains 44px on desktop and 28px on mobile. It travels along measured outer gutters, crossing between sides only in the actual whitespace between sections. Smoothstep interpolation gives broad curved direction changes and naturally reverses with native scrolling. Small internal rotation preserves the SVG’s constant box size. Mobile crosses less often. The star has constant opacity, no masks, no per-section restart and no scale changes. The fixed decorative layer ignores pointer events and sits below the navigation; all sections remain in normal document flow. Reduced-motion users receive a static star. Without JavaScript, a quiet static star remains at the edge.
+The moving star and its CSS, containers, resize measurements, animation frames and scroll listeners have been removed. The decorative gradient background is static. Smooth native anchor navigation remains, and active navigation/reveals use IntersectionObserver without scroll listeners. Reduced motion disables reveals and smooth scrolling; content remains visible without JavaScript.
 
-The Reading List item contains a book icon and a non-clickable Coming soon label. Add an anchor only when a real reading-list URL is available. View CV continues to open the unchanged original public-safe PDF.
+The complete available Git history contains four interests: Varsity football, Weightlifting, Poker, and the finance/philosophy reading entry. These are retained, with the final title Reading: Finance & Philosophy and a non-clickable Reading List — coming soon placeholder below it. A fifth interest must be supplied before it can be added; it is not invented.
