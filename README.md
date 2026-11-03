@@ -1,2 +1,2 @@
 # philipleitner.github.io
-Personal portfolio of Philip Leitner
+Personal Portfolio of Philip Leitner
