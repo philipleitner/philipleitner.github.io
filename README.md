@@ -50,7 +50,7 @@ Repository ownership determines the Pages URL; use GitHub's displayed URL rather
 
 ## CV and credential maintenance
 
-The View CV button opens `./assets/philip-leitner-cv.pdf` in a new tab. The separate Download CV link lives in the footer and downloads the same file. The current PDF is the public-safe original supplied by Philip, preserved byte-for-byte. Future replacements must also omit private details; copy the original PDF rather than regenerating it.
+The View CV button opens `./assets/philip-leitner-cv.pdf` in a new tab. The footer download was removed as requested; the original PDF remains accessible from View CV and can be saved using the browser’s PDF controls. The current PDF is the public-safe original supplied by Philip, preserved byte-for-byte. Future replacements must also omit private details; copy the original PDF rather than regenerating it.
 
 Credential buttons use the exact individual Bloomberg and Forage URLs supplied by Philip. Update the corresponding `credential-link` anchors in `index.html` if credentials are reissued. These external services may restrict automated access.
 
@@ -67,8 +67,10 @@ Only the current equity research project uses a large featured card. Past projec
 
 Leadership & Activities remains between Work Experience and Certifications. The current public-safe CV PDF and the individual credential URLs remain unchanged.
 
-## Continuous ribbon and shared design tokens
+## Small star journey and design tokens
 
-Typography, spacing, surfaces, borders, radii and accent treatments share CSS variables in `:root`. Orange-red identifies primary actions, active navigation (with a bold label and underline), status dots, section markers and link details; text remains near-black. The reading-list placeholder is plain text until a genuine URL is supplied.
+Typography, spacing, surfaces, borders, radii and accent treatments share CSS variables in `:root`. Orange-red identifies primary actions, active navigation (bold label plus underline), status dots, section markers and link details. Research is the only featured project; past projects remain compact rows. Certifications use typographic issuer labels rather than unverified logo assets. Completion dates are explicitly marked as not provided; replace those labels with verified dates when supplied.
 
-A single decorative SVG loop travels through named anchors for the introduction, About, Projects, the featured research card, Work Experience, Leadership, Certifications, Beyond Finance and Contact. Its position, rotation and scale are interpolated from native scroll position, so upward scrolling reverses the same journey. Resize measurements account for real section heights. Only SVG transforms change during scrolling; content remains in normal flow. A text-line/control mask keeps the ribbon clear of readable and clickable areas, and the complete decorative layer ignores pointer events. Mobile uses a smaller loop and simpler horizontal travel. Reduced motion keeps a static loop. Without JavaScript, the loop remains a quiet static decoration and content/navigation remain usable.
+One curved four-point SVG star remains 44px on desktop and 28px on mobile. It travels along measured outer gutters, crossing between sides only in the actual whitespace between sections. Smoothstep interpolation gives broad curved direction changes and naturally reverses with native scrolling. Small internal rotation preserves the SVG’s constant box size. Mobile crosses less often. The star has constant opacity, no masks, no per-section restart and no scale changes. The fixed decorative layer ignores pointer events and sits below the navigation; all sections remain in normal document flow. Reduced-motion users receive a static star. Without JavaScript, a quiet static star remains at the edge.
+
+The Reading List item contains a book icon and a non-clickable Coming soon label. Add an anchor only when a real reading-list URL is available. View CV continues to open the unchanged original public-safe PDF.

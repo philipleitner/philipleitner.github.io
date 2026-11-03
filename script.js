@@ -52,107 +52,87 @@ wideScreen.addEventListener('change', queueBackground);
 reduceMotion.addEventListener('change', queueBackground);
 updateBackground();
 
-// One ribbon, one section-anchored journey. No wheel handlers or scroll pinning.
-const ribbon = document.querySelector('.journey-ribbon');
-const ribbonBody = document.querySelector('.ribbon-body');
-const cutouts = document.querySelector('.ribbon-cutouts');
-const maskBase = document.querySelector('.ribbon-mask-base');
+// One small star follows whitespace corridors, never section contents.
+const star = document.querySelector('.journey-star');
+const sections = [...document.querySelectorAll('main > section')];
 const sectionLinks = [...navigation.querySelectorAll('a[href^="#"]')];
-const mainSections = [...document.querySelectorAll('main > section')];
-const svgNS = 'http://www.w3.org/2000/svg';
-let journeyStops = [];
-let journeyFrame = 0;
-let layoutFrame = 0;
+let crossings = [];
+let starFrame = 0;
+let measurementFrame = 0;
+let starLayout = {};
+const smooth = t => t * t * (3 - 2 * t);
+const mix = (a, b, t) => a + (b - a) * t;
 
-function measureJourney() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  const compact = width <= 850;
-  const maxScroll = Math.max(1, document.documentElement.scrollHeight - height);
-  ribbon.setAttribute('viewBox', `0 0 ${width} ${height}`);
-  maskBase.setAttribute('width', width);
-  maskBase.setAttribute('height', height);
-  // Named anchors deliberately alternate margins beside each section.
-  const anchors = [
-    ['#home', .90, .38, -20, .93],
-    ['#about', .07, .43, 35, .80],
-    ['#projects', .93, .35, 105, .86],
-    ['.project-card', .07, .65, 155, .95],
-    ['#experience', .93, .42, 225, .78],
-    ['#leadership', .07, .48, 285, .90],
-    ['#training', .93, .45, 350, .78],
-    ['#beyond', .07, .48, 415, .86],
-    ['#contact', .89, .63, 480, .95]
-  ];
-  journeyStops = anchors.map(([selector, x, y, angle, scale], index) => {
-    const element = document.querySelector(selector);
-    const top = element.getBoundingClientRect().top + window.scrollY;
-    return { scroll: index ? Math.min(maxScroll, Math.max(0, top - height * .32)) : 0,
-      x: (compact ? (x < .5 ? .12 : .88) : x) * width,
-      y: (compact ? (index === 0 ? .72 : .27) : y) * height, angle: compact ? angle * .5 : angle, scale: compact ? .38 : scale, selector };
-  }).filter((stop, index, list) => !index || stop.scroll > list[index - 1].scroll);
-  // Text-line masks prevent the decoration from showing through any copy.
-  const fragment = document.createDocumentFragment();
-  const reserve = rect => {
-    if (!rect.width || !rect.height) return;
-    const node = document.createElementNS(svgNS, 'rect');
-    node.setAttribute('x', rect.left - 10);
-    node.setAttribute('y', rect.top + window.scrollY - 14);
-    node.setAttribute('width', rect.width + 20);
-    node.setAttribute('height', rect.height + 28);
-    node.setAttribute('rx', 4);
-    fragment.appendChild(node);
-  };
-  const walker = document.createTreeWalker(document.querySelector('main'), NodeFilter.SHOW_TEXT);
-  let textNode;
-  while ((textNode = walker.nextNode())) {
-    if (!textNode.textContent.trim() || textNode.parentElement.closest('[aria-hidden="true"]')) continue;
-    const range = document.createRange();
-    range.selectNodeContents(textNode);
-    [...range.getClientRects()].forEach(reserve);
+function measureStar() {
+  const compact = innerWidth <= 850;
+  const size = compact ? 28 : 44;
+  // Side corridors sit outside text and controls. Crossings use measured gaps.
+  const edge = compact ? 16 : Math.max(25, (innerWidth - 1240) / 2 - 36);
+  const left = edge;
+  const right = innerWidth - edge;
+  const height = innerHeight;
+  const bounds = sections.map(section => {
+    const rect = section.getBoundingClientRect();
+    return { top: rect.top + scrollY, bottom: rect.bottom + scrollY };
+  });
+  crossings = bounds.slice(1).map((section, index) => {
+    const previous = bounds[index];
+    const gap = (previous.bottom + section.top) / 2;
+    const oldSide = compact ? Math.floor(index / 2) % 2 : index % 2;
+    const newSide = compact ? Math.floor((index + 1) / 2) % 2 : (index + 1) % 2;
+    return { start: gap - height * .68, end: gap - height * .32, gap,
+      from: oldSide ? left : right, to: newSide ? left : right };
+  });
+  starLayout = { left, right, size, height };
+  updateStar();
+}
+
+function updateStar() {
+  starFrame = 0;
+  if (!starLayout.size) return;
+  const { right, size, height } = starLayout;
+  let x = right;
+  let y = height * .36;
+  let previousEnd = 0;
+  let previousY = y;
+  for (const crossing of crossings) {
+    if (scrollY < crossing.start) {
+      const t = Math.max(0, Math.min(1, (scrollY - previousEnd) / Math.max(1, crossing.start - previousEnd)));
+      y = mix(previousY, height * .68, smooth(t));
+      break;
+    }
+    if (scrollY <= crossing.end) {
+      const t = Math.max(0, Math.min(1, (scrollY - crossing.start) / (crossing.end - crossing.start)));
+      // Smooth horizontal acceleration; the world-space Y remains in the gap.
+      x = mix(crossing.from, crossing.to, smooth(t));
+      y = crossing.gap - scrollY;
+      break;
+    }
+    x = crossing.to;
+    y = height * .32;
+    previousEnd = crossing.end;
+    previousY = y;
   }
-  document.querySelectorAll('main a, main button').forEach(element => reserve(element.getBoundingClientRect()));
-  cutouts.replaceChildren(fragment);
-  document.documentElement.classList.add('journey-ready');
-  updateJourney();
-}
-
-function curve(a, b, c, d, t) {
-  // Catmull–Rom interpolation gives continuous curved motion through anchors.
-  return .5 * ((2 * b) + (-a + c) * t + (2 * a - 5 * b + 4 * c - d) * t * t + (-a + 3 * b - 3 * c + d) * t * t * t);
-}
-function updateJourney() {
-  journeyFrame = 0;
-  if (!journeyStops.length) return;
-  const scroll = window.scrollY;
-  let index = 0;
-  while (index < journeyStops.length - 2 && scroll > journeyStops[index + 1].scroll) index++;
-  const b = journeyStops[index];
-  const c = journeyStops[Math.min(index + 1, journeyStops.length - 1)];
-  const a = journeyStops[Math.max(0, index - 1)];
-  const d = journeyStops[Math.min(index + 2, journeyStops.length - 1)];
-  const progress = Math.max(0, Math.min(1, (scroll - b.scroll) / Math.max(1, c.scroll - b.scroll)));
-  const point = {};
-  for (const key of ['x', 'y', 'angle', 'scale']) point[key] = curve(a[key], b[key], c[key], d[key], progress);
-  if (reduceMotion.matches) Object.assign(point, { x: innerWidth * .91, y: innerHeight * .42, angle: -20, scale: innerWidth <= 850 ? .42 : .85 });
-  ribbonBody.setAttribute('transform', `translate(${point.x} ${point.y}) rotate(${point.angle}) scale(${point.scale})`);
-  cutouts.setAttribute('transform', `translate(0 ${-scroll})`);
-  const atEnd = scroll + innerHeight >= document.documentElement.scrollHeight - 3;
-  const active = atEnd ? mainSections[mainSections.length - 1] : [...mainSections].reverse().find(section => section.getBoundingClientRect().top <= innerHeight * .4);
+  if (reduceMotion.matches) { x = right; y = height * .36; }
+  const rotation = reduceMotion.matches ? 0 : Math.sin(scrollY / 850) * 9;
+  star.style.transform = `translate3d(${x - size / 2}px, ${y - size / 2}px, 0)`;
+  star.querySelector('path').setAttribute('transform', `rotate(${rotation})`);
+  const atEnd = scrollY + innerHeight >= document.documentElement.scrollHeight - 3;
+  const active = atEnd ? sections[sections.length - 1] : [...sections].reverse().find(section => section.getBoundingClientRect().top <= innerHeight * .4);
   sectionLinks.forEach(link => {
     if (active && link.hash === `#${active.id}`) link.setAttribute('aria-current', 'location');
     else link.removeAttribute('aria-current');
   });
 }
-function queueJourney() {
-  if (!journeyFrame) journeyFrame = requestAnimationFrame(updateJourney);
+function queueStar() {
+  if (!starFrame) starFrame = requestAnimationFrame(updateStar);
 }
-function queueMeasure() {
-  if (!layoutFrame) layoutFrame = requestAnimationFrame(() => { layoutFrame = 0; measureJourney(); });
+function queueStarMeasurement() {
+  if (!measurementFrame) measurementFrame = requestAnimationFrame(() => { measurementFrame = 0; measureStar(); });
 }
-window.addEventListener('scroll', queueJourney, { passive: true });
-window.addEventListener('resize', queueMeasure);
-reduceMotion.addEventListener('change', queueJourney);
-document.fonts.ready.then(queueMeasure);
-if ('ResizeObserver' in window) new ResizeObserver(queueMeasure).observe(document.querySelector('main'));
-measureJourney();
+window.addEventListener('scroll', queueStar, { passive: true });
+window.addEventListener('resize', queueStarMeasurement);
+reduceMotion.addEventListener('change', queueStar);
+document.fonts.ready.then(queueStarMeasurement);
+if ('ResizeObserver' in window) new ResizeObserver(queueStarMeasurement).observe(document.querySelector('main'));
+measureStar();
