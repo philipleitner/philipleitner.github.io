@@ -58,6 +58,7 @@ nav a:not(.nav-contact):is(:hover,:focus-visible) { color: var(--accent-ink); }
 .dot { display: inline-block; width: 6px; height: 6px; margin: 0 7px 2px 0; background: var(--accent); }
 .hero h1 { margin: 24px 0; font: clamp(76px,8.8vw,116px)/.94 var(--serif); letter-spacing: -5px; }
 .hero-copy { max-width: 510px; font-size: 15px; line-height: 1.85; color: var(--muted); }
+.hero-copy .keep-together { white-space: nowrap; }
 .hero-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .hero-portrait { aspect-ratio: 1; min-width: 0; align-self: start; overflow: hidden; border-radius: 3px 80px 3px 3px; background: var(--blue-wash); }
 .hero-portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
@@ -73,10 +74,10 @@ nav a:not(.nav-contact):is(:hover,:focus-visible) { color: var(--accent-ink); }
 #about h2 span { white-space: nowrap; }
 .home-places { display: flex; flex-direction: column; min-width: 0; position: relative; isolation: isolate; overflow: hidden; margin: 0; padding: 26px; background: #e8f5ffb3; border: var(--surface-border); border-radius: var(--radius); }
 .country-field { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-.home-places figcaption { font: 19px/1.4 var(--serif); color: var(--blue-ink); }
+.home-places figcaption { font: 600 15px/1.6 var(--sans); color: var(--blue-ink); }
 .country-list { flex: 1; align-content: space-around; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 30px; margin: 28px 0 0; padding: 0; list-style: none; }
 .country-list li { margin: 0; padding: 0; }
-.country-list li > span:last-child { display: block; margin-top: 9px; font: 24px/1.2 var(--serif); color: var(--ink); }
+.country-list li > span:last-child { display: block; margin-top: 9px; font: 500 18px/1.6 var(--sans); color: var(--ink); }
 .country-flag { display: block; width: 54px; height: 36px; object-fit: contain; outline: 1px solid #17222b20; }
 .about-story { padding: var(--surface-pad); background: var(--surface); border: var(--surface-border); border-radius: var(--radius); }
 .prose { color: var(--muted); font-size: 15px; line-height: 1.9; }
@@ -176,7 +177,7 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
 @media(max-width:600px) {
   :root { --space: 64px; --surface-pad: 20px; --row-pad: 26px; }.hero,.section,.contact,footer { width: calc(100% - 40px); }
   h2 { font-size: 43px;letter-spacing: -1.5px; }.hero { grid-template-columns: 1fr; padding: 36px 0 0; gap: 30px; }.hero h1 { font-size: clamp(76px,20vw,94px);letter-spacing: -4px; margin: 22px 0; }.hero-copy { font-size: 14px; }.hero-links { margin-top: 24px; }.hero-portrait { border-top-right-radius: 65px; }.hero-bottom { margin-top: -16px; }
-  .section { padding-top: 26px; }.section-label { font-size: 8px; }.prose { font-size: 14px; }.home-places { padding: 22px; }.country-list { gap: 22px; }.country-list li > span:last-child { font-size: 23px; }.fact-row { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }.fact-title { font-size: 20px; }.education-primary { grid-column: 1/-1; }
+  .section { padding-top: 26px; }.section-label { font-size: 8px; }.prose { font-size: 14px; }.home-places { padding: 22px; }.country-list { gap: 22px; }.country-list li > span:last-child { font-size: 17px; }.fact-row { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 20px; }.fact-title { font-size: 20px; }.education-primary { grid-column: 1/-1; }
   .project-card { grid-template-columns: 1fr; }.project-visual { min-height: 265px;padding: 24px; }.project-visual > p { font-size: 51px; }.chart { left: 24px;right: 24px;bottom: 47px;height: 145px; }.project-content { padding: 26px 24px; }.project-content h3 { color: var(--accent-ink); font-size: 35px; }.project-content .eyebrow { margin-top: 22px; }
   .past-project-row,.experience-row { grid-template-columns: 1fr;gap: 20px;padding: var(--row-pad) 0; }.past-project-title .eyebrow { font-size: 9px; }.past-project-title h3 { color: var(--accent-ink); font-size: 27px; }.experience-date { padding: 0;display: flex;flex-wrap: wrap;gap: 12px; }.experience-date span { margin: 0; }.experience-row h3 { font-size: 29px; }.experience-row ul { font-size: 14px; }.role { margin: 10px 0 17px; }
   .activity-grid { grid-template-columns: 1fr;gap: 0;margin-top: 20px; }.activity-card+.activity-card { border-left: 0; border-top: var(--surface-border); padding: 24px 0 0; margin-top: 24px; }.activity-card h3 { font-size: 27px; }
