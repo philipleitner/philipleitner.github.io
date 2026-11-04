@@ -66,8 +66,9 @@ const revealTargets = [];
 revealGroups.forEach((selector, groupIndex) => {
   document.querySelectorAll(selector).forEach((element, index) => {
     if (revealTargets.includes(element)) return;
-    element.style.setProperty('--reveal-order', groupIndex === 0 ? 0 : index);
+    element.style.setProperty('--reveal-order', groupIndex <= 1 ? 0 : index);
     if (element.matches('h2')) element.classList.add('reveal-heading');
+    else if (element.matches('.past-project-row,.experience-row,.activity-card,.certificate,.interest-grid>div')) element.classList.add('reveal-row');
     revealTargets.push(element);
   });
 });
@@ -76,8 +77,8 @@ const activeReveals = new Set();
 let revealObserver;
 function finishReveal(element) {
   revealed.add(element);
-  revealObserver?.unobserve(element);
-  element.classList.remove('reveal-once');
+  revealObserver?.unobserve?.(element);
+  element.classList.remove('reveal-pending', 'reveal-once');
   element.removeEventListener('animationend', revealEnded);
   activeReveals.delete(element);
 }
@@ -93,31 +94,45 @@ function finishDestination(hash) {
     if (element.contains(destination) || (destination.matches("section") && element === destination.querySelector("h2"))) finishReveal(element);
   });
 }
+function resetReveals() {
+  revealTargets.forEach(finishReveal);
+  revealObserver?.disconnect?.();
+}
 if (typeof window.IntersectionObserver === 'function' && !revealMotion.matches) {
   try {
+    let observerResponded = false;
     revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const element = entry.target;
-        if (!entry.isIntersecting || revealed.has(element)) return;
-        revealed.add(element);
-        revealObserver.unobserve(element);
-        if (revealMotion.matches || element.contains(document.activeElement)) return;
-        activeReveals.add(element);
-        element.addEventListener('animationend', revealEnded);
-        element.classList.add('reveal-once');
-      });
-    }, { rootMargin: '0px 0px -72px 0px', threshold: .01 });
+      observerResponded = true;
+      try {
+        entries.forEach(entry => {
+          const element = entry.target;
+          if (!entry.isIntersecting || revealed.has(element)) return;
+          revealed.add(element);
+          revealObserver.unobserve(element);
+          if (revealMotion.matches || element.contains(document.activeElement)) {
+            finishReveal(element);
+            return;
+          }
+          activeReveals.add(element);
+          element.addEventListener('animationend', revealEnded);
+          // Pending and animation start use identical values: never flash a
+          // fully visible element back to faint when it enters the viewport.
+          element.classList.replace('reveal-pending', 'reveal-once');
+        });
+      } catch { resetReveals(); }
+    }, { rootMargin: '0px 0px 12px 0px', threshold: 0 });
     if (location.hash) finishDestination(location.hash);
+    // Install every observation before preparing anything. Then batch layout
+    // reads followed by writes, arming only genuinely below-viewport content.
     revealTargets.forEach(element => { if (!revealed.has(element)) revealObserver.observe(element); });
-  } catch {
-    revealTargets.forEach(element => {
-      revealed.add(element);
-      element.classList.remove('reveal-once');
-      element.removeEventListener('animationend', revealEnded);
+    const positions = revealTargets.map(element => ({ element, top: element.getBoundingClientRect().top }));
+    setTimeout(() => { if (!observerResponded) resetReveals(); }, 1000);
+    positions.forEach(({ element, top }) => {
+      if (revealed.has(element)) return;
+      if (top < innerHeight) finishReveal(element);
+      else element.classList.add('reveal-pending');
     });
-    activeReveals.clear();
-    revealObserver?.disconnect();
-  }
+  } catch { resetReveals(); }
 }
 // Navigation and keyboard focus never wait for a staggered entrance.
 document.addEventListener('click', event => {
@@ -130,6 +145,5 @@ document.addEventListener('focusin', event => {
 });
 revealMotion.addEventListener('change', event => {
   if (!event.matches) return;
-  revealObserver?.disconnect();
-  [...activeReveals].forEach(finishReveal);
+  resetReveals();
 });
