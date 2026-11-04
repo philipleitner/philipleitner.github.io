@@ -47,7 +47,9 @@ with sync_playwright() as p:
     assert page.locator('.credential-date').count() == 0
     assert 'Completion date not provided' not in page.locator('body').inner_text()
     assert page.locator('.site-background').evaluate('(e)=>getComputedStyle(e).position') == 'fixed'
-    assert page.locator('.credential-list').evaluate('(e)=>getComputedStyle(e).backgroundColor') == 'rgb(238, 248, 255)'
+    assert page.locator('.credential-list').evaluate('(e)=>getComputedStyle(e).backgroundColor') == 'rgba(253, 253, 254, 0.95)'
+    assert page.locator('.skills').count() == 0
+    assert 'Excel & Power Query / PowerPoint / Power BI / Financial Modelling / Python' not in page.locator('body').inner_text()
     page.set_viewport_size({'width':1440,'height':900})
     supported=page.evaluate("CSS.supports('animation-timeline: scroll()')")
     for progress in [0,.25,.5,.75,1]:

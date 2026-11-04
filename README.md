@@ -57,7 +57,7 @@ Credential buttons use the exact individual Bloomberg and Forage URLs supplied b
 
 ## Design and content structure
 
-Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black ink and orange-red (`#FF2B06`) form the shared palette. The layout uses a compact identity introduction, one featured research composition, compact past projects and aligned experience/leadership/credential entries. Shared typography, spacing, surface and action tokens live in `styles.css`.
+Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black ink and orange-red (`#FF2B06`) form the shared palette. The layout uses a compact identity introduction, one featured research composition, compact past projects and aligned experience/leadership/credential entries. Cloudy-white grouped surfaces, light-blue borders and shared padding separate detailed content from the gradient without making every row a separate card. Shared typography, spacing, surface and action tokens live in `styles.css`.
 
 All content stays in normal document flow. The restored full-viewport blue-to-white gradient is fixed behind the naturally scrolling content, with static radial-gradient forms and circular outlines. It uses no blur filters or background animation. There are no moving stars, overlapping panels, backdrop filters or large blur filters. The PL logo/favicon identity, safe original PDF and supplied credential URLs remain intact. Unavailable reports, models and reading-list links remain non-clickable coming-soon text.
 

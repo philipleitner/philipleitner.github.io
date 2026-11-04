@@ -44,7 +44,7 @@ with sync_playwright() as pw:
    assert all(t['blur']=='none' for t in tiers), 'Expensive backdrop filtering returned'
    assert page.locator('*').evaluate_all('(es)=>es.every(e=>getComputedStyle(e).filter==="none" && getComputedStyle(e).backdropFilter==="none")')
    assert page.locator('.project-card').evaluate('(e)=>getComputedStyle(e).backgroundColor') != 'rgba(0, 0, 0, 0)'
-   assert page.locator('.experience .entry-list').evaluate('(e)=>getComputedStyle(e).backgroundColor') == 'rgba(0, 0, 0, 0)'
+   assert page.locator('.experience .entry-list').evaluate('(e)=>getComputedStyle(e).backgroundColor') == 'rgba(253, 253, 254, 0.95)'
    assert page.locator('.orbital-decoration').count() == 0
    assert page.evaluate('document.getAnimations().every(a=>a.effect.target.matches(".reading-progress>span"))')
    page.screenshot(path=str(out/f'{width}-static-surfaces.png'))
