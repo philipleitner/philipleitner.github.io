@@ -83,7 +83,7 @@ nav a:not(.nav-contact):is(:hover,:focus-visible) { color: var(--accent-ink); }
 .prose { color: var(--muted); font-size: 15px; line-height: 1.9; }
 .prose p+p { margin-top: 20px; }
 .fact-row { display: grid; grid-template-columns: 1.4fr 1fr 1.2fr; grid-template-rows: 3px auto auto auto; column-gap: 0; row-gap: 9px; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
-.fact-row > div { display: grid; grid-row: span 4; grid-template-rows: 3px 2.8rem auto auto; row-gap: 9px; align-content: start; padding: 0 14px; border-left: var(--surface-border); font-size: 11px; line-height: 1.7; color: var(--muted); }
+.fact-row > div { display: grid; grid-row: span 4; grid-template-rows: 3px minmax(4.2rem,auto) auto auto; row-gap: 9px; align-content: start; padding: 0 14px; border-left: var(--surface-border); font-size: 11px; line-height: 1.7; color: var(--muted); }
 .fact-row > div:first-child { padding-left: 0; border-left: 0; }
 .fact-row > div:last-child { padding-right: 0; }
 .fact-row > div::before { content: ''; width: 24px; height: 3px; background: var(--accent); }
