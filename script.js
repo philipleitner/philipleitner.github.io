@@ -50,3 +50,15 @@ if ('IntersectionObserver' in window) {
   }, { rootMargin: '-15% 0px -55% 0px', threshold: 0 });
   document.querySelectorAll('main > section').forEach(section => activeObserver.observe(section));
 }
+
+// One gentle entrance, triggered once. Stamps remain visible without JS or an observer.
+const passportStamps = document.querySelector('.passport-stamps');
+if (passportStamps && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const stampObserver = new IntersectionObserver(entries => {
+    if (entries.some(entry => entry.isIntersecting)) {
+      passportStamps.classList.add('stamps-entered');
+      stampObserver.disconnect();
+    }
+  }, { threshold: .05 });
+  stampObserver.observe(passportStamps);
+}

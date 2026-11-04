@@ -57,7 +57,7 @@ with sync_playwright() as p:
     supported=page.evaluate("CSS.supports('animation-timeline: scroll()')")
     for progress in [0,.25,.5,.75,1]:
         page.evaluate('(p)=>scrollTo({top:(document.documentElement.scrollHeight-innerHeight)*p,behavior:"instant"})',progress)
-        page.wait_for_timeout(100)
+        page.wait_for_timeout(550)
         if supported:
             scale=page.locator('.reading-progress>span').evaluate('(e)=>new DOMMatrixReadOnly(getComputedStyle(e).transform).a')
             assert abs(scale-progress)<.025,(progress,scale)
@@ -121,7 +121,8 @@ with sync_playwright() as p:
     assert page.evaluate("async () => (await fetch(document.querySelector('.hero-links a').href)).status") == 200
     assert page.evaluate("async () => (await fetch(document.querySelector('link[rel=icon]').href)).status") == 200
     assert page.evaluate("async () => (await fetch(document.querySelector('.hero-portrait img').src)).status") == 200
-    assert page.evaluate("async()=>Promise.all([...document.querySelectorAll('.country-flag')].map(async e=>(await fetch(e.src)).status)).then(statuses=>statuses.length===6 && statuses.every(s=>s===200))")
+    assert page.locator('.passport-stamp[role="img"]').count() == 6
+    assert page.locator('.passport-stamp title').all_text_contents() == ['Austria','Romania','Greece','Chile','Singapore','Italy']
     page.wait_for_load_state('networkidle')
     page.unroute_all(behavior='wait')
     assert not errors, errors

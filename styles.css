@@ -72,16 +72,19 @@ nav a:not(.nav-contact):is(:hover,:focus-visible) { color: var(--accent-ink); }
 .section h2 { margin-bottom: 42px; }
 .about-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 6%; align-items: stretch; }
 #about h2 span { white-space: nowrap; }
-.home-places { display: flex; flex-direction: column; justify-content: center; min-width: 0; position: relative; overflow: hidden; margin: 0; padding: 34px 28px 34px 50px; background: linear-gradient(90deg,#d9efff 0 24px,#f3faff 24px); border: var(--surface-border); border-radius: var(--radius); }
-.home-places::before { content: ''; position: absolute; top: 20px; bottom: 20px; left: 24px; border-left: 2px dotted #0099ff66; }
+.home-places { display: flex; flex-direction: column; justify-content: center; min-width: 0; position: relative; margin: 0; padding: 24px; background: #f3faff; border: var(--surface-border); border-radius: var(--radius); }
 .home-places figcaption { font: 600 17px/1.6 var(--sans); color: var(--blue-ink); }
-.home-places figcaption::before { content: ''; display: block; width: 28px; height: 3px; margin-bottom: 16px; background: var(--accent); }
-.country-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0; margin: 24px 0 0; padding: 0; border-bottom: var(--surface-border); list-style: none; }
-.country-list li { display: flex; align-items: center; gap: 12px; margin: 0; padding: 19px 0; border-top: var(--surface-border); }
-.country-list li:nth-child(odd) { padding-right: 16px; }
-.country-list li:nth-child(even) { padding-left: 18px; border-left: var(--surface-border); }
-.country-list li > span:last-child { font: 550 18px/1.5 var(--sans); color: var(--ink); }
-.country-flag { display: block; flex-shrink: 0; width: 30px; height: 20px; object-fit: contain; outline: 1px solid #17222b20; }
+.home-places figcaption::before { content: ''; display: block; width: 28px; height: 3px; margin-bottom: 12px; background: var(--accent); }
+.passport-stamps { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); place-items: center; gap: 8px 10px; margin: 16px 0 0; padding: 0; list-style: none; }
+.stamp-cell { width: 100%; max-width: 150px; margin: 0; padding: 0; }
+.stamp-cell+li { margin-top: 0; }
+.passport-stamp { display: block; width: 100%; height: auto; overflow: visible; transform: rotate(var(--stamp-angle,-2deg)); }
+.passport-stamp text { font: 600 24px/1 var(--sans); letter-spacing: -.4px; }
+.stamp-blue { color: #07557e; }.stamp-red { color: var(--accent-ink); }
+.stamp-cell:nth-child(2) { --stamp-angle: 3deg; }.stamp-cell:nth-child(3) { --stamp-angle: -1deg; }.stamp-cell:nth-child(4) { --stamp-angle: 2deg; }.stamp-cell:nth-child(5) { --stamp-angle: -3deg; }.stamp-cell:nth-child(6) { --stamp-angle: 1deg; }
+.stamps-entered .stamp-cell { animation: stamp-arrive 300ms ease-out backwards; animation-delay: var(--stamp-delay,0ms); }
+@keyframes stamp-arrive { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@media(hover:hover) and (pointer:fine) { .stamp-border { transition: stroke 160ms ease; }.passport-stamp:hover .stamp-border { stroke: var(--accent); } }
 .about-story { padding: var(--surface-pad); background: var(--surface); border: var(--surface-border); border-radius: var(--radius); }
 .prose { color: var(--muted); font-size: 15px; line-height: 1.9; }
 .prose p+p { margin-top: 20px; }
@@ -170,10 +173,6 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
   .hero { gap: 28px 6%; }.hero h1 { font-size: 88px; }
   .activity-grid { gap: 28px; }.training-grid { grid-template-columns: 1fr 1.6fr; gap: 6%; }
 }
-@media(max-width:1100px) {
-  .country-list { grid-template-columns: 1fr; }
-  .country-list li:nth-child(n) { padding: 12px 0; border-left: 0; }
-}
 @media(min-width:601px) and (max-width:950px) {
   .fact-row { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .fact-row > .education-primary { grid-column: 1/-1; padding-bottom: 18px; }
@@ -194,7 +193,7 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
 @media(max-width:600px) {
   :root { --space: 64px; --surface-pad: 20px; --row-pad: 26px; }.hero,.section,.contact,footer { width: calc(100% - 40px); }
   h2 { font-size: 43px;letter-spacing: -1.5px; }.hero { grid-template-columns: 1fr; padding: 36px 0 0; gap: 30px; }.hero h1 { font-size: clamp(76px,20vw,94px);letter-spacing: -4px; margin: 22px 0; }.hero-copy { font-size: 14px; }.hero-links { margin-top: 24px; }.hero-portrait { border-top-right-radius: 65px; }.hero-bottom { margin-top: -16px; }
-  .section { padding-top: 26px; }.section-label { font-size: 8px; }.prose { font-size: 14px; }.home-places { padding: 26px 22px 26px 42px; }.home-places figcaption { font-size: 16px; }.country-list { grid-template-columns: 1fr; margin-top: 20px; }.country-list li:nth-child(n) { padding: 10px 0; border-left: 0; }.country-list li > span:last-child { font-size: 17px; }.fact-row { grid-template-columns: repeat(2,minmax(0,1fr)); row-gap: 9px; }.fact-row > div { padding: 0; border-left: 0; }.fact-row > div:last-child { padding-left: 16px; border-left: var(--surface-border); }.fact-row > .education-primary { grid-column: 1/-1; padding-bottom: 18px; }
+  .section { padding-top: 26px; }.section-label { font-size: 8px; }.prose { font-size: 14px; }.home-places { padding: 12px; }.home-places figcaption { font-size: 16px; }.passport-stamps { gap: 6px 8px; }.stamp-cell { max-width: 150px; }.fact-row { grid-template-columns: repeat(2,minmax(0,1fr)); row-gap: 9px; }.fact-row > div { padding: 0; border-left: 0; }.fact-row > div:last-child { padding-left: 16px; border-left: var(--surface-border); }.fact-row > .education-primary { grid-column: 1/-1; padding-bottom: 18px; }
   .project-card { grid-template-columns: 1fr; }.project-visual { min-height: 265px;padding: 24px; }.project-visual > p { font-size: 51px; }.chart { left: 24px;right: 24px;bottom: 47px;height: 145px; }.project-content { padding: 26px 24px; }.project-content h3 { color: var(--accent-ink); font-size: 35px; }.project-content .eyebrow { margin-top: 22px; }
   .past-project-row,.experience-row { grid-template-columns: 1fr;gap: 20px;padding: var(--row-pad) 0; }.past-project-title .eyebrow { font-size: 9px; }.past-project-title h3 { color: var(--accent-ink); font-size: 27px; }.experience-date { padding: 0;display: flex;flex-wrap: wrap;gap: 12px; }.experience-date span { margin: 0; }.experience-row h3 { font-size: 29px; }.experience-row ul { font-size: 14px; }.role { margin: 10px 0 17px; }
   .activity-grid { grid-template-columns: 1fr;gap: 0;margin-top: 20px; }.activity-card+.activity-card { border-left: 0; border-top: var(--surface-border); padding: 24px 0 0; margin-top: 24px; }.activity-card h3 { font-size: 27px; }
