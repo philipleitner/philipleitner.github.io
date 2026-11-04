@@ -89,7 +89,8 @@ function finishDestination(hash) {
   try { destination = document.getElementById(decodeURIComponent(hash.slice(1))); } catch { return; }
   if (!destination) return;
   revealTargets.forEach(element => {
-    if (destination.contains(element) || element.contains(destination)) finishReveal(element);
+    // Complete the destination itself, not every later entry in its section.
+    if (element.contains(destination) || (destination.matches("section") && element === destination.querySelector("h2"))) finishReveal(element);
   });
 }
 if (typeof window.IntersectionObserver === 'function' && !revealMotion.matches) {
@@ -105,7 +106,7 @@ if (typeof window.IntersectionObserver === 'function' && !revealMotion.matches) 
         element.addEventListener('animationend', revealEnded);
         element.classList.add('reveal-once');
       });
-    }, { rootMargin: '0px 0px 80px 0px', threshold: .01 });
+    }, { rootMargin: '0px 0px -72px 0px', threshold: .01 });
     if (location.hash) finishDestination(location.hash);
     revealTargets.forEach(element => { if (!revealed.has(element)) revealObserver.observe(element); });
   } catch {

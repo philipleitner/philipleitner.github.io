@@ -1,0 +1,15 @@
+# Diagnose reveals that look unchanged
+
+User reports no noticeable change after reveal update. Live Pages/API verification blocked by environment403; root handles remote check/documentation. Builder diagnose local actual normal slow scrolling: positive80pxrootmargin likely starts and ends fades belowviewport, so prior lifecycle tests proved run but not visible effect. Measure each reveal start's viewportintersection, opacity at first visible row and actualvisible animationduration. Do not simply exaggerate motion or add fancyfeatures.
+
+Make entrances perceptible within original brief bounds: 18–20px heading travel, ~14–16content, ~600–650ms desktop/480–550mobile,75msstagger. Trigger at viewport edge/slightlyinside (rootMargin0 or smallnegativebottom20–40px, lowthreshold), not80pxoutside; content neednotfullyvisible and no readingwait. Defaultvisible/noJS/reduced, finiteCSSbackwards only; no prehidden states. Keep anchor/focus immediate, one-time/safe cleanup, no nestedmotion. Consider persistent once-revealed state peractualviewport? No replay onup; no broadnewanimation. Nativehero staysstaticunless addingentrance notrequested. Existinganimation should visiblyoccur while manualscrolling without clickinganchors (anchors intentionallyskip). Test regular scrolling and direct anchor separately.
+
+Cache: root may version stylesheet/script URL inindex to force latestassets; coordinate root ownsindex/docs/brief; builder ownsJS/CSS/tests. No design/contentchanges. Must prove visible rendering, not merely animationstart counters; record slowdesktop/mobile down/up with a close sequence where opacity/translation visiblyevolves insideviewport. Existingtestsregressions plus targetedvisiblemotiontest. Keep recording20–35s. No prolongedprofiling/no deviceFPSclaims. No commit/push.
+
+## Result and review
+
+Builder delegation hit usage limit before implementation; coordinator completed the scoped implementation and checks directly, as disclosed. Original80px positive margin could finish reveal before slow-scrolling content entered viewport. Trigger now72px inside viewport; heading20px/650ms, content16px/600ms, mobile550/500ms. Anchor completion narrowed to destination/heading, leaving later section entries eligible. CSS/JS relative URLs versioned to request fresh assets.
+
+New tests/reveal_visibility.py tests slow scroll and later entries after fresh anchor navigation, with optional recording. PASS: desktop8 sampled changing-opacity frames (6 with whole heading on-screen), mobile7 (all whole heading on-screen); correct viewport trigger and later-row reveals. Lifecycle suite and ten-width baseline also passed, including noJS/reduced/failure, nav/focus/assets/progress and stable layout. Existing content/design unchanged aside from versioned asset URLs. Syntax/whitespace checks passed. SystemFFmpeg reused via temporary Playwright encoder path, no tool installation. Recordings outside repository in portfolio-review/visible-reveals.
+
+Live GitHub Pages and API deployment read checks blocked by environment HTTP403, so no live deployment verification claimed. Production push remains under existing authorization.
