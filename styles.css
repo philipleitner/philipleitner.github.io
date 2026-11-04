@@ -82,8 +82,6 @@ nav a:not(.nav-contact):is(:hover,:focus-visible) { color: var(--accent-ink); }
 .passport-stamp text { fill: var(--ink); font: 600 24px/1 var(--sans); letter-spacing: -.4px; }
 .stamp-at { color: #ed2939; }.stamp-ro { color: #002b7f; }.stamp-gr { color: #0d5eaf; }.stamp-cl { color: #0039a6; }.stamp-sg { color: #ed2939; }.stamp-it { color: #008c45; }
 .stamp-cell:nth-child(2) { --stamp-angle: 3deg; }.stamp-cell:nth-child(3) { --stamp-angle: -1deg; }.stamp-cell:nth-child(4) { --stamp-angle: 2deg; }.stamp-cell:nth-child(5) { --stamp-angle: -3deg; }.stamp-cell:nth-child(6) { --stamp-angle: 1deg; }
-.stamps-entered .stamp-cell { animation: stamp-arrive 300ms ease-out backwards; animation-delay: var(--stamp-delay,0ms); }
-@keyframes stamp-arrive { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 @media(hover:hover) and (pointer:fine) { .stamp-border { transition: stroke 160ms ease; }.passport-stamp:hover .stamp-border { stroke: color-mix(in srgb,currentColor 80%,var(--ink) 20%); } }
 .about-story { padding: var(--surface-pad); background: var(--surface); border: var(--surface-border); border-radius: var(--radius); }
 .prose { color: var(--muted); font-size: 15px; line-height: 1.9; }
@@ -203,3 +201,11 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
   footer { flex-wrap: wrap;gap: 14px 20px;padding-bottom: 25px; }.footer-links { margin-left: auto; }footer p { order: 3;width: 100%;font-size: 10px; }
 }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior: auto; }*,*::before,*::after { animation: none!important;transition: none!important; } }
+
+/* Finite, default-visible entrances. No pre-hidden document state or scroll work. */
+:root { --reveal-travel: 14px; --reveal-heading-travel: 18px; --reveal-duration: 540ms; --reveal-heading-duration: 600ms; --reveal-stagger: 75ms; --reveal-delay-cap: 225ms; --reveal-ease: cubic-bezier(.2,.65,.3,1); }
+.reveal-heading { --reveal-travel: var(--reveal-heading-travel); --reveal-duration: var(--reveal-heading-duration); }
+.reveal-once { animation: gentle-reveal var(--reveal-duration) var(--reveal-ease) backwards; animation-delay: min(calc(var(--reveal-order,0) * var(--reveal-stagger)),var(--reveal-delay-cap)); }
+@keyframes gentle-reveal { from { opacity: .2; transform: translateY(var(--reveal-travel)); } to { opacity: 1; transform: translateY(0); } }
+@media(max-width:600px) { :root { --reveal-travel: 10px; --reveal-heading-travel: 12px; --reveal-duration: 440ms; --reveal-heading-duration: 480ms; --reveal-stagger: 60ms; --reveal-delay-cap: 180ms; } }
+@media(prefers-reduced-motion:reduce) { .reveal-once { animation: none!important; } }

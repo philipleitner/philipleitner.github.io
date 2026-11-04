@@ -91,8 +91,16 @@ Role instructions are saved in `.agents/roles/briefing-review.md` and `.agents/r
 
 ## Scrolling and performance
 
-The page uses native browser scrolling and smooth section links over the fixed decorative blue background, which stays visibly blue behind the lighter content surfaces. A thin red reading-progress bar uses only a native CSS scroll timeline and `transform: scaleX()` on one small element. The country stamps receive a short, one-time IntersectionObserver entrance and restrained fine-pointer colour hover; they remain visible without JavaScript, and reduced motion disables these transitions. There is no JavaScript scroll-position animation, per-frame polling, moving star/trail, hero parallax or animation library. Browsers without scroll-timeline support and reduced-motion users receive a static design without the progress effect.
+The page uses native browser scrolling and smooth section links over the fixed decorative blue background, which stays visibly blue behind the lighter content surfaces. A thin red reading-progress bar uses only a native CSS scroll timeline and `transform: scaleX()` on one small element. Section headings, selected content groups and list entries receive consistent one-time IntersectionObserver fades/rises, adapted from the earlier reveal implementation. Headings rise about 18px, content slightly less, with roughly 450–650ms easing and short capped group staggers; mobile uses lighter travel. Nested parent/child reveals are avoided. Content is visible by default, navigation/focus remains immediate, and reduced motion disables the entrances. Stamp artwork retains restrained fine-pointer colour hover. There is no JavaScript scroll-position animation, per-frame polling, moving star/trail, hero parallax or animation library. Browsers without scroll-timeline support omit the progress bar. Reduced-motion users receive static entrances and instant anchor navigation.
 
 Actual browser reloads return to the introduction and remove an old section fragment. Fresh incoming section links and normal anchor/back navigation still work. This resets scroll position, not the browser cache. Reduced-motion preferences disable smooth anchor scrolling.
 
 Browser regression suites check responsive layouts, progress at several scroll positions, keyboard navigation, local PDF/favicon assets, reload behavior and the absence of expensive decorative effects. Screenshots stay outside the repository. Cloud Chromium validation does not guarantee a particular frame rate on every device.
+
+Reveal lifecycle regression (using the same local-server helper):
+
+```sh
+python3 .agents/skills/webapp-testing/scripts/with_server.py --server "python3 -m http.server 8782 --bind 127.0.0.1" --port 8782 -- python3 tests/section_reveals.py --url http://127.0.0.1:8782 --artifacts /tmp/portfolio-reveals
+```
+
+The implementation adapts commit `5525453`’s observer/unobserve pattern; its old background scroll handler is excluded. This check exercises full-page down/up motion, one-time completion, layout stability, anchor/focus access and failure/reduced-motion fallbacks.
