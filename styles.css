@@ -79,12 +79,12 @@ nav a:not(.nav-contact):is(:hover,:focus-visible) { color: var(--accent-ink); }
 .stamp-cell { width: 100%; max-width: 150px; margin: 0; padding: 0; }
 .stamp-cell+li { margin-top: 0; }
 .passport-stamp { display: block; width: 100%; height: auto; overflow: visible; transform: rotate(var(--stamp-angle,-2deg)); }
-.passport-stamp text { font: 600 24px/1 var(--sans); letter-spacing: -.4px; }
-.stamp-blue { color: #07557e; }.stamp-red { color: var(--accent-ink); }
+.passport-stamp text { fill: var(--ink); font: 600 24px/1 var(--sans); letter-spacing: -.4px; }
+.stamp-at { color: #ed2939; }.stamp-ro { color: #002b7f; }.stamp-gr { color: #0d5eaf; }.stamp-cl { color: #0039a6; }.stamp-sg { color: #ed2939; }.stamp-it { color: #008c45; }
 .stamp-cell:nth-child(2) { --stamp-angle: 3deg; }.stamp-cell:nth-child(3) { --stamp-angle: -1deg; }.stamp-cell:nth-child(4) { --stamp-angle: 2deg; }.stamp-cell:nth-child(5) { --stamp-angle: -3deg; }.stamp-cell:nth-child(6) { --stamp-angle: 1deg; }
 .stamps-entered .stamp-cell { animation: stamp-arrive 300ms ease-out backwards; animation-delay: var(--stamp-delay,0ms); }
 @keyframes stamp-arrive { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-@media(hover:hover) and (pointer:fine) { .stamp-border { transition: stroke 160ms ease; }.passport-stamp:hover .stamp-border { stroke: var(--accent); } }
+@media(hover:hover) and (pointer:fine) { .stamp-border { transition: stroke 160ms ease; }.passport-stamp:hover .stamp-border { stroke: color-mix(in srgb,currentColor 80%,var(--ink) 20%); } }
 .about-story { padding: var(--surface-pad); background: var(--surface); border: var(--surface-border); border-radius: var(--radius); }
 .prose { color: var(--muted); font-size: 15px; line-height: 1.9; }
 .prose p+p { margin-top: 20px; }
