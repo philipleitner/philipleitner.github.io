@@ -24,12 +24,12 @@ h3 { font: var(--entry-title)/1.2 var(--serif); letter-spacing: -.6px; }
 section[id],article[id] { scroll-margin-top: 22px; }
 .icon { width: 19px; height: 19px; flex-shrink: 0; vertical-align: middle; }
 /* Static colour architecture; no filters or animated decorative layers. */
-.site-background { position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; background: linear-gradient(155deg, #0099ff 0%, #8bd4ff 34%, #edf8ff 63%, #fdfdfe 84%); }
+.site-background { position: fixed; inset: 0; overflow: hidden; z-index: -1; pointer-events: none; background: linear-gradient(155deg, #0099ff 0%, #79cdff 34%, #b6dfff 65%, #cce9fc 100%); }
 .background-drift { position: absolute; inset: -150px -8%; }
 .background-shape { position: absolute; border-radius: 50%; }
-.shape-one { top: 6%; right: -5%; width: 55vw; height: 65vh; background: radial-gradient(ellipse, #fdfdfe9c 0%, #fdfdfe55 35%, transparent 72%); }
+.shape-one { top: 6%; right: -5%; width: 55vw; height: 65vh; background: radial-gradient(ellipse, #a3daff99 0%, #a3daff44 35%, transparent 72%); }
 .shape-two { top: 42%; left: -12%; width: 60vw; height: 65vh; background: radial-gradient(ellipse, #0099ff7a 0%, #0099ff35 35%, transparent 72%); }
-.shape-three { bottom: -5%; right: -5%; width: 50vw; height: 48vh; background: radial-gradient(ellipse, #b5e5ffcf 0%, #b5e5ff66 35%, transparent 72%); }
+.shape-three { bottom: -5%; right: -5%; width: 50vw; height: 48vh; background: radial-gradient(ellipse, #9bd8ffb3 0%, #9bd8ff55 35%, transparent 72%); }
 .background-orbit { position: absolute; border: 1px solid #fdfdfeb3; border-radius: 50%; }
 .orbit-large { width: 1000px; height: 1000px; top: -130px; right: -260px; box-shadow: none; }
 .orbit-small { width: 630px; height: 630px; left: -280px; bottom: 80px; border-color: #0085d549; }
