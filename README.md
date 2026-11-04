@@ -17,6 +17,7 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 - `index.html`: biography, projects, experience, education, certifications, interests, contact details, and navigation.
 - `styles.css`: colors in `:root`, typography, layouts, mobile breakpoints, reduced-motion preferences, and subtle introductory animation.
 - `script.js`: accessible mobile navigation, Escape handling, and active-section tracking. Content and navigation remain visible without JavaScript; CSS handles smooth anchor navigation and reduced-motion preferences.
+- `assets/background-field.svg`: lightweight static curves, arcs, dots and waves behind the blue gradient; no filters or embedded animation.
 - `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
 - `assets/philip-leitner-cv.pdf`: the supplied public-safe original PDF, copied byte-for-byte to preserve layout and fonts. The earlier private CV is not included.
 
@@ -57,9 +58,9 @@ Credential buttons use the exact individual Bloomberg and Forage URLs supplied b
 
 ## Design and content structure
 
-Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black ink and orange-red (`#FF2B06`) form the shared palette. The layout uses a compact identity introduction, one featured research composition, compact past projects and aligned experience/leadership/credential entries. Cloudy-white grouped surfaces, light-blue borders and shared padding separate detailed content from the gradient without making every row a separate card. Shared typography, spacing, surface and action tokens live in `styles.css`.
+Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black ink and orange-red (`#FF2B06`) form the shared palette. The layout uses a compact identity introduction, one featured research composition, compact past projects and aligned experience/leadership/credential entries. Cloudy-white grouped surfaces, fine blue borders, selected red edge details and shared padding separate detailed content from the background without making every row a separate card. Dark-red titles and red credential/link details establish the accent hierarchy. Shared typography, spacing, surface and action tokens live in `styles.css`.
 
-All content stays in normal document flow. The restored full-viewport sky-to-powder-blue gradient is fixed behind the naturally scrolling content, with static radial-gradient forms and circular outlines. It uses no blur filters or background animation. There are no moving stars, overlapping panels, backdrop filters or large blur filters. The PL logo/favicon identity, safe original PDF and supplied credential URLs remain intact. Unavailable reports, models and reading-list links remain non-clickable coming-soon text.
+All content stays in normal document flow. The restored full-viewport sky-to-powder-blue gradient is fixed behind the naturally scrolling content, with static blue glows, fine flowing curves, circular outlines and a restrained dotted texture. It uses no blur filters or background animation. There are no moving stars, overlapping panels, backdrop filters or large blur filters. The PL logo/favicon identity, safe original PDF and supplied credential URLs remain intact. Unavailable reports, models and reading-list links remain non-clickable coming-soon text.
 
 The recoverable interests remain Varsity football, Weightlifting, Poker and Reading: Finance & Philosophy. Do not invent a fifth interest.
 

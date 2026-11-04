@@ -43,7 +43,7 @@ with sync_playwright() as p:
         assert abs(width - action['x'] - action['width'] - width * .04) <= 1, f'Navigation is not right aligned at {width}'
     assert page.locator('.project-card').evaluate('(e)=>getComputedStyle(e).display') == 'grid'
     assert page.locator('.project-content h3').evaluate('(e)=>getComputedStyle(e).color') == 'rgb(169, 35, 11)'
-    assert page.locator('.past-project-title h3').first.evaluate('(e)=>getComputedStyle(e).color') == 'rgb(104, 27, 11)'
+    assert page.locator('.past-project-title h3').first.evaluate('(e)=>getComputedStyle(e).color') == 'rgb(169, 35, 11)'
     assert page.locator('.credential-date').count() == 0
     assert 'Completion date not provided' not in page.locator('body').inner_text()
     assert page.locator('.site-background').evaluate('(e)=>getComputedStyle(e).position') == 'fixed'
@@ -84,6 +84,8 @@ with sync_playwright() as p:
     pdf = page.request.get(args.url + '/assets/philip-leitner-cv.pdf')
     assert pdf.status == 200 and pdf.body().startswith(b'%PDF')
     assert page.request.get(args.url + '/assets/favicon.svg').status == 200
+    field=page.request.get(args.url + '/assets/background-field.svg')
+    assert field.status == 200 and b'<svg' in field.body()
     for selector in ['.button', '.credential-link', '.contact-link']:
         link = page.locator(selector).first
         link.hover()

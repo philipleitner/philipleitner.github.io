@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1000" viewBox="0 0 1440 1000" fill="none">
+  <defs><pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".7" fill="#1474a8"/></pattern><linearGradient id="wave" x1="0" y1="780" x2="0" y2="1000" gradientUnits="userSpaceOnUse"><stop stop-color="#1889d0" stop-opacity=".10"/><stop offset="1" stop-color="#8cc9ef" stop-opacity=".02"/></linearGradient></defs>
+  <rect x="24" y="24" width="600" height="380" fill="url(#dots)" opacity=".18"/>
+  <g stroke="#287fae" stroke-width=".8" opacity=".23">
+    <path d="M-160 900C250 810 540 580 860 355S1290 50 1590 20"/>
+    <path d="M-160 921C240 830 545 598 870 372S1300 69 1590 39"/>
+    <path d="M-140 990C280 789 660 733 1070 727S1390 753 1560 792"/>
+  </g>
+  <g stroke="#217dad" stroke-width=".8" opacity=".20"><circle cx="1160" cy="130" r="180"/><circle cx="1160" cy="130" r="255"/><circle cx="1160" cy="130" r="330"/><circle cx="1160" cy="130" r="405"/></g>
+  <path d="M-60 825C210 797 385 912 663 859S1100 774 1500 857V1000H-60Z" fill="url(#wave)"/>
+  <path d="M-60 867C250 829 385 950 700 889S1170 829 1500 899V1000H-60Z" fill="#69b8e9" opacity=".08"/>
+</svg>

@@ -1,0 +1,13 @@
+# Blue reference-inspired background and stronger red accents
+
+User supplies screenshot: pale atmospheric field, soft colouredglow, fine flowing curves/diagonals, large concentric arcs and faint dottedtexture, gentle layeredwave nearbottom; requests blue interpretation plus more red onboxes/text/details. Use screenshot as visualinspiration, no Ferraria branding/assets/text. Do not reintroduce movingstars/shapes (previouslag), heavyweightblur/backdropfilter, JSscroll loop, new animation/dependencies. Existing lightweightredreadingbar remainsonlyscroll animation.
+
+Build coherent staticfullviewport background using pale but visiblyblue base (whitepanelsmuststandout), restrained blue radialglows, lightweight SVG curves/arcs/dottedtexture with fewpaths/smallasset, maybe subtlebluewave. Current saturatedlinear wash alone insufficient to matchref. Prefer one local decorativeSVG asset +gradient CSS, pointer-inert. No hugerepeatingcomplexlayers. Mobile simplified but stilldesigned. Keep existing content/layout/panels/plainHTML setup and normalflow. No whitewashout or cream.
+
+Red needs visible intentional hierarchy beyondtinyicons: shared panelborder/shorttoporleft redaccent treatments, selected actualtitle/employer emphasis in accessible darkred, projecttitles/status, credentialmarkers/actions, linkunderlines. Keep blue/white dominant, bodycopydarkink; not everyborder fullyred. Make Work/Leadership/Cert panels feelcoherent, featuredresearch onlylargeproject, pastrowscompact. No noninteractivehover/pointer. Use sharedaccenttokens andmodifyexistingrules notnewoverridepile. Redtext onwhite highcontrast, no lightredsmalltextoverblue.
+
+Preserve text/hrefs/CV/favicon byteexact. Root docs+brief, builder source/test. Read existingdesign/motion/browser skills. Browserreview top/middle/bottom desktop/mobile and intermediates; verifyprogress/nav/keyboard/PDF/favicon/subpath/reduced/noJS/nooverflow/nofilters/noextraanimation. Add focusedbackgroundasset check if useful, no pointless tests. Screenshots intro/work/projects/certs desktopmobile. No prolongedprofiling. No commit/push.
+
+## Coordinator review
+
+Reviewed desktopintro/work and mobilecertification screenshots. Bluefield now contains flowingdiagonals, concentricarcs, dots and restrainedwaves; redrails anddarkredemployerheads are visibly stronger. SVGabout1.2KB, nofilter/embeddedanimation. Independentbrowsercheck passed exactvisiblecopy/hreforder/CV/favicon, progress5offsets/onlybaranimation, absentstar/JSscrolllistener/filters, normalflow/mobileoverflow, anchors/menu and actualreload. RelativeCSSasset path retained forPages. No brandingorcontent copied fromreference.
