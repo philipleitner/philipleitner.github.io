@@ -18,6 +18,7 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 - `styles.css`: colors in `:root`, typography, layouts, mobile breakpoints, reduced-motion preferences, and subtle introductory animation.
 - `script.js`: accessible mobile navigation, Escape handling, and active-section tracking. Content and navigation remain visible without JavaScript; CSS handles smooth anchor navigation and reduced-motion preferences.
 - `assets/philip-leitner-portrait.webp`: the supplied portrait with subtle photographic retouch, encoded as a lightweight1254px WebP; used only in the introduction. Keep its descriptive alt text and explicit dimensions when replacing it.
+- `assets/flags/`: six local public-domain country flag SVGs; attribution and source details in `SOURCE.md`.
 - `assets/background-field.svg`: lightweight static curves, arcs, dots and waves behind the blue gradient; no filters or embedded animation.
 - `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
 - `assets/philip-leitner-cv.pdf`: the supplied public-safe original PDF, copied byte-for-byte to preserve layout and fonts. The earlier private CV is not included.
@@ -61,7 +62,7 @@ Credential buttons use the exact individual Bloomberg and Forage URLs supplied b
 
 Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black ink and orange-red (`#FF2B06`) form the shared palette. The layout uses a compact identity introduction, one featured research composition, compact past projects and aligned experience/leadership/credential entries. Cloudy-white grouped surfaces, fine blue borders, selected red edge details and shared padding separate detailed content from the background without making every row a separate card. Dark-red titles and red credential/link details establish the accent hierarchy. Shared typography, spacing, surface and action tokens live in `styles.css`.
 
-The About section pairs “A little about me.” and a static country constellation with one biography/education panel. The six countries are personal home locations, displayed without dates or a travel sequence; the illustration is not a geographic map. The Bocconi degree has a full-width row above the IB and language details.
+The About section puts “A little about me.” above two aligned panels: six named countries with local flag images, and the unchanged biography with education details. Countries are shown without dates or a travel sequence. University, IB result and languages share one equally styled desktop row, with a responsive arrangement on mobile.
 
 All content stays in normal document flow. The restored full-viewport sky-to-powder-blue gradient is fixed behind the naturally scrolling content, with static blue glows, fine flowing curves, circular outlines and a restrained dotted texture. It uses no blur filters or background animation. There are no moving stars, overlapping panels, backdrop filters or large blur filters. The PL logo/favicon identity, safe original PDF and supplied credential URLs remain intact. Unavailable reports, models and reading-list links remain non-clickable coming-soon text.
 

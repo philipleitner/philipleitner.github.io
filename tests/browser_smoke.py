@@ -121,6 +121,9 @@ with sync_playwright() as p:
     assert page.evaluate("async () => (await fetch(document.querySelector('.hero-links a').href)).status") == 200
     assert page.evaluate("async () => (await fetch(document.querySelector('link[rel=icon]').href)).status") == 200
     assert page.evaluate("async () => (await fetch(document.querySelector('.hero-portrait img').src)).status") == 200
+    assert page.evaluate("async()=>Promise.all([...document.querySelectorAll('.country-flag')].map(async e=>(await fetch(e.src)).status)).then(statuses=>statuses.length===6 && statuses.every(s=>s===200))")
+    page.wait_for_load_state('networkidle')
+    page.unroute_all(behavior='wait')
     assert not errors, errors
     assert not failed_assets, failed_assets
     browser.close()
