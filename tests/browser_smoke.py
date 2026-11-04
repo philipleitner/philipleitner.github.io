@@ -24,6 +24,9 @@ with sync_playwright() as p:
     page.wait_for_load_state('networkidle')
     assert page.locator('.journey-star,.star-layer,.journey-ribbon').count() == 0
     assert page.locator('.orbital-decoration,.orbital-spark').count() == 0
+    assert page.locator('.hero-portrait img').count() == 1
+    assert page.locator('.hero-portrait img').get_attribute('alt') == 'Philip Leitner'
+    assert page.locator('.hero-portrait img').evaluate('(e)=>e.complete && e.naturalWidth>0')
     assert page.locator('.project-card').count() == 1
     assert page.locator('.project-card .badge').inner_text() == 'In progress'
     assert page.locator('.credential-link').count() == 2
@@ -69,7 +72,7 @@ with sync_playwright() as p:
             page.wait_for_timeout(150)
             page.screenshot(path=str(artifacts / f'{name}-{suffix}.png'))
             page.locator('#'+section).screenshot(path=str(artifacts/f'{name}-{suffix}-section.png'))
-    assert page.locator('.art-monogram').evaluate('(e)=>getComputedStyle(e).animationName') == 'none'
+    assert page.locator('.hero-portrait img').evaluate('(e)=>getComputedStyle(e).animationName') == 'none'
     page.get_by_role('button', name='Menu').click()
     page.locator('nav a[href="#training"]').click()
     page.wait_for_timeout(900)
@@ -103,7 +106,7 @@ with sync_playwright() as p:
     page.emulate_media(reduced_motion='reduce')
     page.set_viewport_size({'width': 1440, 'height': 900})
     assert not page.locator('.reading-progress').is_visible()
-    assert page.locator('.art-monogram').evaluate('(e)=>getComputedStyle(e).animationName') == 'none'
+    assert page.locator('.hero-portrait img').evaluate('(e)=>getComputedStyle(e).animationName') == 'none'
     assert page.locator('html').evaluate('(e)=>getComputedStyle(e).scrollBehavior') == 'auto'
     plain = browser.new_context(java_script_enabled=False, viewport={'width': 390, 'height': 844})
     plain_page = plain.new_page()
@@ -117,6 +120,7 @@ with sync_playwright() as p:
     page.goto(args.url + '/portfolio/')
     assert page.evaluate("async () => (await fetch(document.querySelector('.hero-links a').href)).status") == 200
     assert page.evaluate("async () => (await fetch(document.querySelector('link[rel=icon]').href)).status") == 200
+    assert page.evaluate("async () => (await fetch(document.querySelector('.hero-portrait img').src)).status") == 200
     assert not errors, errors
     assert not failed_assets, failed_assets
     browser.close()

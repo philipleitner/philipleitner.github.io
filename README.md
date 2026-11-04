@@ -17,6 +17,7 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 - `index.html`: biography, projects, experience, education, certifications, interests, contact details, and navigation.
 - `styles.css`: colors in `:root`, typography, layouts, mobile breakpoints, reduced-motion preferences, and subtle introductory animation.
 - `script.js`: accessible mobile navigation, Escape handling, and active-section tracking. Content and navigation remain visible without JavaScript; CSS handles smooth anchor navigation and reduced-motion preferences.
+- `assets/philip-leitner-portrait.webp`: the supplied portrait with subtle photographic retouch, encoded as a lightweight1254px WebP; used only in the introduction. Keep its descriptive alt text and explicit dimensions when replacing it.
 - `assets/background-field.svg`: lightweight static curves, arcs, dots and waves behind the blue gradient; no filters or embedded animation.
 - `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
 - `assets/philip-leitner-cv.pdf`: the supplied public-safe original PDF, copied byte-for-byte to preserve layout and fonts. The earlier private CV is not included.
