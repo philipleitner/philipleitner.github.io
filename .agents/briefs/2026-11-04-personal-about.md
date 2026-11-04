@@ -1,0 +1,15 @@
+# Personal About section
+
+User requests designed About section, all other sections preserved. Heading exact “A little about me.”; navigation stays About. Existing three biography paragraphs unchanged. Hero intro remains unchanged.
+
+Use space beneath heading for personal visual of six countries: Austria, Romania, Greece, Chile, Singapore, Italy. Caption exact “Places I’ve called home.” All country names visible, no dates/cities/order/arrows implying chronology. Recommend lightweight illustrated constellation of six small accurate/simplified country outlines in balanced grid with soft curved blue connections; use geographic map ONLY with accurate geographic positions. Alternative accurately projected small world map if dependable asset. Do not invent country shapes; use recognisable accurate geometry from reliable existing geography source if obtainable. A thoughtful typographic country arrangement with decorative connections is preferable to wrong map/outlines. It can avoid geographic claims and chronological implication. Make personal, visually rich but readable, blue details/red selected markers; not a plain list. Shared palette, no movingstar/filters or recurringanimation. SVG sharp responsive; semantic figcaption/list labels, no hover-only names. Mobile compact readable arrangement.
+
+Education: replace BSc · Class of2029 with exact degree “BSc in International Economics and Finance”, then “Bocconi University” and “Class of 2029” beneath. Give degree a genuinely wider area; retain IB44/45 and English & German Nativeproficiency. Balanced left heading+countries and right biography+education, or integratededucationband; avoid disconnectedboxstack. Use shared styles and current panels, reduce unnecessary segmentation. Only #about HTML/CSS and targetedtests; root docs/brief. No other sections/links/assets changes.
+
+Inspect desktop1440/1024 and mobile390/320, country labels all visible/nonclipped, no geography errors, degree wraps cleanly, nooverflow/overlap/headeroffset. Baseline as appropriate, no fullreload suite unlessneeded. Capture About section at desktop/mobile. Preserve biography exact and hrefs/CV/favicon. No commit/push; root review publishes.
+
+## Review
+
+Chose a non-geographic country constellation with six visible names, secondary ISO monograms and static curved SVG field, avoiding inaccurate map/outlines or a travel sequence. Right-hand biography and education share one surface; degree spans full width above IB/languages. Heading kept balanced with ordinary-space inline grouping.
+
+Builder baseline passed at10widths plus targeted About checks at1440/1024/768/390/320, reduced motion/no-JS/navigation/assets/progress. Root independently verified exact biography and all outside-About HTML/asset bytes preserved; heading/caption/degree/countries present; all six labels visible, nonoverlapping and >=12px at1440/1024/390/320; no overflow or extra animations. Desktop and mobile screenshots inspected. Whitespace check passed. Only current native reading bar animates.

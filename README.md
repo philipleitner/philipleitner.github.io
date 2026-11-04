@@ -61,6 +61,8 @@ Credential buttons use the exact individual Bloomberg and Forage URLs supplied b
 
 Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black ink and orange-red (`#FF2B06`) form the shared palette. The layout uses a compact identity introduction, one featured research composition, compact past projects and aligned experience/leadership/credential entries. Cloudy-white grouped surfaces, fine blue borders, selected red edge details and shared padding separate detailed content from the background without making every row a separate card. Dark-red titles and red credential/link details establish the accent hierarchy. Shared typography, spacing, surface and action tokens live in `styles.css`.
 
+The About section pairs “A little about me.” and a static country constellation with one biography/education panel. The six countries are personal home locations, displayed without dates or a travel sequence; the illustration is not a geographic map. The Bocconi degree has a full-width row above the IB and language details.
+
 All content stays in normal document flow. The restored full-viewport sky-to-powder-blue gradient is fixed behind the naturally scrolling content, with static blue glows, fine flowing curves, circular outlines and a restrained dotted texture. It uses no blur filters or background animation. There are no moving stars, overlapping panels, backdrop filters or large blur filters. The PL logo/favicon identity, safe original PDF and supplied credential URLs remain intact. Unavailable reports, models and reading-list links remain non-clickable coming-soon text.
 
 The recoverable interests remain Varsity football, Weightlifting, Poker and Reading: Finance & Philosophy. Do not invent a fifth interest.
