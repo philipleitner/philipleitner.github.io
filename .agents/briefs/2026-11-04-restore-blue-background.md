@@ -1,0 +1,9 @@
+# Restore blue background and remove absent certificate dates
+
+Restore the earlier beautiful full-viewport sky-blue to cloudy-white gradient from history (preoverhaul13bec05/08ce0ed) with soft radial-gradient forms and circular outlines. Keep recent layout/typography and red progressbar/smooth native anchors. Interpret 'nice scrolling animation' as content scrolling over fixed decorative background plus existing readingbar; do NOT reintroduce star, moving decorations, CSSblur/backdropfilters, JSscroll handlers or parallax. State this in report. Keep background visible throughout page with clear readable text: adjust mutedtext/navsectionlabel blues darker if needed to maintain contrast over most saturatedblue. Do not turn everysection into opaquecard. Mobile use cheap static gradient iffixedlayers problematic.
+
+Remove both Completion date not provided paragraphs and orphan credential-dateCSS. Do not inventdates. Preserve credentialhrefs/CV/favicon/content outside thisremoval. Root owns docs; builder source/testing. Test baseline and affected reload suite, desktop/mobile screenshots introduction and middle/certifications, native progress correct and only animation, normalflow/noclip and keyboard/links. Add useful absence checks. No commit/push.
+
+## Coordinator review
+
+Independent Chromium checks passed: exact prior visible text minus only the two requested date labels; href ordering and CV/favicon bytes unchanged; fullviewport fixed background restored; progress accuracy at five offsets and no extra scroll animation/listener/filter; reload, anchor/menu navigation and responsive flow. Desktop introduction inspected, blue gradient visibly restored. Small uncovered text colours darkened for contrast on saturated blue; no additional content rewrite. Native smooth anchors/progress retained, not star or heavy parallax.

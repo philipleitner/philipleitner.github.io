@@ -52,14 +52,14 @@ Repository ownership determines the Pages URL; use GitHub's displayed URL rather
 
 The View CV button opens `./assets/philip-leitner-cv.pdf` in a new tab. The footer download was removed as requested; the original PDF remains accessible from View CV and can be saved using the browser’s PDF controls. The current PDF is the public-safe original supplied by Philip, preserved byte-for-byte. Future replacements must also omit private details; copy the original PDF rather than regenerating it.
 
-Credential buttons use the exact individual Bloomberg and Forage URLs supplied by Philip. Update the corresponding `credential-link` anchors in `index.html` if credentials are reissued. These external services may restrict automated access.
+Credential buttons use the exact individual Bloomberg and Forage URLs supplied by Philip. No missing-completion-date labels are displayed; visitors can open the original credentials for details. Update the corresponding `credential-link` anchors in `index.html` if credentials are reissued. These external services may restrict automated access.
 
 
 ## Design and content structure
 
 Sky Blue (`#0099FF`), Cloudy White (`#FDFDFE`), near-black ink and orange-red (`#FF2B06`) form the shared palette. The layout uses a compact identity introduction, one featured research composition, compact past projects and aligned experience/leadership/credential entries. Shared typography, spacing, surface and action tokens live in `styles.css`.
 
-All content stays in normal document flow. The decorative background is static. There are no moving stars, overlapping panels, backdrop filters or large blur filters. The PL logo/favicon identity, safe original PDF and supplied credential URLs remain intact. Unavailable reports, models and reading-list links remain non-clickable coming-soon text.
+All content stays in normal document flow. The restored full-viewport blue-to-white gradient is fixed behind the naturally scrolling content, with static radial-gradient forms and circular outlines. It uses no blur filters or background animation. There are no moving stars, overlapping panels, backdrop filters or large blur filters. The PL logo/favicon identity, safe original PDF and supplied credential URLs remain intact. Unavailable reports, models and reading-list links remain non-clickable coming-soon text.
 
 The recoverable interests remain Varsity football, Weightlifting, Poker and Reading: Finance & Philosophy. Do not invent a fifth interest.
 
@@ -86,7 +86,7 @@ Role instructions are saved in `.agents/roles/briefing-review.md` and `.agents/r
 
 ## Scrolling and performance
 
-The page uses native browser scrolling and smooth section links. A thin red reading-progress bar uses only a native CSS scroll timeline and `transform: scaleX()` on one small element. There is no JavaScript scroll-position animation, per-frame polling, moving star/trail, hero parallax or animation library. Browsers without scroll-timeline support and reduced-motion users receive a static design without the progress effect.
+The page uses native browser scrolling and smooth section links over the fixed decorative blue background. A thin red reading-progress bar uses only a native CSS scroll timeline and `transform: scaleX()` on one small element. There is no JavaScript scroll-position animation, per-frame polling, moving star/trail, hero parallax or animation library. Browsers without scroll-timeline support and reduced-motion users receive a static design without the progress effect.
 
 Actual browser reloads return to the introduction and remove an old section fragment. Fresh incoming section links and normal anchor/back navigation still work. This resets scroll position, not the browser cache. Reduced-motion preferences disable smooth anchor scrolling.
 

@@ -42,8 +42,11 @@ with sync_playwright() as p:
         assert abs(logo['x'] - width * .04) <= 1, f'Unexpected logo inset at {width}'
         assert abs(width - action['x'] - action['width'] - width * .04) <= 1, f'Navigation is not right aligned at {width}'
     assert page.locator('.project-card').evaluate('(e)=>getComputedStyle(e).display') == 'grid'
-    for selector in ['.project-content h3','.past-project-title h3']:
-        assert page.locator(selector).first.evaluate('(e)=>getComputedStyle(e).color') == 'rgb(169, 35, 11)'
+    assert page.locator('.project-content h3').evaluate('(e)=>getComputedStyle(e).color') == 'rgb(169, 35, 11)'
+    assert page.locator('.past-project-title h3').first.evaluate('(e)=>getComputedStyle(e).color') == 'rgb(104, 27, 11)'
+    assert page.locator('.credential-date').count() == 0
+    assert 'Completion date not provided' not in page.locator('body').inner_text()
+    assert page.locator('.site-background').evaluate('(e)=>getComputedStyle(e).position') == 'fixed'
     assert page.locator('.credential-list').evaluate('(e)=>getComputedStyle(e).backgroundColor') == 'rgb(238, 248, 255)'
     page.set_viewport_size({'width':1440,'height':900})
     supported=page.evaluate("CSS.supports('animation-timeline: scroll()')")
