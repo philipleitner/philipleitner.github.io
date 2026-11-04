@@ -41,4 +41,4 @@ with sync_playwright() as p:
   context.close()
  page=b.new_page(viewport={'width':390,'height':900});page.goto(a.url);page.wait_for_load_state('networkidle');page.evaluate('scrollTo({top:document.querySelector("#experience").offsetTop-400,behavior:"instant"})');page.wait_for_timeout(50);page.emulate_media(reduced_motion='reduce');page.wait_for_timeout(50);assert page.locator('.reveal-pending,.reveal-entering').count()==0
  b.close()
-print('PASS: full down/up, completed transitions/no replay/layoutshift,320overflow, noJS/reduced/IO/setup/silent/mainJS/cleanupfailure safety.')
+print('PASS: full down/up, completed transitions/upward visibility/layoutshift,320overflow, noJS/reduced/IO/setup/silent/mainJS/cleanupfailure safety.')

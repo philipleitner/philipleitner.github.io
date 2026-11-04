@@ -82,21 +82,32 @@ const initialReveals = new Set();
 const revealTimers = new WeakMap();
 let revealObserver;
 let revealHeight = innerHeight;
-function finishReveal(element) {
+let revealDirection = 1;
+let revealLastY = scrollY;
+let revealScrollFrame = 0;
+let revealEnabled = false;
+function finishReveal(element, preparedTransitions = null) {
   revealed.add(element);
   initialReveals.delete(element);
-  revealObserver?.unobserve?.(element);
+  const entering = activeReveals.has(element);
+  if (!entering && !element.classList.contains('reveal-pending')) return;
+  const transitions = entering ? (preparedTransitions || element.getAnimations()).filter(animation =>
+    animation.transitionProperty === 'opacity' || animation.transitionProperty === 'transform') : [];
   element.removeEventListener('transitionend', revealEnded);
   element.removeEventListener('transitioncancel', revealEnded);
   clearTimeout(revealTimers.get(element));
   element.classList.remove('reveal-pending','reveal-entering');
+  // A transition can retain its sampled value briefly after class removal.
+  // Explicitly cancel only our two reveal properties for immediate upward/focus safety.
+  transitions.forEach(animation => animation.cancel());
   activeReveals.delete(element);
 }
 function revealEnded(event) {
   if (event.target === event.currentTarget && event.propertyName === 'opacity') finishReveal(event.currentTarget);
 }
 function resetReveals() {
-  revealTargets.forEach(finishReveal);
+  revealEnabled = false;
+  revealTargets.forEach(element => finishReveal(element));
   revealObserver?.disconnect?.();
 }
 function enterReveal(element) {
@@ -104,7 +115,6 @@ function enterReveal(element) {
   if (revealMotion.matches || element.contains(document.activeElement)) { finishReveal(element); return; }
   revealed.add(element);
   initialReveals.delete(element);
-  revealObserver?.unobserve?.(element);
   activeReveals.add(element);
   element.addEventListener('transitionend', revealEnded);
   element.addEventListener('transitioncancel', revealEnded);
@@ -118,7 +128,7 @@ function connectRevealObserver() {
     responded = true;
     try { entries.forEach(entry => {
       if (!entry.isIntersecting || revealed.has(entry.target)) return;
-      if (entry.boundingClientRect.top < innerHeight*.5 && !initialReveals.has(entry.target)) finishReveal(entry.target);
+      if (revealDirection < 0 || (entry.boundingClientRect.top < innerHeight*.5 && !initialReveals.has(entry.target))) finishReveal(entry.target);
       else enterReveal(entry.target);
     }); }
     catch { resetReveals(); }
@@ -152,6 +162,7 @@ if (typeof window.IntersectionObserver === 'function' && !revealMotion.matches) 
     const early = typeof PerformanceObserver === 'function' &&
       PerformanceObserver.supportedEntryTypes?.includes('paint') &&
       performance.getEntriesByType('paint').length === 0;
+    revealEnabled = true;
     const positions = revealTargets.map(element => ({element,rect:element.getBoundingClientRect()}));
     const initial = [];
     positions.forEach(({element,rect}) => {
@@ -199,7 +210,37 @@ window.addEventListener('resize', () => {
       revealHeight=innerHeight;
       revealObserver.disconnect();
       revealObserver=connectRevealObserver();
-      revealTargets.forEach(element => { if (!revealed.has(element)) revealObserver.observe(element); });
+      revealTargets.forEach(element => revealObserver.observe(element));
     } catch { resetReveals(); }
   },150);
 });
+
+// Direction changes need geometry, not animation interpolation. One passive
+// event schedules one finite read/write batch; idle pages do no work.
+window.addEventListener('scroll', () => {
+  const nextY = scrollY;
+  if (nextY !== revealLastY) revealDirection = nextY > revealLastY ? 1 : -1;
+  revealLastY = nextY;
+  if (!revealEnabled || revealMotion.matches || revealScrollFrame) return;
+  revealScrollFrame = requestAnimationFrame(() => {
+    revealScrollFrame = 0;
+    if (!revealEnabled || revealMotion.matches) return;
+    try {
+      const positions = revealTargets.map(element => ({element,rect:element.getBoundingClientRect(),transitions:activeReveals.has(element)?element.getAnimations():[]}));
+      positions.forEach(({element,rect,transitions}) => {
+        if (element.contains(document.activeElement)) { finishReveal(element,transitions); return; }
+        // Include the full 20px travel as a conservative safety margin: even
+        // a translated target must be wholly below the actual viewport.
+        if (rect.top >= innerHeight + 20) {
+          if (!element.classList.contains('reveal-pending')) {
+            finishReveal(element,transitions);
+            revealed.delete(element);
+            element.classList.add('reveal-pending');
+          }
+        } else if (rect.bottom <= 0 || (revealDirection < 0 && rect.top < innerHeight && rect.bottom > 0)) {
+          finishReveal(element,transitions);
+        }
+      });
+    } catch { resetReveals(); }
+  });
+}, {passive:true});
