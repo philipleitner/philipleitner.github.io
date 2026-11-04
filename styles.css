@@ -202,13 +202,9 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
 }
 @media(prefers-reduced-motion:reduce) { html { scroll-behavior: auto; }*,*::before,*::after { animation: none!important;transition: none!important; } }
 
-/* Default-visible content; JS prepares only genuinely offscreen targets after
-   successful observer installation. Pending and entrance values match exactly. */
-:root { --reveal-travel: 14px; --reveal-heading-travel: 18px; --reveal-row-travel: 12px; --reveal-duration: 680ms; --reveal-heading-duration: 620ms; --reveal-row-duration: 560ms; --reveal-stagger: 45ms; --reveal-delay-cap: 135ms; --reveal-ease: cubic-bezier(.22,.61,.36,1); }
-.reveal-heading { --reveal-travel: var(--reveal-heading-travel); --reveal-duration: var(--reveal-heading-duration); }
-.reveal-row { --reveal-travel: var(--reveal-row-travel); --reveal-duration: var(--reveal-row-duration); }
-.reveal-pending { opacity: .22; transform: translateY(var(--reveal-travel)); }
-.reveal-once { animation: gentle-reveal var(--reveal-duration) var(--reveal-ease) backwards; animation-delay: min(calc(var(--reveal-order,0) * var(--reveal-stagger)),var(--reveal-delay-cap)); }
-@keyframes gentle-reveal { from { opacity: .22; transform: translateY(var(--reveal-travel)); } to { opacity: 1; transform: translateY(0); } }
-@media(max-width:600px) { :root { --reveal-travel: 10px; --reveal-heading-travel: 10px; --reveal-row-travel: 10px; --reveal-duration: 500ms; --reveal-heading-duration: 500ms; --reveal-row-duration: 460ms; --reveal-stagger: 35ms; --reveal-delay-cap: 105ms; } }
-@media(prefers-reduced-motion:reduce) { .reveal-once { animation: none!important; }.reveal-pending { opacity: 1; transform: none; } }
+/* Progressive, finite opacity/transform transitions; no pre-hidden HTML/nav. */
+:root { --reveal-travel: 20px; --reveal-duration: 720ms; --reveal-stagger: 80ms; --reveal-delay-cap: 240ms; --reveal-ease: cubic-bezier(.22,1,.36,1); }
+.reveal-pending { opacity: 0; transform: translateY(var(--reveal-travel)); }
+.reveal-entering { opacity: 1; transform: translateY(0); transition-property: opacity,transform; transition-duration: var(--reveal-duration); transition-timing-function: var(--reveal-ease); transition-delay: min(calc(var(--reveal-base-delay,0ms) + var(--reveal-order,0) * var(--reveal-stagger)),var(--reveal-delay-cap)); }
+@media(max-width:600px) { :root { --reveal-duration: 680ms; } }
+@media(prefers-reduced-motion:reduce) { .reveal-pending,.reveal-entering { opacity: 1; transform: none; transition: none!important; } }

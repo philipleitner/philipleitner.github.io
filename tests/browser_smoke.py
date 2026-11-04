@@ -57,7 +57,7 @@ with sync_playwright() as p:
     supported=page.evaluate("CSS.supports('animation-timeline: scroll()')")
     for progress in [0,.25,.5,.75,1]:
         page.evaluate('(p)=>scrollTo({top:(document.documentElement.scrollHeight-innerHeight)*p,behavior:"instant"})',progress)
-        page.wait_for_timeout(900)
+        page.wait_for_timeout(1300)
         if supported:
             scale=page.locator('.reading-progress>span').evaluate('(e)=>new DOMMatrixReadOnly(getComputedStyle(e).transform).a')
             assert abs(scale-progress)<.025,(progress,scale)
@@ -69,13 +69,13 @@ with sync_playwright() as p:
         page.set_viewport_size({'width': width, 'height': 900})
         for section, suffix in [('home','intro'),('about','about'),('projects','projects'),('experience','experience'),('leadership','leadership'),('training','credentials'),('beyond','interests'),('contact','contact')]:
             page.evaluate('(id)=>scrollTo({top:Math.max(0,document.getElementById(id).getBoundingClientRect().top+scrollY-120),behavior:"instant"})', section)
-            page.wait_for_timeout(900)
+            page.wait_for_timeout(1300)
             page.screenshot(path=str(artifacts / f'{name}-{suffix}.png'))
             page.locator('#'+section).screenshot(path=str(artifacts/f'{name}-{suffix}-section.png'))
     assert page.locator('.hero-portrait img').evaluate('(e)=>getComputedStyle(e).animationName') == 'none'
     page.get_by_role('button', name='Menu').click()
     page.locator('nav a[href="#training"]').click()
-    page.wait_for_timeout(900)
+    page.wait_for_timeout(1300)
     assert page.get_by_role('button', name='Menu').get_attribute('aria-expanded') == 'false'
     assert page.locator('#training h2').bounding_box()['y'] >= page.locator('header').bounding_box()['height']
     page.get_by_role('button', name='Menu').click()

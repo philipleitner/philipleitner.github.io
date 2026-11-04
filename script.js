@@ -53,97 +53,153 @@ if (typeof window.IntersectionObserver === 'function') {
   } catch { /* Anchor clicks still track navigation if observer setup fails. */ }
 }
 
-// Adapted from the earlier reveal-once observer: finite effects on independent
-// targets only. Content is visible before setup, after completion and on failure.
+// One reusable transition observer. Only safely prepared targets become
+// transparent; late or uncertain initialization keeps visible content visible.
 const revealMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const revealGroups = [
-  '.section h2, .contact h2', '.home-places, .about-story', '.project-card',
-  '.past-project-row', '.experience .experience-row',
-  '.leadership > .entry-list > .experience-row', '.activity-card',
-  '.certificate', '.interest-grid > div', '.contact-links'
+  ['.hero-main>.eyebrow,.section-label,.contact>.eyebrow',0,false],
+  ['.hero h1,.section h2,.contact h2',80,false],
+  ['.hero-copy',160,false], ['.hero-links',240,false], ['.hero-portrait',160,false],
+  ['.home-places figcaption',80,false], ['.stamp-cell',0,true],
+  ['.prose,.fact-row',160,false], ['.project-group-title',80,false],
+  ['.project-card',160,false], ['.past-project-row',0,true],
+  ['.experience .experience-row',0,true], ['.leadership>.entry-list>.experience-row',0,true],
+  ['.activity-card',0,true], ['.certificate',0,true], ['.interest-grid>div',0,true],
+  ['.contact-links',160,false]
 ];
 const revealTargets = [];
-revealGroups.forEach((selector, groupIndex) => {
-  document.querySelectorAll(selector).forEach((element, index) => {
+revealGroups.forEach(([selector, base, stagger]) => {
+  document.querySelectorAll(selector).forEach((element,index) => {
     if (revealTargets.includes(element)) return;
-    element.style.setProperty('--reveal-order', groupIndex <= 1 ? 0 : index);
-    if (element.matches('h2')) element.classList.add('reveal-heading');
-    else if (element.matches('.past-project-row,.experience-row,.activity-card,.certificate,.interest-grid>div')) element.classList.add('reveal-row');
+    element.style.setProperty('--reveal-base-delay', `${base}ms`);
+    element.style.setProperty('--reveal-order', stagger ? index : 0);
     revealTargets.push(element);
   });
 });
 const revealed = new WeakSet();
 const activeReveals = new Set();
+const initialReveals = new Set();
+const revealTimers = new WeakMap();
 let revealObserver;
+let revealHeight = innerHeight;
 function finishReveal(element) {
   revealed.add(element);
+  initialReveals.delete(element);
   revealObserver?.unobserve?.(element);
-  element.classList.remove('reveal-pending', 'reveal-once');
-  element.removeEventListener('animationend', revealEnded);
+  element.removeEventListener('transitionend', revealEnded);
+  element.removeEventListener('transitioncancel', revealEnded);
+  clearTimeout(revealTimers.get(element));
+  element.classList.remove('reveal-pending','reveal-entering');
   activeReveals.delete(element);
 }
 function revealEnded(event) {
-  if (event.target === event.currentTarget && event.animationName === 'gentle-reveal') finishReveal(event.currentTarget);
-}
-function finishDestination(hash) {
-  let destination;
-  try { destination = document.getElementById(decodeURIComponent(hash.slice(1))); } catch { return; }
-  if (!destination) return;
-  revealTargets.forEach(element => {
-    // Complete the destination itself, not every later entry in its section.
-    if (element.contains(destination) || (destination.matches("section") && element === destination.querySelector("h2"))) finishReveal(element);
-  });
+  if (event.target === event.currentTarget && event.propertyName === 'opacity') finishReveal(event.currentTarget);
 }
 function resetReveals() {
   revealTargets.forEach(finishReveal);
   revealObserver?.disconnect?.();
 }
+function enterReveal(element) {
+  if (revealed.has(element)) return;
+  if (revealMotion.matches || element.contains(document.activeElement)) { finishReveal(element); return; }
+  revealed.add(element);
+  initialReveals.delete(element);
+  revealObserver?.unobserve?.(element);
+  activeReveals.add(element);
+  element.addEventListener('transitionend', revealEnded);
+  element.addEventListener('transitioncancel', revealEnded);
+  element.classList.replace('reveal-pending','reveal-entering');
+  // Finite cleanup fallback; the entering state itself is already fully visible.
+  revealTimers.set(element,setTimeout(() => finishReveal(element),1250));
+}
+function connectRevealObserver() {
+  let responded = false;
+  const observer = new IntersectionObserver(entries => {
+    responded = true;
+    try { entries.forEach(entry => {
+      if (!entry.isIntersecting || revealed.has(entry.target)) return;
+      if (entry.boundingClientRect.top < innerHeight*.5 && !initialReveals.has(entry.target)) finishReveal(entry.target);
+      else enterReveal(entry.target);
+    }); }
+    catch { resetReveals(); }
+  }, { rootMargin: `0px 0px -${Math.round(innerHeight*.12)}px 0px`, threshold: 0 });
+  setTimeout(() => { if (revealObserver === observer && !responded) resetReveals(); },1000);
+  return observer;
+}
+function destinationFor(hash) {
+  try { return document.getElementById(decodeURIComponent(hash.slice(1))); } catch { return null; }
+}
+function finishDestination(hash, arrival = false) {
+  const destination = destinationFor(hash);
+  if (!destination) return;
+  const heading = destination.matches('section') ? destination.querySelector('h2') : null;
+  const visibleArrival = arrival ? revealTargets.filter(element => {
+    if (!destination.contains(element)) return false;
+    const rect = element.getBoundingClientRect();
+    return rect.top < innerHeight && rect.bottom > 0;
+  }) : [];
+  revealTargets.forEach(element => {
+    if (element.contains(destination) || element === heading || visibleArrival.includes(element)) finishReveal(element);
+  });
+}
 if (typeof window.IntersectionObserver === 'function' && !revealMotion.matches) {
   try {
-    let observerResponded = false;
-    revealObserver = new IntersectionObserver(entries => {
-      observerResponded = true;
-      try {
-        entries.forEach(entry => {
-          const element = entry.target;
-          if (!entry.isIntersecting || revealed.has(element)) return;
-          revealed.add(element);
-          revealObserver.unobserve(element);
-          if (revealMotion.matches || element.contains(document.activeElement)) {
-            finishReveal(element);
-            return;
-          }
-          activeReveals.add(element);
-          element.addEventListener('animationend', revealEnded);
-          // Pending and animation start use identical values: never flash a
-          // fully visible element back to faint when it enters the viewport.
-          element.classList.replace('reveal-pending', 'reveal-once');
-        });
-      } catch { resetReveals(); }
-    }, { rootMargin: '0px 0px 12px 0px', threshold: 0 });
+    revealObserver = connectRevealObserver();
     if (location.hash) finishDestination(location.hash);
-    // Install every observation before preparing anything. Then batch layout
-    // reads followed by writes, arming only genuinely below-viewport content.
     revealTargets.forEach(element => { if (!revealed.has(element)) revealObserver.observe(element); });
-    const positions = revealTargets.map(element => ({ element, top: element.getBoundingClientRect().top }));
-    setTimeout(() => { if (!observerResponded) resetReveals(); }, 1000);
-    positions.forEach(({ element, top }) => {
+    // Paint Timing support is required: an empty unsupported API is not proof
+    // that users have never seen this content. Late initialization stays static.
+    const early = typeof PerformanceObserver === 'function' &&
+      PerformanceObserver.supportedEntryTypes?.includes('paint') &&
+      performance.getEntriesByType('paint').length === 0;
+    const positions = revealTargets.map(element => ({element,rect:element.getBoundingClientRect()}));
+    const initial = [];
+    positions.forEach(({element,rect}) => {
       if (revealed.has(element)) return;
-      if (top < innerHeight) finishReveal(element);
-      else element.classList.add('reveal-pending');
+      if (rect.bottom <= 0 || (rect.top < innerHeight && !early)) finishReveal(element);
+      else {
+        element.classList.add('reveal-pending');
+        if (rect.top < innerHeight) { initial.push(element); initialReveals.add(element); }
+      }
+    });
+    if (initial.length) requestAnimationFrame(() => {
+      try {
+        initial.forEach(element => getComputedStyle(element).opacity);
+        initial.forEach(enterReveal);
+      } catch { resetReveals(); }
     });
   } catch { resetReveals(); }
 }
-// Navigation and keyboard focus never wait for a staggered entrance.
+// Anchors/focus resolve immediately. Only visible arrival groups are completed;
+// entries further down the destination section retain their natural entrance.
+let arrivalTimer;
 document.addEventListener('click', event => {
   const link = event.target.closest('a[href^="#"]');
-  if (link) finishDestination(link.hash);
+  if (!link) return;
+  finishDestination(link.hash);
+  clearTimeout(arrivalTimer);
+  arrivalTimer = setTimeout(() => finishDestination(link.hash,true),750);
 });
-window.addEventListener('hashchange', () => finishDestination(location.hash));
+window.addEventListener('hashchange', () => {
+  finishDestination(location.hash);
+  clearTimeout(arrivalTimer);
+  arrivalTimer = setTimeout(() => finishDestination(location.hash,true),750);
+});
+window.addEventListener('pageshow', () => { if (location.hash) finishDestination(location.hash,true); });
 document.addEventListener('focusin', event => {
   revealTargets.forEach(element => { if (element.contains(event.target)) finishReveal(element); });
 });
-revealMotion.addEventListener('change', event => {
-  if (!event.matches) return;
-  resetReveals();
+revealMotion.addEventListener('change', event => { if (event.matches) resetReveals(); });
+let revealResizeTimer;
+window.addEventListener('resize', () => {
+  if (!revealObserver || revealMotion.matches || Math.abs(innerHeight-revealHeight)<80) return;
+  clearTimeout(revealResizeTimer);
+  revealResizeTimer = setTimeout(() => {
+    try {
+      revealHeight=innerHeight;
+      revealObserver.disconnect();
+      revealObserver=connectRevealObserver();
+      revealTargets.forEach(element => { if (!revealed.has(element)) revealObserver.observe(element); });
+    } catch { resetReveals(); }
+  },150);
 });
