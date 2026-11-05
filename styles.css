@@ -86,13 +86,13 @@ nav a:not(.nav-contact):is(:hover,:focus-visible) { color: var(--accent-ink); }
 .about-story { padding: var(--surface-pad); background: var(--surface); border: var(--surface-border); border-radius: var(--radius); }
 .prose { color: var(--muted); font-size: 15px; line-height: 1.9; }
 .prose p+p { margin-top: 20px; }
-.fact-row { display: grid; grid-template-columns: 1.65fr 1.05fr 1.2fr; grid-template-rows: 3px auto auto auto; column-gap: 0; row-gap: 9px; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
-.fact-row > div { display: grid; grid-row: span 4; grid-template-rows: 3px minmax(4.2rem,auto) auto auto; row-gap: 9px; align-content: start; padding: 0 14px; border-left: var(--surface-border); font-size: 11px; line-height: 1.7; color: var(--muted); }
+.fact-row { display: grid; grid-template-columns: minmax(0,1.65fr) minmax(max-content,1.05fr) minmax(0,1.2fr); grid-template-rows: 3px auto auto auto; column-gap: 0; row-gap: 9px; margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.fact-row > div { min-width: 0; display: grid; grid-row: span 4; grid-template-rows: 3px minmax(4.2rem,auto) auto auto; row-gap: 9px; align-content: start; padding: 0 14px; border-left: var(--surface-border); font-size: 11px; line-height: 1.7; color: var(--muted); }
 .fact-row > div:first-child { padding-left: 0; border-left: 0; }
 .fact-row > div:last-child { padding-right: 0; }
 .fact-row > div::before { content: ''; width: 24px; height: 3px; background: var(--accent); }
 .fact-title { font: 600 16px/1.4 var(--sans); color: var(--ink); }
-.university-details { white-space: nowrap; }
+.university-details,.ib-label { white-space: nowrap; }
 @supports (grid-template-rows: subgrid) { .fact-row > div { grid-template-rows: subgrid; } }
 .project-group-title { font: 600 11px/1.4 var(--sans); letter-spacing: 1px; color: var(--blue-ink); margin-bottom: 18px; }
 .project-card { display: grid; grid-template-columns: 1fr 1.15fr; border: 1px solid #0099ff45; border-radius: var(--radius); overflow: hidden; background: #f0f9ff; border-top: var(--panel-accent); }
@@ -145,6 +145,10 @@ ul { margin: 0; padding-left: 18px; }li+li { margin-top: 7px; }
 .certificate:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
 .certificate { display: grid; grid-template-columns: 34px 1fr; gap: 20px; padding: 0 0 30px; margin-bottom: 30px; border-bottom: 1px solid var(--line); }
 .certificate > span { width: 31px; height: 31px; display: grid; place-items: center; border: 1px solid #ff2b0660; color: var(--accent-ink); font-size: 11px; }
+.issuer-logo { display: block; margin-bottom: 19px; }
+.issuer-logo--bloomberg { width: 150px; height: 32px; overflow: hidden; }
+.issuer-logo--bloomberg img { display: block; width: 150px; height: auto; max-width: none; }
+.issuer-logo--bank { width: 190px; max-width: 100%; height: auto; }
 .certificate h3 { font-size: 27px; }
 .issuer-label { display: block; width: fit-content; padding: 3px 8px; border-radius: 4px; background: var(--blue-wash); margin: 13px 0 0; color: var(--blue-ink); font-size: 12px; font-weight: 650; }
 .credential-link { display: inline-flex; align-items: center; gap: 14px; margin-top: 20px; padding: 9px 13px; border: 1px solid #db8f7d; border-radius: 5px; font-size: 12px; font-weight: 600; transition: background .15s; }
@@ -172,7 +176,7 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
   .activity-grid { gap: 28px; }.training-grid { grid-template-columns: 1fr 1.6fr; gap: 6%; }
 }
 @media(min-width:601px) and (max-width:950px) {
-  .fact-row { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .fact-row { grid-template-columns: minmax(max-content,1fr) minmax(0,1fr); }
   .fact-row > .education-primary { grid-column: 1/-1; padding-bottom: 18px; }
   .fact-row > div:nth-child(2) { padding-left: 0; border-left: 0; }
 }
@@ -191,7 +195,7 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
 @media(max-width:600px) {
   :root { --space: 64px; --surface-pad: 20px; --row-pad: 26px; }.hero,.section,.contact,footer { width: calc(100% - 40px); }
   h2 { font-size: 43px;letter-spacing: -1.5px; }.hero { grid-template-columns: 1fr; padding: 36px 0 0; gap: 30px; }.hero h1 { font-size: clamp(76px,20vw,94px);letter-spacing: -4px; margin: 22px 0; }.hero-copy { font-size: 14px; }.hero-links { margin-top: 24px; }.hero-portrait { border-top-right-radius: 65px; }.hero-bottom { margin-top: -16px; }
-  .section { padding-top: 26px; }.section-label { font-size: 8px; }.prose { font-size: 14px; }.home-places { padding: 12px; }.home-places figcaption { font-size: 16px; }.passport-stamps { gap: 6px 8px; }.stamp-cell { max-width: 150px; }.fact-row { grid-template-columns: repeat(2,minmax(0,1fr)); row-gap: 9px; }.fact-row > div { padding: 0; border-left: 0; }.fact-row > div:last-child { padding-left: 16px; border-left: var(--surface-border); }.fact-row > .education-primary { grid-column: 1/-1; padding-bottom: 18px; }
+  .section { padding-top: 26px; }.section-label { font-size: 8px; }.prose { font-size: 14px; }.home-places { padding: 12px; }.home-places figcaption { font-size: 16px; }.passport-stamps { gap: 6px 8px; }.stamp-cell { max-width: 150px; }.fact-row { grid-template-columns: minmax(9rem,1fr) minmax(0,1fr); row-gap: 9px; }.fact-row > div { padding: 0; border-left: 0; }.fact-row > div:last-child { padding-left: 16px; border-left: var(--surface-border); }.fact-row > .education-primary { grid-column: 1/-1; padding-bottom: 18px; }
   .project-card { grid-template-columns: 1fr; }.project-visual { min-height: 265px;padding: 24px; }.project-visual > p { font-size: 51px; }.chart { left: 24px;right: 24px;bottom: 47px;height: 145px; }.project-content { padding: 26px 24px; }.project-content h3 { color: var(--accent-ink); font-size: 35px; }.project-content .eyebrow { margin-top: 22px; }
   .past-project-row,.experience-row { grid-template-columns: 1fr;gap: 20px;padding: var(--row-pad) 0; }.past-project-title .eyebrow { font-size: 9px; }.past-project-title h3 { color: var(--accent-ink); font-size: 27px; }.experience-date { padding: 0;display: flex;flex-wrap: wrap;gap: 12px; }.experience-date span { margin: 0; }.experience-row h3 { font-size: 29px; }.experience-row ul { font-size: 14px; }.role { margin: 10px 0 17px; }
   .activity-grid { grid-template-columns: 1fr;gap: 0;margin-top: 20px; }.activity-card+.activity-card { border-left: 0; border-top: var(--surface-border); padding: 24px 0 0; margin-top: 24px; }.activity-card h3 { font-size: 27px; }
