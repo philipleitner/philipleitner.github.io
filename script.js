@@ -64,7 +64,7 @@ const revealGroups = [
   ['.prose,.fact-row',160,false], ['.project-group-title',80,false],
   ['.project-card',160,false], ['.past-project-row',0,true],
   ['.experience .experience-row',0,true], ['.leadership>.entry-list>.experience-row',0,true],
-  ['.activity-card',0,true], ['.certificate',0,true], ['.interest-grid>div',0,true],
+  ['.learning-card',160,false], ['.activity-card',0,true], ['.certificate',0,true], ['.interest-grid>div',0,true],
   ['.contact-links',160,false]
 ];
 const revealTargets = [];

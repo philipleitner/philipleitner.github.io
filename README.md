@@ -18,7 +18,7 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 - `styles.css`: colors in `:root`, typography, layouts, mobile breakpoints, reduced-motion preferences, and subtle introductory animation.
 - `script.js`: accessible mobile navigation, Escape handling, and active-section tracking. Content and navigation remain visible without JavaScript; CSS handles smooth anchor navigation and reduced-motion preferences.
 - `assets/philip-leitner-portrait.webp`: the supplied portrait with subtle photographic retouch, encoded as a lightweight1254px WebP; used only in the introduction. Keep its descriptive alt text and explicit dimensions when replacing it.
-- `assets/flags/`: retained public-domain flag source assets from an earlier design; current country stamps are inline SVG in `index.html`. Attribution is in `SOURCE.md`.
+- `assets/flags/`: public-domain flag assets; the Italian flag is used by the learning card, while country stamps are inline SVG in `index.html`. Attribution is in `SOURCE.md`.
 - `assets/background-field.svg`: lightweight static curves, arcs, dots and waves behind the blue gradient; no filters or embedded animation.
 - `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
 - `assets/philip-leitner-cv.pdf`: the supplied public-safe original PDF, copied byte-for-byte to preserve layout and fonts. The earlier private CV is not included.
@@ -36,6 +36,14 @@ The equity research company, thesis, and publication date are labelled **to be a
 For an Excel model, use a relative `.xlsx` link. Verify you have permission to distribute every document and check it for private information. Replace the public CV PDF after future updates with an address-free copy, keeping its filename or updating both CV links. Do not copy the original private PDF into the repository.
 
 The abstract project graphics are decorative. The research graphic explicitly contains no market data. No analytics, tracking, or contact backend is included; contact uses email and LinkedIn.
+
+## Italian learning card
+
+The Italian card is ongoing learning, separate from earned credentials. In `index.html`, edit the number inside `.learning-score strong` to update the manually supplied Duolingo Score (currently 12). Keep this separate from XP and streak counts.
+
+The “View profile” action uses the supplied public profile-sharing URL for `Philip199736`. Update `.learning-profile` in `index.html` when changing the profile link; preserve its accessible action label and external-link attributes.
+
+Automatic updates are **not enabled or verified**. On 5 November 2026, access to the public Duolingo endpoint was blocked by this environment’s proxy (HTTP tunnel 403), so the actual Italian Duolingo Score field for the supplied account could not be verified. This does not establish that Duolingo offers no suitable public data. No password, cookies, guessed score field, or daily GitHub Actions job is used. Retain the manually confirmed value until a real public account/source can be tested. If automation is later verified, publish a last-successful-update date and preserve the last valid score on fetch/validation failures.
 
 ## Validation
 
