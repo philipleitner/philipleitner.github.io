@@ -41,7 +41,7 @@ The abstract project graphics are decorative. The research graphic explicitly co
 
 The Italian card is ongoing learning, separate from earned credentials. In `index.html`, edit the number inside `.learning-score strong` to update the manually supplied Duolingo Score (currently 12). Keep this separate from XP and streak counts.
 
-The “View profile” action uses the supplied public profile-sharing URL for `Philip199736`. Update `.learning-profile` in `index.html` when changing the profile link; preserve its accessible action label and external-link attributes.
+The “View profile” action uses the direct web-profile route `https://www.duolingo.com/profile/Philip199736` for the supplied username, avoiding the app-oriented invite/share redirect. Both the original invite URL and direct profile URL were blocked by this environment’s proxy (HTTP tunnel 403) during checks on 5 November 2026, so the live destination remains unverified here. Update `.learning-profile` in `index.html` when changing the profile link; preserve its accessible action label and external-link attributes.
 
 Automatic updates are **not enabled or verified**. On 5 November 2026, access to the public Duolingo endpoint was blocked by this environment’s proxy (HTTP tunnel 403), so the actual Italian Duolingo Score field for the supplied account could not be verified. This does not establish that Duolingo offers no suitable public data. No password, cookies, guessed score field, or daily GitHub Actions job is used. Retain the manually confirmed value until a real public account/source can be tested. If automation is later verified, publish a last-successful-update date and preserve the last valid score on fetch/validation failures.
 

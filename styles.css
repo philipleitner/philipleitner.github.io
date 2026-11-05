@@ -140,8 +140,11 @@ ul { margin: 0; padding-left: 18px; }li+li { margin-top: 7px; }
 .activity-link { display: inline-flex; gap: 16px; padding: 6px 0; margin-top: 20px; border-bottom: 1px solid var(--accent); font-size: 12px; }
 .activity-link span { color: var(--accent); }
 .activity-link:is(:hover,:focus-visible) { color: #501809; border-color: var(--ink); }
-.training-intro { min-width: 0; }
-.learning-card { margin-top: 32px; padding: 24px; border: var(--surface-border); border-top: var(--panel-accent); border-radius: var(--radius); background: var(--surface); }
+.training-intro { min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+.training-intro h2 { margin-bottom: 0; }
+.training-grid > div:last-child { display: flex; min-width: 0; }
+.training-grid .credential-list { width: 100%; }
+.learning-card { margin-top: auto; padding: 24px; border: var(--surface-border); border-top: var(--panel-accent); border-radius: var(--radius); background: var(--surface); }
 .learning-brand,.learning-title { display: flex; align-items: center; gap: 12px; }
 .learning-brand { justify-content: space-between; margin-bottom: 25px; }
 .learning-brand img { width: 36px; height: 36px; }
@@ -222,4 +225,4 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
 @media(max-width:600px) { :root { --reveal-duration: 680ms; } }
 @media(prefers-reduced-motion:reduce) { .reveal-pending,.reveal-entering { opacity: 1; transform: none; transition: none!important; } }
 
-@media(max-width:850px) { .training-intro { margin-bottom: 30px; }.learning-card { max-width: 420px; margin-top: 24px; } }
+@media(max-width:850px) { .training-intro { margin-bottom: 30px; gap: 24px; }.learning-card { max-width: 420px; margin-top: 0; } }
