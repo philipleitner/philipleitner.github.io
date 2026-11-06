@@ -21,13 +21,14 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 - `assets/flags/`: public-domain flag assets; the Italian flag is used by the learning card, while country stamps are inline SVG in `index.html`. Attribution is in `SOURCE.md`.
 - `assets/background-field.svg`: lightweight static curves, arcs, dots and waves behind the blue gradient; no filters or embedded animation.
 - `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
+- `assets/pennsem-starbucks-the-way-forward.pptx`: the supplied original PennSEM Starbucks case presentation, linked from its Past Projects entry. Keep the file unchanged when publishing this version.
 - `assets/philip-leitner-cv.pdf`: the supplied public-safe original PDF, copied byte-for-byte to preserve layout and fonts. The earlier private CV is not included.
 
 Edit the relevant text directly in `index.html`. Keep section IDs and navigation links aligned. Use relative paths (for example, `./assets/report.pdf`) so the site works at both a domain root and a GitHub Pages project path.
 
 The attached CV is the factual source. The user supplied first-year status, the equity research project, investment banking interest, and Forage as the simulation platform. LinkedIn could not be read because environment access was blocked; only the supplied profile URL is linked. No additional profile details were inferred. Certification dates are omitted because none were supplied.
 
-The equity research company, thesis, and publication date are labelled **to be added**. The research report, Excel model, and case presentation are **Coming soon** text, without fake or disabled download links. To publish a document later, add a reviewed file under `assets/` and replace its status span with a descriptive anchor, such as:
+The equity research company, thesis, and publication date are labelled **to be added**. The research report and Excel model remain **Coming soon** text, without fake or disabled download links. The PennSEM Starbucks presentation is available as the original PowerPoint download in its Past Projects row. To publish a document later, add a reviewed file under `assets/` and replace its status span with a descriptive anchor, such as:
 
 ```html
 <a href="./assets/equity-research.pdf" download>Download research report (PDF)</a>
