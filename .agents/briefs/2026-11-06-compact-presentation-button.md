@@ -1,0 +1,7 @@
+# Compact presentation download
+
+Replace heavy presentation-download composition with compact inline-flex rectangular button: pale red tint, thin existing-accent red border, dark readable text, small decorative download SVG and exact visible label Download presentation. Remove PPTX badge, file icon, divided action area and related unused CSS. Reduce padding, use modest3–5px corner rounding and existing typography(~13–14px). Hover/focus gently deepen tint, no transforms/movement/scaling; retain clear global keyboard outline and reduced-motion support. Exact href/download attribute and all other links/text/assets preserved. Fit320/390 phones with no clipping or horizontal scrolling; responsive wrapping if necessary. Builder owns HTML/CSS; root owns README cleanup, cache token, brief and commit/push. Focused desktop/mobile browser, actual download/hash, keyboard focus, hover no-motion and reduced-motion checks; screenshots outside repo. Do not commit/push.
+
+## Review evidence
+
+Builder and coordinator checks passed at1440/390/320: compact13px dark label, pale tint and thin accent border, exactly one small downloadSVG, no badge/divider/fileicon or obsolete CSS. Mobile screenshot visually inspected. Actual downloaded PPTX SHA256 matches unchanged source. Hover changes background only; button and icon transforms remain none, focus outline is visible and reduced-motion safe. Exact unrelated HTML and href/download attribute preserved aside from stylesheet cache revision. Artifacts /workspace/portfolio-review/compact-download-root/.
