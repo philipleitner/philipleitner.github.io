@@ -226,3 +226,17 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
 @media(prefers-reduced-motion:reduce) { .reveal-pending,.reveal-entering { opacity: 1; transform: none; transition: none!important; } }
 
 @media(max-width:850px) { .training-intro { margin-bottom: 30px; gap: 24px; }.learning-card { max-width: 420px; margin-top: 0; } }
+
+/* Reusable action for downloadable presentation files. */
+.presentation-download { display: inline-grid; grid-template-columns: 20px minmax(0,1fr) 37px; align-items: center; gap: 14px; width: fit-content; max-width: 100%; margin-top: 22px; padding: 16px 18px; border: 1px solid #e02505; border-radius: 3px; background: var(--accent); color: #fff; transition: background 160ms ease,border-color 160ms ease; }
+.presentation-download__file { width: 20px; height: 24px; }
+.presentation-download__content { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; min-width: 0; }
+.presentation-download__label { font: 700 19px/1.25 var(--sans); }
+.presentation-download__badge { display: inline-block; padding: 3px 6px; border-radius: 2px; background: #fff; color: #a9230b; font: 700 10px/1.4 var(--sans); letter-spacing: .08em; }
+.presentation-download__action { display: grid; place-items: center; align-self: stretch; border-left: 1px solid #ffffff70; padding-left: 14px; }
+.presentation-download__action svg { width: 22px; height: 24px; transition: transform 160ms ease; }
+.presentation-download:is(:hover,:focus-visible) { background: #c72205; border-color: #a9230b; }
+.presentation-download:is(:hover,:focus-visible) .presentation-download__action svg { transform: translateY(2px); }
+.presentation-download:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+@media(max-width:600px) { .presentation-download { grid-template-columns: 18px minmax(0,1fr) 28px; gap: 10px; padding: 14px 12px; }.presentation-download__file { width: 18px; }.presentation-download__action { padding-left: 8px; }.presentation-download__action svg { width: 19px; } }
+@media(prefers-reduced-motion:reduce) { .presentation-download,.presentation-download__action svg { transition: none; }.presentation-download:is(:hover,:focus-visible) .presentation-download__action svg { transform: none; } }

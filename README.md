@@ -34,6 +34,8 @@ The equity research company, thesis, and publication date are labelled **to be a
 <a href="./assets/equity-research.pdf" download>Download research report (PDF)</a>
 ```
 
+Use the shared `.presentation-download` component for equivalent presentation downloads: retain its decorative file icon, visible action label, file-type badge and divided download arrow. Its hover/focus states and reduced-motion behavior are scoped in `styles.css`; keep CV and ordinary text links on their existing styles.
+
 For an Excel model, use a relative `.xlsx` link. Verify you have permission to distribute every document and check it for private information. Replace the public CV PDF after future updates with an address-free copy, keeping its filename or updating both CV links. Do not copy the original private PDF into the repository.
 
 The abstract project graphics are decorative. The research graphic explicitly contains no market data. No analytics, tracking, or contact backend is included; contact uses email and LinkedIn.
