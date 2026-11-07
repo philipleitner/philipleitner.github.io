@@ -21,7 +21,7 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 - `assets/flags/`: public-domain flag assets; the Italian flag is used by the learning card, while country stamps are inline SVG in `index.html`. Attribution is in `SOURCE.md`.
 - `assets/background-field.svg`: lightweight static curves, arcs, dots and waves behind the blue gradient; no filters or embedded animation.
 - `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
-- `assets/presentations/PennSEM Burberry.pdf` and `assets/presentations/PennSEM Starbucks.pptx`: original supplied case presentations, keeping the exact filenames. The Projects entry opens the original Burberry PDF and an exported Starbucks PDF, in that order. The supplied Starbucks PowerPoint is retained unchanged.
+- `assets/presentations/PennSEM Burberry.pdf` and `assets/presentations/PennSEM Starbucks.pptx`: original supplied case presentations, keeping the exact filenames. The Projects entry opens the exported Starbucks PDF first, then the original Burberry PDF. The supplied Starbucks PowerPoint is retained unchanged.
 - `assets/presentations/PennSEM Starbucks.pdf`: browser-viewable PDF exported from the original PowerPoint; review slide layout after any future export. The current 13-page LibreOffice export uses Carlito/Liberation Sans font substitutions, so it is a preview rather than a pixel-identical PowerPoint rendering.
 - `assets/pennsem-starbucks-the-way-forward.pptx`: retained original Starbucks file for compatibility with previously published direct links.
 - `assets/philip-leitner-cv.pdf`: the supplied public-safe original PDF, copied byte-for-byte to preserve layout and fonts. The earlier private CV is not included.
