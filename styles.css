@@ -232,3 +232,7 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
 .presentation-download .icon { width: 17px; height: 17px; flex: 0 0 17px; color: var(--accent-ink); }
 .presentation-download:is(:hover,:focus-visible) { background: #ffe0d7; }
 @media(prefers-reduced-motion:reduce) { .presentation-download { transition: none; } }
+
+.activity-grid > .activity-card:only-child { grid-column: 1 / -1; }
+.presentation-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }
+.presentation-actions .presentation-download { margin-top: 0; }
