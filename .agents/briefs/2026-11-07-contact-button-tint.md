@@ -1,0 +1,7 @@
+# Matching contact action tint
+
+Apply the same pale-red tint and thinredborder used on presentation PDF actions to ONLY .contact-link email/LinkedIn buttons. User calls it glow; match current subtle tint, NOT a new shadow/glow effect. Preserve contactbutton size/layout/typography/icons and exactmailto/LinkedIn hrefs, all content and othersections. Basebackground#fff0ec, border1px existingaccent, darktext; hover/focusbackground#ffe0d7, no movement/scaling/shadows. Match clear global focusoutline, reducedmotionno unnecessaryanimation. Prefer shared color tokens for presentation/contact tint and hover if lightweight; avoid other component visualchanges. Builder ownsCSS; root owns cachetoken/brief/commitpush. Test1440/390/320 matching computedcolors/borders, hover/focus, nooverflow/clipping and unchangedhrefs. Screenshots outside repo. Do not commit/push.
+
+## Review outcome
+
+Contact/presentation actions share static --action-tint/#fff0ec and --action-tint-hover/#ffe0d7 variables. Contact dimensions, typography, icons and actual mailto/LinkedIn hrefs preserved. No shadows/transforms added. Builder and independent coordinator checks passed1440/390/320: exact matching computed base tint/border, deeper hover tint, clear keyboard outline, no movement/overflow/errors. Entire HTML unchanged except CSS cache revision. Mobile screenshot visually inspected at /workspace/portfolio-review/contact-tint-root/.
