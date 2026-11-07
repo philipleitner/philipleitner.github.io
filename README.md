@@ -21,7 +21,8 @@ Open `http://127.0.0.1:8000` in your own browser. Stop with Ctrl+C. The site als
 - `assets/flags/`: public-domain flag assets; the Italian flag is used by the learning card, while country stamps are inline SVG in `index.html`. Attribution is in `SOURCE.md`.
 - `assets/background-field.svg`: lightweight static curves, arcs, dots and waves behind the blue gradient; no filters or embedded animation.
 - `assets/favicon.svg`: the PL browser icon, drawn as vector paths for sharp small-size rendering.
-- `assets/presentations/PennSEM Burberry.pdf` and `assets/presentations/PennSEM Starbucks.pptx`: original supplied case presentations, keeping the exact filenames. The Projects entry opens Burberry as a PDF and downloads Starbucks as PowerPoint, in that order.
+- `assets/presentations/PennSEM Burberry.pdf` and `assets/presentations/PennSEM Starbucks.pptx`: original supplied case presentations, keeping the exact filenames. The Projects entry opens the original Burberry PDF and an exported Starbucks PDF, in that order. The supplied Starbucks PowerPoint is retained unchanged.
+- `assets/presentations/PennSEM Starbucks.pdf`: browser-viewable PDF exported from the original PowerPoint; review slide layout after any future export. The current 13-page LibreOffice export uses Carlito/Liberation Sans font substitutions, so it is a preview rather than a pixel-identical PowerPoint rendering.
 - `assets/pennsem-starbucks-the-way-forward.pptx`: retained original Starbucks file for compatibility with previously published direct links.
 - `assets/philip-leitner-cv.pdf`: the supplied public-safe original PDF, copied byte-for-byte to preserve layout and fonts. The earlier private CV is not included.
 
@@ -29,13 +30,13 @@ Edit the relevant text directly in `index.html`. Keep section IDs and navigation
 
 The attached CV is the factual source. The user supplied first-year status, the equity research project, investment banking interest, and Forage as the simulation platform. LinkedIn could not be read because environment access was blocked; only the supplied profile URL is linked. No additional profile details were inferred. Certification dates are omitted because none were supplied.
 
-The equity research company, thesis, and publication date are labelled **to be added**. The research report and Excel model remain **Coming soon** text, without fake or disabled download links. The consolidated PennSEM competition appears only in Projects, with its Burberry PDF view link and original Starbucks PowerPoint download. To publish a document later, add a reviewed file under `assets/` and replace its status span with a descriptive anchor, such as:
+The equity research company, thesis, and publication date are labelled **to be added**. The research report and Excel model remain **Coming soon** text, without fake or disabled download links. The consolidated PennSEM competition appears only in Projects, with its Burberry and Starbucks PDF view links. To publish a document later, add a reviewed file under `assets/` and replace its status span with a descriptive anchor, such as:
 
 ```html
 <a href="./assets/equity-research.pdf" download>Download research report (PDF)</a>
 ```
 
-Use the shared `.presentation-download` component for equivalent presentation downloads: a compact pale-red button with dark text, a thin red border and one decorative download icon. Hover/focus gently deepen the tint without movement. Keep CV and ordinary text links on their existing styles.
+Use the shared `.presentation-download` component for equivalent presentation file actions: a compact pale-red button with dark text, a thin red border and one appropriate decorative view/download icon. Hover/focus gently deepen the tint without movement. Keep CV and ordinary text links on their existing styles.
 
 For an Excel model, use a relative `.xlsx` link. Verify you have permission to distribute every document and check it for private information. Replace the public CV PDF after future updates with an address-free copy, keeping its filename or updating both CV links. Do not copy the original private PDF into the repository.
 
