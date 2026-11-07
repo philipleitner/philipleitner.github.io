@@ -10,6 +10,7 @@ with sync_playwright() as p:
   page=b.new_page(viewport={'width':width,'height':900});errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   page.add_init_script('window.revealStarts=[];document.addEventListener("transitionrun",e=>{if(e.propertyName==="opacity"&&e.target.classList.contains("reveal-entering"))revealStarts.push(e.target)},true)')
   page.goto(a.url);page.wait_for_load_state('networkidle');page.wait_for_timeout(1200)
+  page.evaluate('async()=>{const images=[...document.images];images.forEach(e=>e.loading="eager");await Promise.all(images.map(e=>e.decode().catch(()=>{})))}')
   before=page.evaluate('({height:document.documentElement.scrollHeight,positions:[...document.querySelectorAll("main>section")].map(e=>e.offsetTop)})')
   assert page.locator(selectors).evaluate_all('(es)=>es.every(e=>!es.some(other=>other!==e&&other.contains(e)))')
   span=page.evaluate('document.documentElement.scrollHeight-innerHeight')

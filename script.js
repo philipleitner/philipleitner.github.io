@@ -1,16 +1,10 @@
 // A real refresh starts a new visit at the introduction. Fresh deep links and
 // ordinary anchor/back navigation retain their native browser behavior.
-if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
-  const previousRestoration = history.scrollRestoration;
+const isReloadVisit = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+const previousRestoration = history.scrollRestoration;
+if (isReloadVisit) {
   history.scrollRestoration = 'manual';
   if (location.hash) history.replaceState(history.state, '', location.pathname + location.search);
-  window.addEventListener('pageshow', () => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, behavior: 'instant' });
-      history.scrollRestoration = previousRestoration;
-    });
-  }, { once: true });
 }
 
 const menuButton = document.querySelector('.menu-toggle');
@@ -142,7 +136,8 @@ function finishDestination(hash, arrival = false) {
     if (element.contains(destination) || element === heading || visibleArrival.includes(element)) finishReveal(element);
   });
 }
-if (typeof window.IntersectionObserver === 'function' && !revealMotion.matches) {
+function initializeReveals() {
+ if (typeof window.IntersectionObserver !== 'function' || revealMotion.matches) return;
   try {
     revealObserver = connectRevealObserver();
     if (location.hash) finishDestination(location.hash);
@@ -170,6 +165,20 @@ if (typeof window.IntersectionObserver === 'function' && !revealMotion.matches) 
     });
   } catch { resetReveals(); }
 }
+// Reload restoration must settle before any observer can consume targets using
+// the previous visit's deep coordinates. This is finite load work, not replay.
+if (isReloadVisit) {
+  const prepareReload = () => {
+    window.scrollTo({top:0,behavior:'instant'});
+    requestAnimationFrame(() => {
+      window.scrollTo({top:0,behavior:'instant'});
+      initializeReveals();
+      history.scrollRestoration = previousRestoration;
+    });
+  };
+  if (document.readyState === 'complete') prepareReload();
+  else window.addEventListener('pageshow',prepareReload,{once:true});
+} else initializeReveals();
 // Anchors/focus resolve immediately. Only visible arrival groups are completed;
 // entries further down the destination section retain their natural entrance.
 let arrivalTimer;
