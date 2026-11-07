@@ -237,3 +237,6 @@ footer p { color: var(--muted); font-size: 11px; }.footer-links { margin-left: a
 .activity-grid > .activity-card:only-child { grid-column: 1 / -1; }
 .presentation-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }
 .presentation-actions .presentation-download { margin-top: 0; }
+
+@media(min-width:851px) { #about .home-places { justify-content: flex-start; }#about .passport-stamps { flex: 1; grid-template-rows: repeat(3,1fr); } }
+@media(min-width:851px) and (max-width:950px) { #about .fact-row { grid-template-columns: minmax(9rem,1fr) minmax(0,1fr); } }
